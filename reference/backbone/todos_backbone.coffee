@@ -1,11 +1,11 @@
 ###
-  knockback_observables.js
-  (c) 2011 Kevin Malakoff.
-  Knockback.Observables is freely distributable under the MIT license.
-  See the following for full license details:
-    https:#github.com/kmalakoff/knockback/blob/master/LICENSE
+  An example Backbone application contributed by
+  [Jérôme Gravel-Niquet](http://jgn.me/). This demo uses a simple
+  [LocalStorage adapter](backbone-localstorage.html)
+  to persist Backbone models within your browser.
+
+  Ported to Coffeescript by Kevin Malakoff.
 ###
-throw new Error('Knockback: Dependency alert! knockback_core.js must be included before this file') if not @Knockback
 
 # Todo Model
 # ----------

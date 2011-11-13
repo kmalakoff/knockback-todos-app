@@ -1,9 +1,10 @@
 /*
-  knockback_observables.js
-  (c) 2011 Kevin Malakoff.
-  Knockback.Observables is freely distributable under the MIT license.
-  See the following for full license details:
-    https:#github.com/kmalakoff/knockback/blob/master/LICENSE
+  An example Backbone application contributed by
+  [Jérôme Gravel-Niquet](http://jgn.me/). This demo uses a simple
+  [LocalStorage adapter](backbone-localstorage.html)
+  to persist Backbone models within your browser.
+
+  Ported to Coffeescript by Kevin Malakoff.
 */
 var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
   for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
@@ -13,9 +14,6 @@ var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, par
   child.__super__ = parent.prototype;
   return child;
 };
-if (!this.Knockback) {
-  throw new Error('Knockback: Dependency alert! knockback_core.js must be included before this file');
-}
 window.Todo = (function() {
   __extends(Todo, Backbone.Model);
   function Todo() {
