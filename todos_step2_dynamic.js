@@ -4,8 +4,17 @@
   Knockback-Todos is freely distributable under the MIT license.
   See the following for full license details:
     https:#github.com/kmalakoff/knockback-todos/blob/master/LICENSE
-*/$(document).ready(function() {
-  var $all_priority_pickers, LanguageOptionViewModel, PrioritiesSetting, PrioritySettingsViewModel, SortingOptionViewModel, Todo, TodoViewModel, create_view_model, footer_view_model, header_view_model, list_sorting_options_view_model, locale, model, priority_settings, stats_view_model, todo_list_view_model, todos, view_model, _i, _j, _k, _l, _len, _len2, _len3, _len4, _len5, _m, _ref, _ref2, _ref3, _ref4;
+*/
+var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
+  for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
+  function ctor() { this.constructor = child; }
+  ctor.prototype = parent.prototype;
+  child.prototype = new ctor;
+  child.__super__ = parent.prototype;
+  return child;
+}, __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+$(document).ready(function() {
+  var $all_priority_pickers, LanguageOptionViewModel, PrioritiesSetting, PrioritySettingsViewModel, SortingOptionViewModel, Todo, TodoList, TodoViewModel, create_view_model, footer_view_model, header_view_model, list_sorting_options_view_model, locale, model, priority_settings, stats_view_model, todo_list_view_model, todos, view_model, _i, _j, _k, _len, _len2, _len3, _ref, _ref2;
   locale_manager.setLocale('it-IT');
   PrioritiesSetting = (function() {
     function PrioritiesSetting(attributes) {
@@ -30,47 +39,49 @@
       })
     ],
     getColorByPriority: function(priority) {
+      var model;
+      model = this.getModelByPriority(priority);
+      if (model) {
+        return model.get('color');
+      } else {
+        return '';
+      }
+    },
+    getModelByPriority: function(priority) {
       var model, _i, _len, _ref;
       _ref = priority_settings.models;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         model = _ref[_i];
         if (model.get('priority') === priority) {
-          return model.get('color');
+          return model;
         }
       }
       return '';
     }
   };
   Todo = (function() {
-    function Todo(attributes) {
-      this.attributes = attributes;
-      if (!this.attributes['created_at']) {
-        this.attributes['created_at'] = new Date();
-      }
+    __extends(Todo, Backbone.Model);
+    function Todo() {
+      Todo.__super__.constructor.apply(this, arguments);
     }
-    Todo.prototype.has = function(attribute_name) {
-      return this.attributes.hasOwnProperty(attribute_name);
-    };
-    Todo.prototype.get = function(attribute_name) {
-      return this.attributes[attribute_name];
+    Todo.prototype.defaults = function() {
+      return {
+        created_at: new Date()
+      };
     };
     return Todo;
   })();
-  todos = {
-    models: [
-      new Todo({
-        text: 'Test task text 1',
-        priority: 'medium'
-      }), new Todo({
-        text: 'Test task text 2',
-        priority: 'low'
-      }), new Todo({
-        text: 'Test task text 3',
-        priority: 'high',
-        done_at: new Date()
-      })
-    ]
-  };
+  TodoList = (function() {
+    __extends(TodoList, Backbone.Collection);
+    function TodoList() {
+      TodoList.__super__.constructor.apply(this, arguments);
+    }
+    TodoList.prototype.model = Todo;
+    TodoList.prototype.localStorage = new Store("todos");
+    return TodoList;
+  })();
+  todos = new TodoList();
+  todos.fetch();
   LanguageOptionViewModel = function(locale) {
     this.id = locale;
     this.label = locale_manager.localeToLabel(locale);
@@ -86,51 +97,81 @@
     checked: 'checked'
   });
   PrioritySettingsViewModel = function(model) {
-    this.priority_text = locale_manager.get(model.get('priority'));
+    this.priority = model.get('priority');
+    this.priority_text = locale_manager.get(this.priority);
     this.priority_color = model.get('color');
     return this;
   };
   window.settings_view_model = {
-    priority_settings: []
+    priority_settings: [],
+    default_setting: ko.observable(),
+    setDefault: function(priority) {
+      var view_model, _j, _len2, _ref2, _results;
+      _ref2 = settings_view_model.priority_settings;
+      _results = [];
+      for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+        view_model = _ref2[_j];
+        _results.push((view_model.priority === priority ? settings_view_model.default_setting(view_model) : void 0));
+      }
+      return _results;
+    }
   };
   _ref2 = priority_settings.models;
   for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
     model = _ref2[_j];
     settings_view_model.priority_settings.push(new PrioritySettingsViewModel(model));
   }
-  settings_view_model.current_priority = settings_view_model.priority_settings[0];
+  settings_view_model.setDefault(priority_settings.models[0].get('priority'));
   header_view_model = {
     title: "Todos"
   };
   $('#todo-header').append($("#header-template").tmpl(header_view_model));
   create_view_model = {
+    input_text: ko.observable(''),
     input_placeholder_text: locale_manager.get('placeholder_create'),
     input_tooltip_text: locale_manager.get('tooltip_create'),
-    priority_color: settings_view_model.current_priority.priority_color
+    priority_color: ko.dependentObservable(function() {
+      return window.settings_view_model.default_setting().priority_color;
+    }),
+    setDefaultPriority: function(priority) {
+      return settings_view_model.setDefault(priority);
+    },
+    addTodo: function(event) {
+      var text;
+      text = this.input_text();
+      if (!text || event.keyCode !== 13) {
+        return true;
+      }
+      todos.create({
+        text: text,
+        priority: settings_view_model.default_setting().priority
+      });
+      return this.input_text('');
+    }
   };
-  $('#todo-create').append($("#create-template").tmpl(create_view_model));
+  ko.applyBindings(create_view_model, $('#todo-create')[0]);
   TodoViewModel = function(model) {
+    this.model = model;
     this.text = model.get('text');
     this.created_at = model.get('created_at');
     if (model.has('done_at')) {
       this.done_text = "" + (locale_manager.get('label_completed')) + ": " + (locale_manager.localizeDate(model.get('done_at')));
     }
     this.priority_color = priority_settings.getColorByPriority(model.get('priority'));
+    this.destroyTodo = __bind(function() {
+      return this.model.destroy();
+    }, this);
     return this;
   };
   todo_list_view_model = {
-    todos: []
+    todos: ko.observableArray([])
   };
-  _ref3 = todos.models;
-  for (_k = 0, _len3 = _ref3.length; _k < _len3; _k++) {
-    model = _ref3[_k];
-    todo_list_view_model.todos.push(new TodoViewModel(model));
-  }
-  _ref4 = todo_list_view_model.todos;
-  for (_l = 0, _len4 = _ref4.length; _l < _len4; _l++) {
-    view_model = _ref4[_l];
-    $("#todo-list").append($("#item-template").tmpl(view_model));
-  }
+  kb.collectionSync(todos, todo_list_view_model.todos, {
+    viewModelCreate: function(model) {
+      return new TodoViewModel(model);
+    }
+  });
+  ko.applyBindings(todo_list_view_model, $('#todo-list')[0]);
   stats_view_model = {
     total: todos.models.length,
     done: todos.models.reduce((function(prev, cur) {
@@ -148,8 +189,8 @@
     return this;
   };
   list_sorting_options_view_model = [new SortingOptionViewModel('label_name'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_completed')];
-  for (_m = 0, _len5 = list_sorting_options_view_model.length; _m < _len5; _m++) {
-    view_model = list_sorting_options_view_model[_m];
+  for (_k = 0, _len3 = list_sorting_options_view_model.length; _k < _len3; _k++) {
+    view_model = list_sorting_options_view_model[_k];
     $('#todo-list-sorting').append($("#option-template").tmpl(view_model));
   }
   $('#todo-list-sorting').find('#label_created').attr({

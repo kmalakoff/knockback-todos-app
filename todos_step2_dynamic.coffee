@@ -28,22 +28,22 @@ $(document).ready(->
       new PrioritiesSetting({priority:'low',    color:'#00ff60'})
     ]
     getColorByPriority: (priority) ->
-      (return model.get('color') if model.get('priority') == priority) for model in priority_settings.models
+      model = @getModelByPriority(priority)
+      return if model then model.get('color') else ''
+    getModelByPriority: (priority) ->
+      (return model if model.get('priority') == priority) for model in priority_settings.models
       return ''
 
   # Todos
-  class Todo
-    constructor: (@attributes) ->
-      @attributes['created_at'] = new Date() if not @attributes['created_at']
-    has: (attribute_name) -> return @attributes.hasOwnProperty(attribute_name)
-    get: (attribute_name) -> return @attributes[attribute_name]
+  class Todo extends Backbone.Model
+    defaults: -> return {created_at: new Date()}
 
-  todos =
-    models: [
-      new Todo({text:'Test task text 1', priority:'medium'}),
-      new Todo({text:'Test task text 2', priority:'low'}),
-      new Todo({text:'Test task text 3', priority:'high', done_at:new Date()})
-    ]
+  class TodoList extends Backbone.Collection
+    model: Todo
+    localStorage: new Store("todos") # Save all of the todo items under the `"todos"` namespace.
+
+  todos = new TodoList()
+  todos.fetch()
 
   ###################################
   # MVVM: http://en.wikipedia.org/wiki/Model_View_ViewModel
@@ -61,14 +61,19 @@ $(document).ready(->
 
   # Priority Settings
   PrioritySettingsViewModel = (model) ->
-    @priority_text = locale_manager.get(model.get('priority'))
+    @priority = model.get('priority')
+    @priority_text = locale_manager.get(@priority)
     @priority_color = model.get('color')
     return this
 
   window.settings_view_model =
     priority_settings: []
+    default_setting: ko.observable()
+    setDefault: (priority) ->
+      (settings_view_model.default_setting(view_model) if view_model.priority == priority) for view_model in settings_view_model.priority_settings
+
   settings_view_model.priority_settings.push(new PrioritySettingsViewModel(model)) for model in priority_settings.models
-  settings_view_model.current_priority = settings_view_model.priority_settings[0]
+  settings_view_model.setDefault(priority_settings.models[0].get('priority'))
 
   # Header
   header_view_model =
@@ -76,23 +81,33 @@ $(document).ready(->
   $('#todo-header').append($("#header-template").tmpl(header_view_model))
 
   create_view_model =
+    input_text:                 ko.observable('')
     input_placeholder_text:     locale_manager.get('placeholder_create')
     input_tooltip_text:         locale_manager.get('tooltip_create')
-    priority_color:             settings_view_model.current_priority.priority_color
-  $('#todo-create').append($("#create-template").tmpl(create_view_model))
+    priority_color:             ko.dependentObservable(-> return window.settings_view_model.default_setting().priority_color)
+
+    setDefaultPriority: (priority) -> settings_view_model.setDefault(priority)
+    addTodo: (event) ->
+      text = @input_text()
+      return true if (!text || event.keyCode != 13)
+      todos.create({text: text, priority: settings_view_model.default_setting().priority})
+      @input_text('')
+
+  ko.applyBindings(create_view_model, $('#todo-create')[0])
 
   # Content
-  TodoViewModel = (model) ->
+  TodoViewModel = (@model) ->
     @text = model.get('text')
     @created_at = model.get('created_at')
     @done_text = "#{locale_manager.get('label_completed')}: #{locale_manager.localizeDate(model.get('done_at'))}" if model.has('done_at')
     @priority_color = priority_settings.getColorByPriority(model.get('priority'))
+    @destroyTodo = => @model.destroy()
     return this
 
   todo_list_view_model =
-    todos: []
-  todo_list_view_model.todos.push(new TodoViewModel(model)) for model in todos.models
-  $("#todo-list").append($("#item-template").tmpl(view_model)) for view_model in todo_list_view_model.todos
+    todos: ko.observableArray([])
+  kb.collectionSync(todos, todo_list_view_model.todos, { viewModelCreate: (model) -> return new TodoViewModel(model) })
+  ko.applyBindings(todo_list_view_model, $('#todo-list')[0])
 
   # Footer
   stats_view_model =

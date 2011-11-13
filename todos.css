@@ -132,11 +132,6 @@ html {
     top: 50px;
   }
 
-#todo-list-sorting {
-  position: absolute;
-  left: 150px;
-}
-
 #todo-list {
   margin-top: 10px;
 }
@@ -268,6 +263,10 @@ html {
       #todo-stats .todo-clear a:hover {
         color: #336699;
       }
+  #todo-list-sorting {
+    position: absolute;
+    left: 150px;
+  }
 
 #instructions {
   width: 520px;
