@@ -105,7 +105,7 @@
             <div class="todo-destroy" data-bind="click: destroyTodo"></div>
           </div>
           <div class="edit">
-            <input class="todo-input" type="text" data-bind="value: text, event: {keyup: updateOnEnter}" />
+            <input class="todo-input" type="text" data-bind="value: text, event: {keyup: onEnterEndEdit}" />
           </div>
         </div>
       </li>

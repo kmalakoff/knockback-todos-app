@@ -8,26 +8,45 @@
 
 # Localization
 class LocaleManager
-  constructor: (@translations_by_locale) ->
-  getLocales: ->
-    locales = []
-    locales.push(key) for key, value of @translations_by_locale
-    return locales
-  setLocale: (locale) ->
-    throw new Error("Locale: #{locale} not available") if not @translations_by_locale.hasOwnProperty(locale)
-    @current_locale = locale
-  getLocale: -> return @current_locale
-  localeToLabel: (locale) ->
-    locale_parts = locale.split('-')
-    return locale_parts[locale_parts.length-1].toUpperCase()
-  localizeDate: (date) -> Globalize.format(date, Globalize.cultures[@current_locale].calendars.standard.patterns.f, @current_locale)
-  get: (key, parameters) ->
-    return @translations_by_locale[@current_locale][key] if arguments == 1
-    string = @translations_by_locale[@current_locale][key]
+  constructor: (locale_identifier, @translations_by_locale) ->
+    @setLocale(locale_identifier) if locale_identifier
+
+  get: (string_id, parameters) ->
+    culture_map = @translations_by_locale[@locale_identifier] if @locale_identifier
+    return '' if not culture_map
+    string = if culture_map.hasOwnProperty(string_id) then culture_map[string_id] else ''
+    return string if arguments == 1
     string = string.replace("{#{index}}", arg) for arg, index in Array.prototype.slice.call(arguments, 1)
     return string
 
-locale_manager = new LocaleManager({
+  getLocale: -> return @locale_identifier
+  setLocale: (locale_identifier) ->
+    @locale_identifier = locale_identifier
+    Globalize.culture = Globalize.findClosestCulture(locale_identifier)
+    return if !window.Backbone
+    @trigger('change', this)
+    culture_map = @translations_by_locale[@locale_identifier]
+    return if not culture_map
+    @trigger("change:#{key}", value) for key, value of culture_map
+  getLocales: ->
+    locales = []
+    locales.push(string_id) for string_id, value of @translations_by_locale
+    return locales
+
+  localeToLabel: (locale) ->
+    locale_parts = locale.split('-')
+    return locale_parts[locale_parts.length-1].toUpperCase()
+  localizeDate: (date) -> Globalize.format(date, Globalize.cultures[@locale_identifier].calendars.standard.patterns.f, @locale_identifier)
+
+#######################################
+# Mix in Backbone.Events so callers can subscribe
+#######################################
+LocaleManager.prototype extends Backbone.Events if !!window.Backbone
+
+#######################################
+# Set up strings
+#######################################
+locale_manager = new LocaleManager(null, {
   'en':
     placeholder_create:   'What needs to be done?'
     tooltip_create:       'Press Enter to save this task'
@@ -48,7 +67,7 @@ locale_manager = new LocaleManager({
     tooltip_create:       'Appuyez sur Enter pour enregistrer cette tâche'
     label_name:           'Nom'
     label_created:        'Création'
-    label_priority:       'Priority'
+    label_priority:       'Priorité'
     label_completed:      'Complété'
     instructions:         'Double-cliquez pour modifier un todo.'
     high:                 'haute'
@@ -63,7 +82,7 @@ locale_manager = new LocaleManager({
     tooltip_create:       'Premere Enter per salvare questo compito'
     label_name:           'Nome'
     label_created:        'Creato'
-    label_priority:       'Priority'
+    label_priority:       'Priorità'
     label_completed:      'Completato'
     instructions:         'Fare doppio clic per modificare una delle cose da fare.'
     high:                 'alto'

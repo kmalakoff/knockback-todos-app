@@ -26,18 +26,12 @@ $(document).ready(->
     constructor: (@attributes) ->
     get: (attribute_name) -> return @attributes[attribute_name]
 
-  settings =
-    priorities: [
-      new PrioritiesSetting({priority:'high',   color:'#c00020'}),
-      new PrioritiesSetting({priority:'medium', color:'#c08040'}),
-      new PrioritiesSetting({priority:'low',    color:'#00ff60'})
+  priorities =
+    models: [
+      new PrioritiesSetting({id:'high',   color:'#c00020'}),
+      new PrioritiesSetting({id:'medium', color:'#c08040'}),
+      new PrioritiesSetting({id:'low',    color:'#00ff60'})
     ]
-    getColorByPriority: (priority) ->
-      model = @getModelByPriority(priority)
-      return if model then model.get('color') else ''
-    getModelByPriority: (priority) ->
-      (return model if model.get('priority') == priority) for model in settings.priorities
-      return ''
 
   # Todos
   class Todo extends Backbone.Model
@@ -75,15 +69,19 @@ $(document).ready(->
 
   # Priority Settings
   PrioritySettingsViewModel = (model) ->
-    @priority = model.get('priority')
+    @priority = model.get('id')
     @priority_text = locale_manager.get(@priority)
     @priority_color = model.get('color')
     return this
 
   window.settings_view_model =
     priority_settings: []
-  settings_view_model.priority_settings.push(new PrioritySettingsViewModel(model)) for model in settings.priorities
-  settings_view_model.default_setting = settings_view_model.priority_settings[0]
+    getColorByPriority: (priority) ->
+      (return view_model.priority_color if view_model.priority == priority) for view_model in settings_view_model.priority_settings
+      return ''
+  settings_view_model.priority_settings.push(new PrioritySettingsViewModel(model)) for model in priorities.models
+  settings_view_model.default_priority = settings_view_model.priority_settings[0].priority
+  settings_view_model.default_priority_color = settings_view_model.priority_settings[0].priority_color
 
   # Header
   header_view_model =
@@ -94,12 +92,12 @@ $(document).ready(->
     input_text:                 ko.observable('')
     input_placeholder_text:     locale_manager.get('placeholder_create')
     input_tooltip_text:         locale_manager.get('tooltip_create')
-    priority_color:             settings_view_model.default_setting.priority_color
+    priority_color:             settings_view_model.default_priority_color
 
     addTodo: (event) ->
       text = @input_text()
       return true if (!text || event.keyCode != 13)
-      todos.create({text: text, priority: settings_view_model.default_setting.priority})
+      todos.create({text: text, priority: settings_view_model.default_priority})
       @input_text('')
 
   ko.applyBindings(create_view_model, $('#todo-create')[0])
@@ -115,14 +113,14 @@ $(document).ready(->
     @text = kb.observable(model, {key: 'text', write: ((text) -> model.save({text: text}))}, this)
     @edit_mode = ko.observable(false)
     @toggleEditMode = => @edit_mode(!@edit_mode())
-    @updateOnEnter = (event) => @toggleEditMode() if (event.keyCode == 13)
+    @onEnterEndEdit = (event) => @toggleEditMode() if (event.keyCode == 13)
 
     @created_at = model.get('created_at')
     @done = kb.observable(model, {key: 'done_at', read: (-> return model.isDone()), write: ((done) -> model.done(done)) }, this)
     @done_text = kb.observable(model, {key: 'done_at', read: (->
       return if !!model.get('done_at') then return "#{locale_manager.get('label_completed')}: #{locale_manager.localizeDate(model.get('done_at'))}" else ''
     )})
-    @priority_color = settings.getColorByPriority(model.get('priority'))
+    @priority_color = settings_view_model.getColorByPriority(model.get('priority'))
     @destroyTodo = => model.destroy()
     return this
 

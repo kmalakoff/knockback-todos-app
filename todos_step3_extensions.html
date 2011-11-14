@@ -39,12 +39,12 @@
 
     <!-- Todo App Interface -->
     <div id="todoapp">
-      <div id="todo-header"></div>
+      <div id="todo-header" data-bind="template: 'header-template'"></div>
       <div id="todo-create" data-bind="template: 'create-template'"></div>
       <div id="todo-list" data-bind="template: 'list-template'"></div>
       <div id="todo-stats" data-bind="template: 'stats-template'"></div>
-      <div id="todo-footer"></div>
-      <div id="todo-languages" class="selection codestyle"></div>
+      <div id="todo-footer" data-bind="template: 'footer-template'"></div>
+      <div id="todo-languages" class="selection codestyle" data-bind="template: {name: 'option-template', foreach: language_options, templateOptions: {selected_value: current_language}}"></div>
     </div>
 
     <div id="credits">
@@ -69,9 +69,7 @@
           <h1>${title}</h1>
         </div>
 
-        <div id="color-settings">
-          {{tmpl(window.settings_view_model.priority_settings) "#priority-setting-template"}}
-        </div>
+        <div id="color-settings" data-bind="template: {name: 'priority-setting-template', foreach: window.settings_view_model.priority_settings}"></div>
       </div>
     </script>
 
@@ -99,13 +97,13 @@
         <div class="todo" data-bind="css: {done: done, editing: edit_mode}">
           <div class="display">
             <input class="check" type="checkbox" data-bind="checked: done" />
-            {{tmpl($item.priority_color) "#priority-swatch-picker-template"}}
+            <div data-bind="template: {name: 'priority-swatch-picker-template', templateOptions: {priority_color: priority_color, onSelect: setTodoPriority} }"></div>
             <div class="todo-text" data-bind="text: text, dblclick: toggleEditMode"></div>
             <div class="todo-done-text" data-bind="text: done_text"></div>
             <div class="todo-destroy" data-bind="click: destroyTodo"></div>
           </div>
           <div class="edit">
-            <input class="todo-input" type="text" data-bind="value: text, event: {keyup: updateOnEnter}" />
+            <input class="todo-input" type="text" data-bind="value: text, event: {keyup: onEnterEndEdit}" />
           </div>
         </div>
       </li>
@@ -133,7 +131,7 @@
     <script type="text/x-jquery-tmpl" id="priority-setting-template">
       <div class="priority-color-entry">
         <div class="priority-text">${priority_text}</div>
-        <input class='priority-color-swatch colorpicker' value="${priority_color}" data-text="hidden" data-hex="true"/>
+        <input id="${priority}" class='priority-color-swatch colorpicker' value="${priority_color}" data-text="hidden" data-hex="true"/>
       </div>
     </script>
 

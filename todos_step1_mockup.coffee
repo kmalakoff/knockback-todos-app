@@ -21,18 +21,12 @@ $(document).ready(->
     constructor: (@attributes) ->
     get: (attribute_name) -> return @attributes[attribute_name]
 
-  settings =
-    priorities: [
-      new PrioritiesSetting({priority:'high',   color:'#c00020'}),
-      new PrioritiesSetting({priority:'medium', color:'#c08040'}),
-      new PrioritiesSetting({priority:'low',    color:'#00ff60'})
+  priorities =
+    models: [
+      new PrioritiesSetting({id:'high',   color:'#c00020'}),
+      new PrioritiesSetting({id:'medium', color:'#c08040'}),
+      new PrioritiesSetting({id:'low',    color:'#00ff60'})
     ]
-    getColorByPriority: (priority) ->
-      model = @getModelByPriority(priority)
-      return if model then model.get('color') else ''
-    getModelByPriority: (priority) ->
-      (return model if model.get('priority') == priority) for model in settings.priorities
-      return ''
 
   # Todos
   class Todo
@@ -63,13 +57,18 @@ $(document).ready(->
 
   # Priority Settings
   PrioritySettingsViewModel = (model) ->
-    @priority_text = locale_manager.get(model.get('priority'))
+    @priority = model.get('id')
+    @priority_text = locale_manager.get(@priority)
     @priority_color = model.get('color')
     return this
 
   window.settings_view_model =
     priority_settings: []
-  settings_view_model.priority_settings.push(new PrioritySettingsViewModel(model)) for model in settings.priorities
+    getColorByPriority: (priority) ->
+      (return view_model.priority_color if view_model.priority == priority) for view_model in settings_view_model.priority_settings
+      return ''
+
+  settings_view_model.priority_settings.push(new PrioritySettingsViewModel(model)) for model in priorities.models
   settings_view_model.default_setting = settings_view_model.priority_settings[0]
 
   # Header
@@ -94,7 +93,7 @@ $(document).ready(->
     @text = model.get('text')
     @created_at = model.get('created_at')
     @done_text = "#{locale_manager.get('label_completed')}: #{locale_manager.localizeDate(model.get('done_at'))}" if !!model.get('done_at')
-    @priority_color = settings.getColorByPriority(model.get('priority'))
+    @priority_color = settings_view_model.getColorByPriority(model.get('priority'))
     return this
 
   todo_list_view_model =

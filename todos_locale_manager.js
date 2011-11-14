@@ -6,43 +6,33 @@
     https:#github.com/kmalakoff/knockback-todos/blob/master/LICENSE
 */
 var LocaleManager, locale_manager;
+var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
+  for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
+  function ctor() { this.constructor = child; }
+  ctor.prototype = parent.prototype;
+  child.prototype = new ctor;
+  child.__super__ = parent.prototype;
+  return child;
+};
 LocaleManager = (function() {
-  function LocaleManager(translations_by_locale) {
+  function LocaleManager(locale_identifier, translations_by_locale) {
     this.translations_by_locale = translations_by_locale;
+    if (locale_identifier) {
+      this.setLocale(locale_identifier);
+    }
   }
-  LocaleManager.prototype.getLocales = function() {
-    var key, locales, value, _ref;
-    locales = [];
-    _ref = this.translations_by_locale;
-    for (key in _ref) {
-      value = _ref[key];
-      locales.push(key);
+  LocaleManager.prototype.get = function(string_id, parameters) {
+    var arg, culture_map, index, string, _len, _ref;
+    if (this.locale_identifier) {
+      culture_map = this.translations_by_locale[this.locale_identifier];
     }
-    return locales;
-  };
-  LocaleManager.prototype.setLocale = function(locale) {
-    if (!this.translations_by_locale.hasOwnProperty(locale)) {
-      throw new Error("Locale: " + locale + " not available");
+    if (!culture_map) {
+      return '';
     }
-    return this.current_locale = locale;
-  };
-  LocaleManager.prototype.getLocale = function() {
-    return this.current_locale;
-  };
-  LocaleManager.prototype.localeToLabel = function(locale) {
-    var locale_parts;
-    locale_parts = locale.split('-');
-    return locale_parts[locale_parts.length - 1].toUpperCase();
-  };
-  LocaleManager.prototype.localizeDate = function(date) {
-    return Globalize.format(date, Globalize.cultures[this.current_locale].calendars.standard.patterns.f, this.current_locale);
-  };
-  LocaleManager.prototype.get = function(key, parameters) {
-    var arg, index, string, _len, _ref;
+    string = culture_map.hasOwnProperty(string_id) ? culture_map[string_id] : '';
     if (arguments === 1) {
-      return this.translations_by_locale[this.current_locale][key];
+      return string;
     }
-    string = this.translations_by_locale[this.current_locale][key];
     _ref = Array.prototype.slice.call(arguments, 1);
     for (index = 0, _len = _ref.length; index < _len; index++) {
       arg = _ref[index];
@@ -50,9 +40,52 @@ LocaleManager = (function() {
     }
     return string;
   };
+  LocaleManager.prototype.getLocale = function() {
+    return this.locale_identifier;
+  };
+  LocaleManager.prototype.setLocale = function(locale_identifier) {
+    var culture_map, key, value, _results;
+    this.locale_identifier = locale_identifier;
+    Globalize.culture = Globalize.findClosestCulture(locale_identifier);
+    if (!window.Backbone) {
+      return;
+    }
+    this.trigger('change', this);
+    culture_map = this.translations_by_locale[this.locale_identifier];
+    if (!culture_map) {
+      return;
+    }
+    _results = [];
+    for (key in culture_map) {
+      value = culture_map[key];
+      _results.push(this.trigger("change:" + key, value));
+    }
+    return _results;
+  };
+  LocaleManager.prototype.getLocales = function() {
+    var locales, string_id, value, _ref;
+    locales = [];
+    _ref = this.translations_by_locale;
+    for (string_id in _ref) {
+      value = _ref[string_id];
+      locales.push(string_id);
+    }
+    return locales;
+  };
+  LocaleManager.prototype.localeToLabel = function(locale) {
+    var locale_parts;
+    locale_parts = locale.split('-');
+    return locale_parts[locale_parts.length - 1].toUpperCase();
+  };
+  LocaleManager.prototype.localizeDate = function(date) {
+    return Globalize.format(date, Globalize.cultures[this.locale_identifier].calendars.standard.patterns.f, this.locale_identifier);
+  };
   return LocaleManager;
 })();
-locale_manager = new LocaleManager({
+if (!!window.Backbone) {
+  __extends(LocaleManager.prototype, Backbone.Events);
+}
+locale_manager = new LocaleManager(null, {
   'en': {
     placeholder_create: 'What needs to be done?',
     tooltip_create: 'Press Enter to save this task',
@@ -74,7 +107,7 @@ locale_manager = new LocaleManager({
     tooltip_create: 'Appuyez sur Enter pour enregistrer cette tâche',
     label_name: 'Nom',
     label_created: 'Création',
-    label_priority: 'Priority',
+    label_priority: 'Priorité',
     label_completed: 'Complété',
     instructions: 'Double-cliquez pour modifier un todo.',
     high: 'haute',
@@ -90,7 +123,7 @@ locale_manager = new LocaleManager({
     tooltip_create: 'Premere Enter per salvare questo compito',
     label_name: 'Nome',
     label_created: 'Creato',
-    label_priority: 'Priority',
+    label_priority: 'Priorità',
     label_completed: 'Completato',
     instructions: 'Fare doppio clic per modificare una delle cose da fare.',
     high: 'alto',

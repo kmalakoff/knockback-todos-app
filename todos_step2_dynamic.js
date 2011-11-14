@@ -14,7 +14,7 @@ var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, par
   return child;
 }, __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 $(document).ready(function() {
-  var $all_priority_pickers, LanguageOptionViewModel, PrioritiesSetting, PrioritySettingsViewModel, SortingOptionViewModel, Todo, TodoList, TodoViewModel, collection_observable, create_view_model, footer_view_model, header_view_model, locale, model, settings, stats_view_model, todo_list_view_model, todos, _i, _j, _len, _len2, _ref, _ref2;
+  var $all_priority_pickers, LanguageOptionViewModel, PrioritiesSetting, PrioritySettingsViewModel, SortingOptionViewModel, Todo, TodoList, TodoViewModel, collection_observable, create_view_model, footer_view_model, header_view_model, locale, model, priorities, stats_view_model, todo_list_view_model, todos, _i, _j, _len, _len2, _ref, _ref2;
   locale_manager.setLocale('it-IT');
   ko.bindingHandlers.dblclick = {
     init: function(element, value_accessor, all_bindings_accessor, view_model) {
@@ -30,39 +30,19 @@ $(document).ready(function() {
     };
     return PrioritiesSetting;
   })();
-  settings = {
-    priorities: [
+  priorities = {
+    models: [
       new PrioritiesSetting({
-        priority: 'high',
+        id: 'high',
         color: '#c00020'
       }), new PrioritiesSetting({
-        priority: 'medium',
+        id: 'medium',
         color: '#c08040'
       }), new PrioritiesSetting({
-        priority: 'low',
+        id: 'low',
         color: '#00ff60'
       })
-    ],
-    getColorByPriority: function(priority) {
-      var model;
-      model = this.getModelByPriority(priority);
-      if (model) {
-        return model.get('color');
-      } else {
-        return '';
-      }
-    },
-    getModelByPriority: function(priority) {
-      var model, _i, _len, _ref;
-      _ref = settings.priorities;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        model = _ref[_i];
-        if (model.get('priority') === priority) {
-          return model;
-        }
-      }
-      return '';
-    }
+    ]
   };
   Todo = (function() {
     __extends(Todo, Backbone.Model);
@@ -134,20 +114,32 @@ $(document).ready(function() {
     checked: 'checked'
   });
   PrioritySettingsViewModel = function(model) {
-    this.priority = model.get('priority');
+    this.priority = model.get('id');
     this.priority_text = locale_manager.get(this.priority);
     this.priority_color = model.get('color');
     return this;
   };
   window.settings_view_model = {
-    priority_settings: []
+    priority_settings: [],
+    getColorByPriority: function(priority) {
+      var view_model, _j, _len2, _ref2;
+      _ref2 = settings_view_model.priority_settings;
+      for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+        view_model = _ref2[_j];
+        if (view_model.priority === priority) {
+          return view_model.priority_color;
+        }
+      }
+      return '';
+    }
   };
-  _ref2 = settings.priorities;
+  _ref2 = priorities.models;
   for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
     model = _ref2[_j];
     settings_view_model.priority_settings.push(new PrioritySettingsViewModel(model));
   }
-  settings_view_model.default_setting = settings_view_model.priority_settings[0];
+  settings_view_model.default_priority = settings_view_model.priority_settings[0].priority;
+  settings_view_model.default_priority_color = settings_view_model.priority_settings[0].priority_color;
   header_view_model = {
     title: "Todos"
   };
@@ -156,7 +148,7 @@ $(document).ready(function() {
     input_text: ko.observable(''),
     input_placeholder_text: locale_manager.get('placeholder_create'),
     input_tooltip_text: locale_manager.get('tooltip_create'),
-    priority_color: settings_view_model.default_setting.priority_color,
+    priority_color: settings_view_model.default_priority_color,
     addTodo: function(event) {
       var text;
       text = this.input_text();
@@ -165,7 +157,7 @@ $(document).ready(function() {
       }
       todos.create({
         text: text,
-        priority: settings_view_model.default_setting.priority
+        priority: settings_view_model.default_priority
       });
       return this.input_text('');
     }
@@ -190,7 +182,7 @@ $(document).ready(function() {
     this.toggleEditMode = __bind(function() {
       return this.edit_mode(!this.edit_mode());
     }, this);
-    this.updateOnEnter = __bind(function(event) {
+    this.onEnterEndEdit = __bind(function(event) {
       if (event.keyCode === 13) {
         return this.toggleEditMode();
       }
@@ -215,7 +207,7 @@ $(document).ready(function() {
         }
       })
     });
-    this.priority_color = settings.getColorByPriority(model.get('priority'));
+    this.priority_color = settings_view_model.getColorByPriority(model.get('priority'));
     this.destroyTodo = __bind(function() {
       return model.destroy();
     }, this);

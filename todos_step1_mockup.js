@@ -5,7 +5,7 @@
   See the following for full license details:
     https:#github.com/kmalakoff/knockback-todos/blob/master/LICENSE
 */$(document).ready(function() {
-  var $all_priority_pickers, LanguageOptionViewModel, PrioritiesSetting, PrioritySettingsViewModel, SortingOptionViewModel, Todo, TodoViewModel, create_view_model, footer_view_model, header_view_model, locale, model, settings, stats_view_model, todo_list_view_model, todos, _i, _j, _k, _len, _len2, _len3, _ref, _ref2, _ref3;
+  var $all_priority_pickers, LanguageOptionViewModel, PrioritiesSetting, PrioritySettingsViewModel, SortingOptionViewModel, Todo, TodoViewModel, create_view_model, footer_view_model, header_view_model, locale, model, priorities, stats_view_model, todo_list_view_model, todos, _i, _j, _k, _len, _len2, _len3, _ref, _ref2, _ref3;
   locale_manager.setLocale('it-IT');
   PrioritiesSetting = (function() {
     function PrioritiesSetting(attributes) {
@@ -16,39 +16,19 @@
     };
     return PrioritiesSetting;
   })();
-  settings = {
-    priorities: [
+  priorities = {
+    models: [
       new PrioritiesSetting({
-        priority: 'high',
+        id: 'high',
         color: '#c00020'
       }), new PrioritiesSetting({
-        priority: 'medium',
+        id: 'medium',
         color: '#c08040'
       }), new PrioritiesSetting({
-        priority: 'low',
+        id: 'low',
         color: '#00ff60'
       })
-    ],
-    getColorByPriority: function(priority) {
-      var model;
-      model = this.getModelByPriority(priority);
-      if (model) {
-        return model.get('color');
-      } else {
-        return '';
-      }
-    },
-    getModelByPriority: function(priority) {
-      var model, _i, _len, _ref;
-      _ref = settings.priorities;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        model = _ref[_i];
-        if (model.get('priority') === priority) {
-          return model;
-        }
-      }
-      return '';
-    }
+    ]
   };
   Todo = (function() {
     function Todo(attributes) {
@@ -92,14 +72,26 @@
     checked: 'checked'
   });
   PrioritySettingsViewModel = function(model) {
-    this.priority_text = locale_manager.get(model.get('priority'));
+    this.priority = model.get('id');
+    this.priority_text = locale_manager.get(this.priority);
     this.priority_color = model.get('color');
     return this;
   };
   window.settings_view_model = {
-    priority_settings: []
+    priority_settings: [],
+    getColorByPriority: function(priority) {
+      var view_model, _j, _len2, _ref2;
+      _ref2 = settings_view_model.priority_settings;
+      for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+        view_model = _ref2[_j];
+        if (view_model.priority === priority) {
+          return view_model.priority_color;
+        }
+      }
+      return '';
+    }
   };
-  _ref2 = settings.priorities;
+  _ref2 = priorities.models;
   for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
     model = _ref2[_j];
     settings_view_model.priority_settings.push(new PrioritySettingsViewModel(model));
@@ -127,7 +119,7 @@
     if (!!model.get('done_at')) {
       this.done_text = "" + (locale_manager.get('label_completed')) + ": " + (locale_manager.localizeDate(model.get('done_at')));
     }
-    this.priority_color = settings.getColorByPriority(model.get('priority'));
+    this.priority_color = settings_view_model.getColorByPriority(model.get('priority'));
     return this;
   };
   todo_list_view_model = {
