@@ -83,6 +83,11 @@ $(document).ready(function() {
         done_at: done ? new Date() : null
       });
     };
+    Todo.prototype.destroyDone = function(done) {
+      return this.save({
+        done_at: done ? new Date() : null
+      });
+    };
     return Todo;
   })();
   TodoList = (function() {
@@ -99,6 +104,11 @@ $(document).ready(function() {
     };
     TodoList.prototype.remainingCount = function() {
       return this.models.length - this.doneCount();
+    };
+    TodoList.prototype.allDone = function() {
+      return this.filter(function(todo) {
+        return !!todo.get('done_at');
+      });
     };
     return TodoList;
   })();
@@ -240,7 +250,17 @@ $(document).ready(function() {
       }
       template_string = locale_manager.get(count === 1 ? 'remaining_template_s' : 'remaining_template_pl');
       return template_string.replace("{0}", count);
-    })
+    }),
+    onDestroyDone: function() {
+      var model, _k, _len3, _ref3, _results;
+      _ref3 = todos.allDone();
+      _results = [];
+      for (_k = 0, _len3 = _ref3.length; _k < _len3; _k++) {
+        model = _ref3[_k];
+        _results.push(model.destroy());
+      }
+      return _results;
+    }
   };
   ko.applyBindings(stats_view_model, $('#todo-stats')[0]);
   footer_view_model = {

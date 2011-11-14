@@ -90,8 +90,10 @@
     </script>
 
     <script type="text/x-jquery-tmpl" id="list-template">
-      <div class="todo-list-sorting-wrapper-inner">
-        <div id="todo-list-sorting" class="selection codestyle" data-bind="template: {name: 'option-template', foreach: sorting_options}"></div>
+      <div class="todo-list-sorting-wrapper-outer" data-bind="visible: sort_visible">
+        <div class="todo-list-sorting-wrapper-inner">
+          <div id="todo-list-sorting" class="selection codestyle" data-bind="template: {name: 'option-template', foreach: sorting_options}"></div>
+        </div>
       </div>
       <ul class="todo-list" data-bind="template: {name: 'item-template', foreach: todos}"></ul>
     </script>
@@ -119,7 +121,7 @@
 
     <script type="text/x-jquery-tmpl" id="stats-template">
       <span class="todo-count" data-bind="text: remaining_text"></span>
-      <span class="todo-clear"> <a href="#" data-bind="text: clear_text"></a></span>
+      <span class="todo-clear"> <a href="#" data-bind="text: clear_text, click: onDestroyDone"></a></span>
     </script>
 
     <script type="text/x-jquery-tmpl" id="footer-template">

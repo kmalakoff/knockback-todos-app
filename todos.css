@@ -231,11 +231,10 @@ html {
     }
 
   .todo-list-sorting-wrapper-outer {
-    float: left;
     width: 100%;
-    overflow: hidden;
-    position: relative;
+    height: 24px;
   }
+
   .todo-list-sorting-wrapper-inner {
     clear: left;
     float: left;
@@ -245,10 +244,7 @@ html {
     left: 50%;
   }
   #todo-list-sorting {
-    display:block;
     float:left;
-    margin:0;
-    padding:0;
     position:relative;
     right:50%;
   }

@@ -42,12 +42,14 @@ $(document).ready(->
       super
     isDone: -> !!@get('done_at')
     done: (done) -> @save({done_at: if done then new Date() else null})
+    destroyDone: (done) -> @save({done_at: if done then new Date() else null})
 
   class TodoList extends Backbone.Collection
     model: Todo
     localStorage: new Store("todos") # Save all of the todo items under the `"todos"` namespace.
     doneCount: -> @models.reduce(((prev,cur)-> return prev + if !!cur.get('done_at') then 1 else 0), 0)
     remainingCount: -> @models.length - @doneCount()
+    allDone: -> return @filter((todo) -> return !!todo.get('done_at'))
 
   todos = new TodoList()
   todos.fetch()
@@ -140,6 +142,7 @@ $(document).ready(->
       template_string = locale_manager.get(if count == 1 then 'remaining_template_s' else 'remaining_template_pl')
       return template_string.replace("{0}", count)
     )
+    onDestroyDone: -> model.destroy() for model in todos.allDone()
   ko.applyBindings(stats_view_model, $('#todo-stats')[0])
 
   footer_view_model =
