@@ -21,7 +21,11 @@ class LocaleManager
     locale_parts = locale.split('-')
     return locale_parts[locale_parts.length-1].toUpperCase()
   localizeDate: (date) -> Globalize.format(date, Globalize.cultures[@current_locale].calendars.standard.patterns.f, @current_locale)
-  get: (key) -> return @translations_by_locale[@current_locale][key]
+  get: (key, parameters) ->
+    return @translations_by_locale[@current_locale][key] if arguments == 1
+    string = @translations_by_locale[@current_locale][key]
+    string.replace("{#{index}}", arg) for arg, index in Array.prototype.slice.call(arguments, 1)
+    return string
 
 locale_manager = new LocaleManager({
   'en':

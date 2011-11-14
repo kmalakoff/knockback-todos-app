@@ -37,8 +37,18 @@ LocaleManager = (function() {
   LocaleManager.prototype.localizeDate = function(date) {
     return Globalize.format(date, Globalize.cultures[this.current_locale].calendars.standard.patterns.f, this.current_locale);
   };
-  LocaleManager.prototype.get = function(key) {
-    return this.translations_by_locale[this.current_locale][key];
+  LocaleManager.prototype.get = function(key, parameters) {
+    var arg, index, string, _len, _ref;
+    if (arguments === 1) {
+      return this.translations_by_locale[this.current_locale][key];
+    }
+    string = this.translations_by_locale[this.current_locale][key];
+    _ref = Array.prototype.slice.call(arguments, 1);
+    for (index = 0, _len = _ref.length; index < _len; index++) {
+      arg = _ref[index];
+      string.replace("{" + index + "}", arg);
+    }
+    return string;
   };
   return LocaleManager;
 })();

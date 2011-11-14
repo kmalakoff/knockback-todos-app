@@ -14,7 +14,7 @@ var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, par
   return child;
 }, __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 $(document).ready(function() {
-  var $all_priority_pickers, LanguageOptionViewModel, PrioritiesSetting, PrioritySettingsViewModel, SortingOptionViewModel, Todo, TodoList, TodoViewModel, collection_observable, create_view_model, footer_view_model, header_view_model, locale, model, settings, stats_view_model, todo_list_view_model, todos, _i, _j, _len, _len2, _ref, _ref2;
+  var $all_priority_pickers, LanguageOptionViewModel, PrioritiesSetting, PrioritySettingsViewModel, SortingOptionViewModel, Todo, TodoList, TodoViewModel, create_view_model, footer_view_model, header_view_model, locale, model, settings, stats_view_model, todo_list_view_model, todos, _i, _j, _len, _len2, _ref, _ref2;
   locale_manager.setLocale('it-IT');
   PrioritiesSetting = (function() {
     function PrioritiesSetting(attributes) {
@@ -26,6 +26,7 @@ $(document).ready(function() {
     return PrioritiesSetting;
   })();
   settings = {
+    list_sorting_mode: '',
     priorities: [
       new PrioritiesSetting({
         priority: 'high',
@@ -57,6 +58,16 @@ $(document).ready(function() {
         }
       }
       return '';
+    },
+    priorityToRank: function(priority) {
+      switch (priority) {
+        case 'high':
+          return 0;
+        case 'medium':
+          return 1;
+        case 'low':
+          return 2;
+      }
     }
   };
   Todo = (function() {
@@ -72,6 +83,9 @@ $(document).ready(function() {
     Todo.prototype.set = function(attrs) {
       if (attrs && attrs.hasOwnProperty('done_at') && _.isString(attrs['done_at'])) {
         attrs['done_at'] = new Date(attrs['done_at']);
+      }
+      if (attrs && attrs.hasOwnProperty('created_at') && _.isString(attrs['created_at'])) {
+        attrs['created_at'] = new Date(attrs['created_at']);
       }
       return Todo.__super__.set.apply(this, arguments);
     };
@@ -118,6 +132,7 @@ $(document).ready(function() {
     this.id = locale;
     this.label = locale_manager.localeToLabel(locale);
     this.option_group = 'lang';
+    this.onClick = function() {};
     return this;
   };
   _ref = locale_manager.getLocales();
@@ -135,14 +150,25 @@ $(document).ready(function() {
     return this;
   };
   window.settings_view_model = {
-    priority_settings: []
+    priority_settings: [],
+    default_setting: ko.observable(),
+    setDefault: function(priority) {
+      var view_model, _j, _len2, _ref2, _results;
+      _ref2 = settings_view_model.priority_settings;
+      _results = [];
+      for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+        view_model = _ref2[_j];
+        _results.push((view_model.priority === priority ? settings_view_model.default_setting(view_model) : void 0));
+      }
+      return _results;
+    }
   };
   _ref2 = settings.priorities;
   for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
     model = _ref2[_j];
     settings_view_model.priority_settings.push(new PrioritySettingsViewModel(model));
   }
-  settings_view_model.default_setting = settings_view_model.priority_settings[0];
+  settings_view_model.setDefault(settings.priorities[0].get('priority'));
   header_view_model = {
     title: "Todos"
   };
@@ -151,7 +177,12 @@ $(document).ready(function() {
     input_text: ko.observable(''),
     input_placeholder_text: locale_manager.get('placeholder_create'),
     input_tooltip_text: locale_manager.get('tooltip_create'),
-    priority_color: settings_view_model.default_setting.priority_color,
+    priority_color: ko.dependentObservable(function() {
+      return window.settings_view_model.default_setting().priority_color;
+    }),
+    setDefaultPriority: function(priority) {
+      return settings_view_model.setDefault(priority);
+    },
     addTodo: function(event) {
       var text;
       text = this.input_text();
@@ -160,7 +191,7 @@ $(document).ready(function() {
       }
       todos.create({
         text: text,
-        priority: settings_view_model.default_setting.priority
+        priority: settings_view_model.default_setting().priority
       });
       return this.input_text('');
     }
@@ -203,7 +234,36 @@ $(document).ready(function() {
   todo_list_view_model = {
     todos: ko.observableArray([])
   };
-  collection_observable = kb.collectionObservable(todos, todo_list_view_model.todos, {
+  todo_list_view_model.list_sorting_mode = ko.dependentObservable({
+    read: function() {
+      return settings.list_sorting_mode;
+    },
+    write: function(new_mode) {
+      settings.list_sorting_mode = new_mode;
+      switch (new_mode) {
+        case 'label_name':
+          return window.collection_observable.sorting(function(models, model) {
+            return _.sortedIndex(models, model, function(test) {
+              return test.get('text');
+            });
+          });
+        case 'label_created':
+          return window.collection_observable.sorting(function(models, model) {
+            return _.sortedIndex(models, model, function(test) {
+              return test.get('created_at').valueOf();
+            });
+          });
+        case 'label_priority':
+          return window.collection_observable.sorting(function(models, model) {
+            return _.sortedIndex(models, model, function(test) {
+              return settings.priorityToRank(test.get('priority'));
+            });
+          });
+      }
+    },
+    owner: todo_list_view_model
+  });
+  window.collection_observable = kb.collectionObservable(todos, todo_list_view_model.todos, {
     viewModelCreate: function(model) {
       return new TodoViewModel(model);
     }
@@ -213,9 +273,8 @@ $(document).ready(function() {
   });
   todo_list_view_model.sorting_options = [new SortingOptionViewModel('label_name'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_priority')];
   ko.applyBindings(todo_list_view_model, $('#todo-list')[0]);
-  $('#todo-list-sorting').find('#label_created').attr({
-    checked: 'checked'
-  });
+  settings.list_sorting_mode = 'label_name';
+  todo_list_view_model.list_sorting_mode(settings.list_sorting_mode);
   stats_view_model = {
     remaining_text: ko.dependentObservable(function() {
       var count;

@@ -21,14 +21,17 @@ $(document).ready(->
     constructor: (@attributes) ->
     get: (attribute_name) -> return @attributes[attribute_name]
 
-  priority_settings =
-    models: [
+  settings =
+    priorities: [
       new PrioritiesSetting({priority:'high',   color:'#c00020'}),
       new PrioritiesSetting({priority:'medium', color:'#c08040'}),
       new PrioritiesSetting({priority:'low',    color:'#00ff60'})
     ]
     getColorByPriority: (priority) ->
-      (return model.get('color') if model.get('priority') == priority) for model in priority_settings.models
+      model = @getModelByPriority(priority)
+      return if model then model.get('color') else ''
+    getModelByPriority: (priority) ->
+      (return model if model.get('priority') == priority) for model in settings.priorities
       return ''
 
   # Todos
@@ -52,7 +55,7 @@ $(document).ready(->
   LanguageOptionViewModel = (locale) ->
     @id = locale
     @label = locale_manager.localeToLabel(locale)
-    @option_name = 'lang'
+    @option_group = 'lang'
     return this
 
   $('#todo-languages').append($("#option-template").tmpl(new LanguageOptionViewModel(locale))) for locale in locale_manager.getLocales()
@@ -66,8 +69,8 @@ $(document).ready(->
 
   window.settings_view_model =
     priority_settings: []
-  settings_view_model.priority_settings.push(new PrioritySettingsViewModel(model)) for model in priority_settings.models
-  settings_view_model.current_priority = settings_view_model.priority_settings[0]
+  settings_view_model.priority_settings.push(new PrioritySettingsViewModel(model)) for model in settings.priorities
+  settings_view_model.default_setting = settings_view_model.priority_settings[0]
 
   # Header
   header_view_model =
@@ -77,21 +80,21 @@ $(document).ready(->
   create_view_model =
     input_placeholder_text:     locale_manager.get('placeholder_create')
     input_tooltip_text:         locale_manager.get('tooltip_create')
-    priority_color:             settings_view_model.current_priority.priority_color
+    priority_color:             settings_view_model.default_setting.priority_color
   $('#todo-create').append($("#create-template").tmpl(create_view_model))
 
   # Content
   SortingOptionViewModel = (string_id) ->
     @id = string_id
     @label =  locale_manager.get(string_id)
-    @option_name = 'sort'
+    @option_group = 'list_sort'
     return this
 
   TodoViewModel = (model) ->
     @text = model.get('text')
     @created_at = model.get('created_at')
     @done_text = "#{locale_manager.get('label_completed')}: #{locale_manager.localizeDate(model.get('done_at'))}" if !!model.get('done_at')
-    @priority_color = priority_settings.getColorByPriority(model.get('priority'))
+    @priority_color = settings.getColorByPriority(model.get('priority'))
     return this
 
   todo_list_view_model =

@@ -31,7 +31,7 @@
     <!-- The Demo -->
     <link href="todos.css" media="all" rel="stylesheet" type="text/css"/>
     <script src="todos_locale_manager.js"></script>
-    <script src="todos_step2_dynamic.js"></script>
+    <script src="todos_step3_extensions.js"></script>
 
   </head>
 
@@ -80,9 +80,9 @@
         <div id="create-todo">
           <input id="new-todo" placeholder="${input_placeholder_text}" type="text" data-bind="value: input_text, event: {keyup: addTodo}"/>
           <span class="ui-tooltip-top" style="display:none;">${input_tooltip_text}</span>
-          <div class="priority-color-swatch create" style="background:${priority_color}">
+          <div class="priority-color-swatch create" data-bind="style: {background: priority_color}">
             <span class="priority-picker-tooltip ui-tooltip-top" style="display:none;">
-              <div data-bind="template: {name: 'priority-picker-template', foreach: window.settings_view_model.priority_settings}"></div>
+              <div data-bind="template: {name: 'priority-picker-template', foreach: window.settings_view_model.priority_settings, templateOptions: {onSelect: setDefaultPriority} }"></div>
             </span>
           </div>
         </div>
@@ -92,7 +92,7 @@
     <script type="text/x-jquery-tmpl" id="list-template">
       <div class="todo-list-sorting-wrapper-outer" data-bind="visible: sort_visible">
         <div class="todo-list-sorting-wrapper-inner">
-          <div id="todo-list-sorting" class="selection codestyle" data-bind="template: {name: 'option-template', foreach: sorting_options}"></div>
+          <div id="todo-list-sorting" class="selection codestyle" data-bind="template: {name: 'option-template', foreach: sorting_options, templateOptions: {selected_value: list_sorting_mode} }"></div>
         </div>
       </div>
       <ul class="todo-list" data-bind="template: {name: 'item-template', foreach: todos}"></ul>
@@ -140,12 +140,12 @@
     <script type="text/x-jquery-tmpl" id="priority-picker-template">
       <div class="priority-color-entry">
         <div class="priority-text">${priority_text}</div>
-        <div class='priority-color-swatch' style="background:${priority_color}"></div>
+        <div class='priority-color-swatch' style="background:${priority_color}" data-bind="click: function(){$item.onSelect(priority)}"></div>
       </div>
     </script>
 
     <script type="text/x-jquery-tmpl" id="option-template">
-      <div class="option"><input id="${id}" type="radio" name="${option_group}"><label for="${id}">${label}</label></div>
+      <div class="option"><input id="${id}" type="radio" name="${option_group}" data-bind="value: id, checked: $item.selected_value"><label for="${id}">${label}</label></div>
     </script>
 
   </body>

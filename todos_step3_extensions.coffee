@@ -16,12 +16,13 @@ $(document).ready(->
   # ORM: http://en.wikipedia.org/wiki/Object-relational_mapping
   ###################################
 
-  # Priority Settings
+  # Settings
   class PrioritiesSetting
     constructor: (@attributes) ->
     get: (attribute_name) -> return @attributes[attribute_name]
 
   settings =
+    list_sorting_mode: ''
     priorities: [
       new PrioritiesSetting({priority:'high',   color:'#c00020'}),
       new PrioritiesSetting({priority:'medium', color:'#c08040'}),
@@ -33,12 +34,18 @@ $(document).ready(->
     getModelByPriority: (priority) ->
       (return model if model.get('priority') == priority) for model in settings.priorities
       return ''
+    priorityToRank: (priority) ->
+      switch priority
+        when 'high' then return 0
+        when 'medium' then return 1
+        when 'low' then return 2
 
   # Todos
   class Todo extends Backbone.Model
     defaults: -> return {created_at: new Date()}
     set: (attrs) ->
       attrs['done_at'] = new Date(attrs['done_at']) if attrs and attrs.hasOwnProperty('done_at') and _.isString(attrs['done_at'])
+      attrs['created_at'] = new Date(attrs['created_at']) if attrs and attrs.hasOwnProperty('created_at') and _.isString(attrs['created_at'])
       super
     isDone: -> !!@get('done_at')
     done: (done) -> @save({done_at: if done then new Date() else null})
@@ -63,12 +70,13 @@ $(document).ready(->
     @id = locale
     @label = locale_manager.localeToLabel(locale)
     @option_group = 'lang'
+    @onClick = ->
     return this
 
   $('#todo-languages').append($("#option-template").tmpl(new LanguageOptionViewModel(locale))) for locale in locale_manager.getLocales()
   $('#todo-languages').find("##{locale_manager.getLocale()}").attr(checked:'checked')
 
-  # Priority Settings
+  # Settings
   PrioritySettingsViewModel = (model) ->
     @priority = model.get('priority')
     @priority_text = locale_manager.get(@priority)
@@ -77,8 +85,12 @@ $(document).ready(->
 
   window.settings_view_model =
     priority_settings: []
+    default_setting: ko.observable()
+    setDefault: (priority) ->
+      (settings_view_model.default_setting(view_model) if view_model.priority == priority) for view_model in settings_view_model.priority_settings
+
   settings_view_model.priority_settings.push(new PrioritySettingsViewModel(model)) for model in settings.priorities
-  settings_view_model.default_setting = settings_view_model.priority_settings[0]
+  settings_view_model.setDefault(settings.priorities[0].get('priority'))
 
   # Header
   header_view_model =
@@ -89,12 +101,13 @@ $(document).ready(->
     input_text:                 ko.observable('')
     input_placeholder_text:     locale_manager.get('placeholder_create')
     input_tooltip_text:         locale_manager.get('tooltip_create')
-    priority_color:             settings_view_model.default_setting.priority_color
+    priority_color:             ko.dependentObservable(-> return window.settings_view_model.default_setting().priority_color)
 
+    setDefaultPriority: (priority) -> settings_view_model.setDefault(priority)
     addTodo: (event) ->
       text = @input_text()
       return true if (!text || event.keyCode != 13)
-      todos.create({text: text, priority: settings_view_model.default_setting.priority})
+      todos.create({text: text, priority: settings_view_model.default_setting().priority})
       @input_text('')
 
   ko.applyBindings(create_view_model, $('#todo-create')[0])
@@ -119,11 +132,22 @@ $(document).ready(->
 
   todo_list_view_model =
     todos: ko.observableArray([])
-  collection_observable = kb.collectionObservable(todos, todo_list_view_model.todos, { viewModelCreate: (model) -> return new TodoViewModel(model) })
+  todo_list_view_model.list_sorting_mode = ko.dependentObservable(
+    read: -> return settings.list_sorting_mode
+    write: (new_mode) ->
+      settings.list_sorting_mode = new_mode
+      switch new_mode
+        when 'label_name' then window.collection_observable.sorting((models, model)-> return _.sortedIndex(models, model, (test) -> test.get('text')))
+        when 'label_created' then window.collection_observable.sorting((models, model)-> return _.sortedIndex(models, model, (test) -> test.get('created_at').valueOf()))
+        when 'label_priority' then window.collection_observable.sorting((models, model)-> return _.sortedIndex(models, model, (test) -> settings.priorityToRank(test.get('priority'))))
+    owner: todo_list_view_model
+  )
+  window.collection_observable = kb.collectionObservable(todos, todo_list_view_model.todos, { viewModelCreate: (model) -> return new TodoViewModel(model) })
   todo_list_view_model.sort_visible = ko.dependentObservable(-> collection_observable().length)
   todo_list_view_model.sorting_options = [new SortingOptionViewModel('label_name'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_priority')]
   ko.applyBindings(todo_list_view_model, $('#todo-list')[0])
-  $('#todo-list-sorting').find('#label_created').attr(checked:'checked')
+  settings.list_sorting_mode = 'label_name'
+  todo_list_view_model.list_sorting_mode(settings.list_sorting_mode)
 
   # Stats Footer
   stats_view_model =
