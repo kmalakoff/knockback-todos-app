@@ -6,7 +6,7 @@
     https:#github.com/kmalakoff/knockback-todos/blob/master/LICENSE
 */$(document).ready(function() {
   var $all_priority_pickers, LanguageOptionViewModel, PrioritiesSetting, PrioritySettingsViewModel, SortingOptionViewModel, Todo, TodoViewModel, create_view_model, footer_view_model, header_view_model, locale, model, priorities, stats_view_model, todo_list_view_model, todos, _i, _j, _k, _len, _len2, _len3, _ref, _ref2, _ref3;
-  locale_manager.setLocale('it-IT');
+  kb.locale_manager.setLocale('it-IT');
   PrioritiesSetting = (function() {
     function PrioritiesSetting(attributes) {
       this.attributes = attributes;
@@ -59,21 +59,21 @@
   };
   LanguageOptionViewModel = function(locale) {
     this.id = locale;
-    this.label = locale_manager.localeToLabel(locale);
+    this.label = kb.locale_manager.localeToLabel(locale);
     this.option_group = 'lang';
     return this;
   };
-  _ref = locale_manager.getLocales();
+  _ref = kb.locale_manager.getLocales();
   for (_i = 0, _len = _ref.length; _i < _len; _i++) {
     locale = _ref[_i];
     $('#todo-languages').append($("#option-template").tmpl(new LanguageOptionViewModel(locale)));
   }
-  $('#todo-languages').find("#" + (locale_manager.getLocale())).attr({
+  $('#todo-languages').find("#" + (kb.locale_manager.getLocale())).attr({
     checked: 'checked'
   });
   PrioritySettingsViewModel = function(model) {
     this.priority = model.get('id');
-    this.priority_text = locale_manager.get(this.priority);
+    this.priority_text = kb.locale_manager.get(this.priority);
     this.priority_color = model.get('color');
     return this;
   };
@@ -102,14 +102,14 @@
   };
   $('#todo-header').append($("#header-template").tmpl(header_view_model));
   create_view_model = {
-    input_placeholder_text: locale_manager.get('placeholder_create'),
-    input_tooltip_text: locale_manager.get('tooltip_create'),
+    input_placeholder_text: kb.locale_manager.get('placeholder_create'),
+    input_tooltip_text: kb.locale_manager.get('tooltip_create'),
     priority_color: settings_view_model.default_setting.priority_color
   };
   $('#todo-create').append($("#create-template").tmpl(create_view_model));
   SortingOptionViewModel = function(string_id) {
     this.id = string_id;
-    this.label = locale_manager.get(string_id);
+    this.label = kb.locale_manager.get(string_id);
     this.option_group = 'list_sort';
     return this;
   };
@@ -117,7 +117,7 @@
     this.text = model.get('text');
     this.created_at = model.get('created_at');
     if (!!model.get('done_at')) {
-      this.done_text = "" + (locale_manager.get('label_completed')) + ": " + (locale_manager.localizeDate(model.get('done_at')));
+      this.done_text = "" + (kb.locale_manager.get('label_completed')) + ": " + (kb.locale_manager.localizeDate(model.get('done_at')));
     }
     this.priority_color = settings_view_model.getColorByPriority(model.get('priority'));
     return this;
@@ -147,7 +147,7 @@
   };
   $('#todo-stats').append($("#stats-template").tmpl(stats_view_model));
   footer_view_model = {
-    instructions_text: locale_manager.get('instructions')
+    instructions_text: kb.locale_manager.get('instructions')
   };
   $('#todo-footer').append($("#footer-template").tmpl(footer_view_model));
   $all_priority_pickers = $('body').find('.priority-picker-tooltip');

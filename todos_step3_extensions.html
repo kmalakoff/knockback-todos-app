@@ -92,7 +92,7 @@
 
     <script type="text/x-jquery-tmpl" id="item-template">
       <li>
-        <div class="todo" data-bind="css: {done: done, editing: edit_mode}">
+        <div class="todo" data-bind="css: {done: done, done_enhanced: done, editing: edit_mode}">
           <div class="display">
             <input class="check" type="checkbox" data-bind="checked: done" />
             <div data-bind="template: {name: 'priority-swatch-picker-template', templateOptions: {priority_color: priority_color, onSelect: setTodoPriority} }"></div>
@@ -129,7 +129,7 @@
     <script type="text/x-jquery-tmpl" id="priority-setting-template">
       <div class="priority-color-entry">
         <div class="priority-text" data-bind="text: priority_text"></div>
-        <input data-bind="css: {id: priority}, value: priority_color" class='priority-color-swatch colorpicker' data-text="hidden" data-hex="true"/>
+        <input data-bind="attr: {id: priority}, value: priority_color" class='priority-color-swatch colorpicker' data-text="hidden" data-hex="true"/>
       </div>
     </script>
 

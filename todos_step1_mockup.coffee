@@ -9,7 +9,7 @@
 $(document).ready(->
 
   # set the language
-  locale_manager.setLocale('it-IT')
+  kb.locale_manager.setLocale('it-IT')
 
   ###################################
   # Model: http://en.wikipedia.org/wiki/Model_view_controller
@@ -48,17 +48,17 @@ $(document).ready(->
   # Localization
   LanguageOptionViewModel = (locale) ->
     @id = locale
-    @label = locale_manager.localeToLabel(locale)
+    @label = kb.locale_manager.localeToLabel(locale)
     @option_group = 'lang'
     return this
 
-  $('#todo-languages').append($("#option-template").tmpl(new LanguageOptionViewModel(locale))) for locale in locale_manager.getLocales()
-  $('#todo-languages').find("##{locale_manager.getLocale()}").attr(checked:'checked')
+  $('#todo-languages').append($("#option-template").tmpl(new LanguageOptionViewModel(locale))) for locale in kb.locale_manager.getLocales()
+  $('#todo-languages').find("##{kb.locale_manager.getLocale()}").attr(checked:'checked')
 
   # Priority Settings
   PrioritySettingsViewModel = (model) ->
     @priority = model.get('id')
-    @priority_text = locale_manager.get(@priority)
+    @priority_text = kb.locale_manager.get(@priority)
     @priority_color = model.get('color')
     return this
 
@@ -77,22 +77,22 @@ $(document).ready(->
   $('#todo-header').append($("#header-template").tmpl(header_view_model))
 
   create_view_model =
-    input_placeholder_text:     locale_manager.get('placeholder_create')
-    input_tooltip_text:         locale_manager.get('tooltip_create')
+    input_placeholder_text:     kb.locale_manager.get('placeholder_create')
+    input_tooltip_text:         kb.locale_manager.get('tooltip_create')
     priority_color:             settings_view_model.default_setting.priority_color
   $('#todo-create').append($("#create-template").tmpl(create_view_model))
 
   # Content
   SortingOptionViewModel = (string_id) ->
     @id = string_id
-    @label =  locale_manager.get(string_id)
+    @label =  kb.locale_manager.get(string_id)
     @option_group = 'list_sort'
     return this
 
   TodoViewModel = (model) ->
     @text = model.get('text')
     @created_at = model.get('created_at')
-    @done_text = "#{locale_manager.get('label_completed')}: #{locale_manager.localizeDate(model.get('done_at'))}" if !!model.get('done_at')
+    @done_text = "#{kb.locale_manager.get('label_completed')}: #{kb.locale_manager.localizeDate(model.get('done_at'))}" if !!model.get('done_at')
     @priority_color = settings_view_model.getColorByPriority(model.get('priority'))
     return this
 
@@ -112,7 +112,7 @@ $(document).ready(->
   $('#todo-stats').append($("#stats-template").tmpl(stats_view_model))
 
   footer_view_model =
-    instructions_text: locale_manager.get('instructions')
+    instructions_text: kb.locale_manager.get('instructions')
   $('#todo-footer').append($("#footer-template").tmpl(footer_view_model))
 
   ###################################

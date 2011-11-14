@@ -5,7 +5,7 @@
   See the following for full license details:
     https:#github.com/kmalakoff/knockback-todos/blob/master/LICENSE
 */
-var LocaleManager, locale_manager;
+var LocaleManager, LongDateLocalizer, kb;
 var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
   for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
   function ctor() { this.constructor = child; }
@@ -85,7 +85,8 @@ LocaleManager = (function() {
 if (!!window.Backbone) {
   __extends(LocaleManager.prototype, Backbone.Events);
 }
-locale_manager = new LocaleManager(null, {
+kb || (kb = {});
+kb.locale_manager = new LocaleManager(null, {
   'en': {
     placeholder_create: 'What needs to be done?',
     tooltip_create: 'Press Enter to save this task',
@@ -135,3 +136,22 @@ locale_manager = new LocaleManager(null, {
     clear_template_pl: 'Rimuovere {0} elementi completato'
   }
 });
+LongDateLocalizer = (function() {
+  __extends(LongDateLocalizer, kb.LocalizedObservable);
+  function LongDateLocalizer(value, options, view_model) {
+    LongDateLocalizer.__super__.constructor.apply(this, arguments);
+    return kb.wrappedObservable(this);
+  }
+  LongDateLocalizer.prototype.read = function(value) {
+    return Globalize.format(value, Globalize.cultures[kb.locale_manager.getLocale()].calendars.standard.patterns.f, kb.locale_manager.getLocale());
+  };
+  LongDateLocalizer.prototype.write = function(localized_string, value, observable) {
+    var new_value;
+    new_value = Globalize.parseDate(localized_string, Globalize.cultures[kb.locale_manager.getLocale()].calendars.standard.patterns.d, kb.locale_manager.getLocale());
+    if (!(new_value && _.isDate(new_value))) {
+      return observable.resetToCurrent();
+    }
+    return value.setTime(new_value.valueOf());
+  };
+  return LongDateLocalizer;
+})();

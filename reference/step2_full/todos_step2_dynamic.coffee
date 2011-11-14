@@ -9,7 +9,7 @@
 $(document).ready(->
 
   # set the language
-  locale_manager.setLocale('it-IT')
+  kb.locale_manager.setLocale('it-IT')
 
   # add a doubleclick handler to KO
   ko.bindingHandlers.dblclick =
@@ -60,17 +60,17 @@ $(document).ready(->
   # Localization
   LanguageOptionViewModel = (locale) ->
     @id = locale
-    @label = locale_manager.localeToLabel(locale)
+    @label = kb.locale_manager.localeToLabel(locale)
     @option_group = 'lang'
     return this
 
-  $('#todo-languages').append($("#option-template").tmpl(new LanguageOptionViewModel(locale))) for locale in locale_manager.getLocales()
-  $('#todo-languages').find("##{locale_manager.getLocale()}").attr(checked:'checked')
+  $('#todo-languages').append($("#option-template").tmpl(new LanguageOptionViewModel(locale))) for locale in kb.locale_manager.getLocales()
+  $('#todo-languages').find("##{kb.locale_manager.getLocale()}").attr(checked:'checked')
 
   # Priority Settings
   PrioritySettingsViewModel = (model) ->
     @priority = model.get('id')
-    @priority_text = locale_manager.get(@priority)
+    @priority_text = kb.locale_manager.get(@priority)
     @priority_color = model.get('color')
     return this
 
@@ -90,8 +90,8 @@ $(document).ready(->
 
   create_view_model =
     input_text:                 ko.observable('')
-    input_placeholder_text:     locale_manager.get('placeholder_create')
-    input_tooltip_text:         locale_manager.get('tooltip_create')
+    input_placeholder_text:     kb.locale_manager.get('placeholder_create')
+    input_tooltip_text:         kb.locale_manager.get('tooltip_create')
     priority_color:             settings_view_model.default_priority_color
 
     addTodo: (event) ->
@@ -105,7 +105,7 @@ $(document).ready(->
   # Content
   SortingOptionViewModel = (string_id) ->
     @id = string_id
-    @label =  locale_manager.get(string_id)
+    @label =  kb.locale_manager.get(string_id)
     @option_group = 'list_sort'
     return this
 
@@ -118,7 +118,7 @@ $(document).ready(->
     @created_at = model.get('created_at')
     @done = kb.observable(model, {key: 'done_at', read: (-> return model.isDone()), write: ((done) -> model.done(done)) }, this)
     @done_text = kb.observable(model, {key: 'done_at', read: (->
-      return if !!model.get('done_at') then return "#{locale_manager.get('label_completed')}: #{locale_manager.localizeDate(model.get('done_at'))}" else ''
+      return if !!model.get('done_at') then return "#{kb.locale_manager.get('label_completed')}: #{kb.locale_manager.localizeDate(model.get('done_at'))}" else ''
     )})
     @priority_color = settings_view_model.getColorByPriority(model.get('priority'))
     @destroyTodo = => model.destroy()
@@ -136,17 +136,17 @@ $(document).ready(->
   stats_view_model =
     remaining_text: ko.dependentObservable(->
       count = collection_observable.collection().remainingCount(); return '' if not count
-      return locale_manager.get((if count == 1 then 'remaining_template_s' else 'remaining_template_pl'), count)
+      return kb.locale_manager.get((if count == 1 then 'remaining_template_s' else 'remaining_template_pl'), count)
     )
     clear_text: ko.dependentObservable(->
       count = collection_observable.collection().doneCount(); return '' if not count
-      return locale_manager.get((if count == 1 then 'clear_template_s' else 'clear_template_pl'), count)
+      return kb.locale_manager.get((if count == 1 then 'clear_template_s' else 'clear_template_pl'), count)
     )
     onDestroyDone: -> model.destroy() for model in todos.allDone()
   ko.applyBindings(stats_view_model, $('#todo-stats')[0])
 
   footer_view_model =
-    instructions_text: locale_manager.get('instructions')
+    instructions_text: kb.locale_manager.get('instructions')
   $('#todo-footer').append($("#footer-template").tmpl(footer_view_model))
 
   ###################################

@@ -154,7 +154,7 @@ html {
       padding: 0;
       border-bottom: 0;
     }
-  #todo-list .todo.done .display {
+  #todo-list .todo.done_enhanced .display {
     height: 40px;
   }
   #todo-list .editing .display,

@@ -15,7 +15,7 @@ var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, par
 }, __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 $(document).ready(function() {
   var $all_priority_pickers, LanguageOptionViewModel, PrioritiesSetting, PrioritySettingsViewModel, SortingOptionViewModel, Todo, TodoList, TodoViewModel, collection_observable, create_view_model, footer_view_model, header_view_model, locale, model, priorities, stats_view_model, todo_list_view_model, todos, _i, _j, _len, _len2, _ref, _ref2;
-  locale_manager.setLocale('it-IT');
+  kb.locale_manager.setLocale('it-IT');
   ko.bindingHandlers.dblclick = {
     init: function(element, value_accessor, all_bindings_accessor, view_model) {
       return $(element).dblclick(ko.utils.unwrapObservable(value_accessor()));
@@ -101,21 +101,21 @@ $(document).ready(function() {
   todos.fetch();
   LanguageOptionViewModel = function(locale) {
     this.id = locale;
-    this.label = locale_manager.localeToLabel(locale);
+    this.label = kb.locale_manager.localeToLabel(locale);
     this.option_group = 'lang';
     return this;
   };
-  _ref = locale_manager.getLocales();
+  _ref = kb.locale_manager.getLocales();
   for (_i = 0, _len = _ref.length; _i < _len; _i++) {
     locale = _ref[_i];
     $('#todo-languages').append($("#option-template").tmpl(new LanguageOptionViewModel(locale)));
   }
-  $('#todo-languages').find("#" + (locale_manager.getLocale())).attr({
+  $('#todo-languages').find("#" + (kb.locale_manager.getLocale())).attr({
     checked: 'checked'
   });
   PrioritySettingsViewModel = function(model) {
     this.priority = model.get('id');
-    this.priority_text = locale_manager.get(this.priority);
+    this.priority_text = kb.locale_manager.get(this.priority);
     this.priority_color = model.get('color');
     return this;
   };
@@ -146,8 +146,8 @@ $(document).ready(function() {
   $('#todo-header').append($("#header-template").tmpl(header_view_model));
   create_view_model = {
     input_text: ko.observable(''),
-    input_placeholder_text: locale_manager.get('placeholder_create'),
-    input_tooltip_text: locale_manager.get('tooltip_create'),
+    input_placeholder_text: kb.locale_manager.get('placeholder_create'),
+    input_tooltip_text: kb.locale_manager.get('tooltip_create'),
     priority_color: settings_view_model.default_priority_color,
     addTodo: function(event) {
       var text;
@@ -165,7 +165,7 @@ $(document).ready(function() {
   ko.applyBindings(create_view_model, $('#todo-create')[0]);
   SortingOptionViewModel = function(string_id) {
     this.id = string_id;
-    this.label = locale_manager.get(string_id);
+    this.label = kb.locale_manager.get(string_id);
     this.option_group = 'list_sort';
     return this;
   };
@@ -201,7 +201,7 @@ $(document).ready(function() {
       key: 'done_at',
       read: (function() {
         if (!!model.get('done_at')) {
-          return "" + (locale_manager.get('label_completed')) + ": " + (locale_manager.localizeDate(model.get('done_at')));
+          return "" + (kb.locale_manager.get('label_completed')) + ": " + (kb.locale_manager.localizeDate(model.get('done_at')));
         } else {
           return '';
         }
@@ -236,7 +236,7 @@ $(document).ready(function() {
       if (!count) {
         return '';
       }
-      return locale_manager.get((count === 1 ? 'remaining_template_s' : 'remaining_template_pl'), count);
+      return kb.locale_manager.get((count === 1 ? 'remaining_template_s' : 'remaining_template_pl'), count);
     }),
     clear_text: ko.dependentObservable(function() {
       var count;
@@ -244,7 +244,7 @@ $(document).ready(function() {
       if (!count) {
         return '';
       }
-      return locale_manager.get((count === 1 ? 'clear_template_s' : 'clear_template_pl'), count);
+      return kb.locale_manager.get((count === 1 ? 'clear_template_s' : 'clear_template_pl'), count);
     }),
     onDestroyDone: function() {
       var model, _k, _len3, _ref3, _results;
@@ -259,7 +259,7 @@ $(document).ready(function() {
   };
   ko.applyBindings(stats_view_model, $('#todo-stats')[0]);
   footer_view_model = {
-    instructions_text: locale_manager.get('instructions')
+    instructions_text: kb.locale_manager.get('instructions')
   };
   $('#todo-footer').append($("#footer-template").tmpl(footer_view_model));
   $all_priority_pickers = $('body').find('.priority-picker-tooltip');

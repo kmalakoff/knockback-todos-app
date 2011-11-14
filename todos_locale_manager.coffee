@@ -46,7 +46,8 @@ LocaleManager.prototype extends Backbone.Events if !!window.Backbone
 #######################################
 # Set up strings
 #######################################
-locale_manager = new LocaleManager(null, {
+kb ||(kb={})
+kb.locale_manager = new LocaleManager(null, {
   'en':
     placeholder_create:   'What needs to be done?'
     tooltip_create:       'Press Enter to save this task'
@@ -93,3 +94,16 @@ locale_manager = new LocaleManager(null, {
     clear_template_s:     'Rimuovere {0} elemento completato'
     clear_template_pl:    'Rimuovere {0} elementi completato'
 })
+
+#######################################
+# Date localizer
+#######################################
+class LongDateLocalizer extends kb.LocalizedObservable
+  constructor: (value, options, view_model) ->
+    super; return kb.wrappedObservable(this)
+  read: (value) ->
+    return Globalize.format(value, Globalize.cultures[kb.locale_manager.getLocale()].calendars.standard.patterns.f, kb.locale_manager.getLocale())
+  write: (localized_string, value, observable) ->
+    new_value = Globalize.parseDate(localized_string, Globalize.cultures[kb.locale_manager.getLocale()].calendars.standard.patterns.d, kb.locale_manager.getLocale())
+    return observable.resetToCurrent() if not (new_value and _.isDate(new_value)) # reset if invalid
+    value.setTime(new_value.valueOf())

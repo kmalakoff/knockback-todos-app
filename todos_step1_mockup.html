@@ -83,7 +83,7 @@
 
     <script type="text/x-jquery-tmpl" id="item-template">
       <li>
-        <div class="todo {{if done_text}}done{{/if}}">
+        <div class="todo {{if done_text}}done done_enhanced{{/if}}">
           <div class="display">
             <input class="check" type="checkbox" {{if done_text}}checked='checked'{{/if}}/>
             {{tmpl($item.priority_color) "#priority-swatch-picker-template"}}

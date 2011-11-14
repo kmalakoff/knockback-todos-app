@@ -15,7 +15,7 @@ var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, par
 }, __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 $(document).ready(function() {
   var Todo, TodoList, TodoViewModel, collection_observable, create_view_model, footer_view_model, header_view_model, stats_view_model, todo_list_view_model, todos;
-  locale_manager.setLocale('en');
+  kb.locale_manager.setLocale('en');
   ko.bindingHandlers.dblclick = {
     init: function(element, value_accessor, all_bindings_accessor, view_model) {
       return $(element).dblclick(ko.utils.unwrapObservable(value_accessor()));
@@ -82,8 +82,8 @@ $(document).ready(function() {
   $('#todo-header').append($("#header-template").tmpl(header_view_model));
   create_view_model = {
     input_text: ko.observable(''),
-    input_placeholder_text: locale_manager.get('placeholder_create'),
-    input_tooltip_text: locale_manager.get('tooltip_create'),
+    input_placeholder_text: kb.locale_manager.get('placeholder_create'),
+    input_tooltip_text: kb.locale_manager.get('tooltip_create'),
     addTodo: function(event) {
       var text;
       text = this.input_text();
@@ -146,7 +146,7 @@ $(document).ready(function() {
       if (!count) {
         return '';
       }
-      return locale_manager.get((count === 1 ? 'remaining_template_s' : 'remaining_template_pl'), count);
+      return kb.locale_manager.get((count === 1 ? 'remaining_template_s' : 'remaining_template_pl'), count);
     }),
     clear_text: ko.dependentObservable(function() {
       var count;
@@ -154,7 +154,7 @@ $(document).ready(function() {
       if (!count) {
         return '';
       }
-      return locale_manager.get((count === 1 ? 'clear_template_s' : 'clear_template_pl'), count);
+      return kb.locale_manager.get((count === 1 ? 'clear_template_s' : 'clear_template_pl'), count);
     }),
     onDestroyDone: function() {
       var model, _i, _len, _ref, _results;
@@ -169,7 +169,7 @@ $(document).ready(function() {
   };
   ko.applyBindings(stats_view_model, $('#todo-stats')[0]);
   footer_view_model = {
-    instructions_text: locale_manager.get('instructions')
+    instructions_text: kb.locale_manager.get('instructions')
   };
   return $('#todo-footer').append($("#footer-template").tmpl(footer_view_model));
 });
