@@ -35,7 +35,6 @@ $(document).ready(->
   class Todo
     constructor: (@attributes) ->
       @attributes['created_at'] = new Date() if not @attributes['created_at']
-    has: (attribute_name) -> return @attributes.hasOwnProperty(attribute_name)
     get: (attribute_name) -> return @attributes[attribute_name]
 
   todos =
@@ -82,33 +81,33 @@ $(document).ready(->
   $('#todo-create').append($("#create-template").tmpl(create_view_model))
 
   # Content
+  SortingOptionViewModel = (string_id) ->
+    @id = string_id
+    @label =  locale_manager.get(string_id)
+    @option_name = 'sort'
+    return this
+
   TodoViewModel = (model) ->
     @text = model.get('text')
     @created_at = model.get('created_at')
-    @done_text = "#{locale_manager.get('label_completed')}: #{locale_manager.localizeDate(model.get('done_at'))}" if model.has('done_at')
+    @done_text = "#{locale_manager.get('label_completed')}: #{locale_manager.localizeDate(model.get('done_at'))}" if !!model.get('done_at')
     @priority_color = priority_settings.getColorByPriority(model.get('priority'))
     return this
 
   todo_list_view_model =
     todos: []
   todo_list_view_model.todos.push(new TodoViewModel(model)) for model in todos.models
-  $("#todo-list").append($("#item-template").tmpl(view_model)) for view_model in todo_list_view_model.todos
+  todo_list_view_model.sort_visible = (todos.models.length>0)
+  todo_list_view_model.sorting_options = [new SortingOptionViewModel('label_name'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_priority')]
+  $("#todo-list").append($("#list-template").tmpl(todo_list_view_model))
+  $('#todo-list-sorting').find('#label_created').attr(checked:'checked')
 
-  # Footer
+  # Stats Footer
   stats_view_model =
     total:      todos.models.length
     done:       todos.models.reduce(((prev,cur)-> return prev + if cur.get('done_at') then 1 else 0), 0)
     remaining:  todos.models.reduce(((prev,cur)-> return prev + if cur.get('done_at') then 0 else 1), 0)
   $('#todo-stats').append($("#stats-template").tmpl(stats_view_model))
-
-  SortingOptionViewModel = (string_id) ->
-    @id = string_id
-    @label =  locale_manager.get(string_id)
-    @option_name = 'sort'
-    return this
-  list_sorting_options_view_model = [new SortingOptionViewModel('label_name'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_completed')]
-  $('#todo-list-sorting').append($("#option-template").tmpl(view_model)) for view_model in list_sorting_options_view_model
-  $('#todo-list-sorting').find('#label_created').attr(checked:'checked')
 
   footer_view_model =
     instructions_text: locale_manager.get('instructions')

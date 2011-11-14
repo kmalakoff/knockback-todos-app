@@ -230,6 +230,29 @@ html {
       background-position: 0 -20px;
     }
 
+  .todo-list-sorting-wrapper-outer {
+    float: left;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+  .todo-list-sorting-wrapper-inner {
+    clear: left;
+    float: left;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    left: 50%;
+  }
+  #todo-list-sorting {
+    display:block;
+    float:left;
+    margin:0;
+    padding:0;
+    position:relative;
+    right:50%;
+  }
+
 #todo-stats {
   *zoom: 1;
   margin-top: 10px;
@@ -263,10 +286,6 @@ html {
       #todo-stats .todo-clear a:hover {
         color: #336699;
       }
-  #todo-list-sorting {
-    position: absolute;
-    left: 150px;
-  }
 
 #instructions {
   width: 520px;

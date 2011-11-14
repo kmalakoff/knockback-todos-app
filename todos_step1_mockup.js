@@ -5,7 +5,7 @@
   See the following for full license details:
     https:#github.com/kmalakoff/knockback-todos/blob/master/LICENSE
 */$(document).ready(function() {
-  var $all_priority_pickers, LanguageOptionViewModel, PrioritiesSetting, PrioritySettingsViewModel, SortingOptionViewModel, Todo, TodoViewModel, create_view_model, footer_view_model, header_view_model, list_sorting_options_view_model, locale, model, priority_settings, stats_view_model, todo_list_view_model, todos, view_model, _i, _j, _k, _l, _len, _len2, _len3, _len4, _len5, _m, _ref, _ref2, _ref3, _ref4;
+  var $all_priority_pickers, LanguageOptionViewModel, PrioritiesSetting, PrioritySettingsViewModel, SortingOptionViewModel, Todo, TodoViewModel, create_view_model, footer_view_model, header_view_model, locale, model, priority_settings, stats_view_model, todo_list_view_model, todos, _i, _j, _k, _len, _len2, _len3, _ref, _ref2, _ref3;
   locale_manager.setLocale('it-IT');
   PrioritiesSetting = (function() {
     function PrioritiesSetting(attributes) {
@@ -48,9 +48,6 @@
         this.attributes['created_at'] = new Date();
       }
     }
-    Todo.prototype.has = function(attribute_name) {
-      return this.attributes.hasOwnProperty(attribute_name);
-    };
     Todo.prototype.get = function(attribute_name) {
       return this.attributes[attribute_name];
     };
@@ -109,10 +106,16 @@
     priority_color: settings_view_model.current_priority.priority_color
   };
   $('#todo-create').append($("#create-template").tmpl(create_view_model));
+  SortingOptionViewModel = function(string_id) {
+    this.id = string_id;
+    this.label = locale_manager.get(string_id);
+    this.option_name = 'sort';
+    return this;
+  };
   TodoViewModel = function(model) {
     this.text = model.get('text');
     this.created_at = model.get('created_at');
-    if (model.has('done_at')) {
+    if (!!model.get('done_at')) {
       this.done_text = "" + (locale_manager.get('label_completed')) + ": " + (locale_manager.localizeDate(model.get('done_at')));
     }
     this.priority_color = priority_settings.getColorByPriority(model.get('priority'));
@@ -126,11 +129,12 @@
     model = _ref3[_k];
     todo_list_view_model.todos.push(new TodoViewModel(model));
   }
-  _ref4 = todo_list_view_model.todos;
-  for (_l = 0, _len4 = _ref4.length; _l < _len4; _l++) {
-    view_model = _ref4[_l];
-    $("#todo-list").append($("#item-template").tmpl(view_model));
-  }
+  todo_list_view_model.sort_visible = todos.models.length > 0;
+  todo_list_view_model.sorting_options = [new SortingOptionViewModel('label_name'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_priority')];
+  $("#todo-list").append($("#list-template").tmpl(todo_list_view_model));
+  $('#todo-list-sorting').find('#label_created').attr({
+    checked: 'checked'
+  });
   stats_view_model = {
     total: todos.models.length,
     done: todos.models.reduce((function(prev, cur) {
@@ -141,20 +145,6 @@
     }), 0)
   };
   $('#todo-stats').append($("#stats-template").tmpl(stats_view_model));
-  SortingOptionViewModel = function(string_id) {
-    this.id = string_id;
-    this.label = locale_manager.get(string_id);
-    this.option_name = 'sort';
-    return this;
-  };
-  list_sorting_options_view_model = [new SortingOptionViewModel('label_name'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_completed')];
-  for (_m = 0, _len5 = list_sorting_options_view_model.length; _m < _len5; _m++) {
-    view_model = list_sorting_options_view_model[_m];
-    $('#todo-list-sorting').append($("#option-template").tmpl(view_model));
-  }
-  $('#todo-list-sorting').find('#label_created').attr({
-    checked: 'checked'
-  });
   footer_view_model = {
     instructions_text: locale_manager.get('instructions')
   };

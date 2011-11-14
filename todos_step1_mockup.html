@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
   <head>
-    <title>Backbone Demo: Todos</title>
+    <title>Knockback Demo: Todos</title>
     <!-- Demo Dependencies -->
     <script src="vendor/json2.js"></script>
     <script src="vendor/jquery-1.7.min.js"></script>
@@ -31,7 +31,7 @@
     <div id="todoapp">
       <div id="todo-header"></div>
       <div id="todo-create"></div>
-      <ul id="todo-list"></ul>
+      <div id="todo-list"></div>
       <div id="todo-stats"></div>
       <div id="todo-footer"></div>
       <div id="todo-languages" class="selection codestyle"></div>
@@ -79,6 +79,15 @@
       </div>
     </script>
 
+    <script type="text/x-jquery-tmpl" id="list-template">
+      <div class="todo-list-sorting-wrapper" style="display:${sort_visible};">
+        <div class="todo-list-sorting-wrapper-inner">
+          <div id="todo-list-sorting" class="selection codestyle" >{{tmpl(sorting_options) "#option-template"}}</div>
+        </div>
+      </div>
+      <ul>{{tmpl(todos) "#item-template"}}</ul>
+    </script>
+
     <script type="text/x-jquery-tmpl" id="item-template">
       <li>
         <div class="todo {{if done_text}}done{{/if}}">
@@ -106,9 +115,6 @@
           <span class="number">${remaining}</span>
           <span class="word">{{if (remaining == 1)}} 'item' {{else}} 'items' {{/if}}</span> left.
         </span>
-      {{/if}}
-      {{if total || done}}
-        <div id="todo-list-sorting" class="selection codestyle"></div>
       {{/if}}
       {{if done}}
         <span class="todo-clear">

@@ -37,10 +37,17 @@ $(document).ready(->
   # Todos
   class Todo extends Backbone.Model
     defaults: -> return {created_at: new Date()}
+    set: (attrs) ->
+      attrs['done_at'] = new Date(attrs['done_at']) if attrs and attrs.hasOwnProperty('done_at') and _.isString(attrs['done_at'])
+      super
+    isDone: -> !!@get('done_at')
+    done: (done) -> @save({done_at: if done then new Date() else null})
 
   class TodoList extends Backbone.Collection
     model: Todo
     localStorage: new Store("todos") # Save all of the todo items under the `"todos"` namespace.
+    doneCount: -> @models.reduce(((prev,cur)-> return prev + if !!cur.get('done_at') then 1 else 0), 0)
+    remainingCount: -> @models.length - @doneCount()
 
   todos = new TodoList()
   todos.fetch()
@@ -96,34 +103,44 @@ $(document).ready(->
   ko.applyBindings(create_view_model, $('#todo-create')[0])
 
   # Content
-  TodoViewModel = (@model) ->
-    @text = model.get('text')
-    @created_at = model.get('created_at')
-    @done_text = "#{locale_manager.get('label_completed')}: #{locale_manager.localizeDate(model.get('done_at'))}" if model.has('done_at')
-    @priority_color = priority_settings.getColorByPriority(model.get('priority'))
-    @destroyTodo = => @model.destroy()
-    return this
-
-  todo_list_view_model =
-    todos: ko.observableArray([])
-  kb.collectionSync(todos, todo_list_view_model.todos, { viewModelCreate: (model) -> return new TodoViewModel(model) })
-  ko.applyBindings(todo_list_view_model, $('#todo-list')[0])
-
-  # Footer
-  stats_view_model =
-    total:      todos.models.length
-    done:       todos.models.reduce(((prev,cur)-> return prev + if cur.get('done_at') then 1 else 0), 0)
-    remaining:  todos.models.reduce(((prev,cur)-> return prev + if cur.get('done_at') then 0 else 1), 0)
-  $('#todo-stats').append($("#stats-template").tmpl(stats_view_model))
-
   SortingOptionViewModel = (string_id) ->
     @id = string_id
     @label =  locale_manager.get(string_id)
     @option_name = 'sort'
     return this
-  list_sorting_options_view_model = [new SortingOptionViewModel('label_name'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_completed')]
-  $('#todo-list-sorting').append($("#option-template").tmpl(view_model)) for view_model in list_sorting_options_view_model
+
+  TodoViewModel = (model) ->
+    @text = model.get('text')
+    @created_at = model.get('created_at')
+    @done = kb.observable(model, {key: 'done_at', read: (-> return model.isDone()), write: ((done) -> model.done(done)) }, this)
+    @done_text = kb.observable(model, {key: 'done_at', read: (->
+      return if !!model.get('done_at') then return "#{locale_manager.get('label_completed')}: #{locale_manager.localizeDate(model.get('done_at'))}" else ''
+    )})
+    @priority_color = priority_settings.getColorByPriority(model.get('priority'))
+    @destroyTodo = => model.destroy()
+    return this
+
+  todo_list_view_model =
+    todos: ko.observableArray([])
+  collection_observable = kb.collectionObservable(todos, todo_list_view_model.todos, { viewModelCreate: (model) -> return new TodoViewModel(model) })
+  todo_list_view_model.sort_visible = ko.dependentObservable(-> collection_observable().length)
+  todo_list_view_model.sorting_options = [new SortingOptionViewModel('label_name'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_priority')]
+  ko.applyBindings(todo_list_view_model, $('#todo-list')[0])
   $('#todo-list-sorting').find('#label_created').attr(checked:'checked')
+
+  # Stats Footer
+  stats_view_model =
+    remaining_text: ko.dependentObservable(->
+      count = collection_observable.collection().remainingCount(); return '' if not count
+      template_string = locale_manager.get(if count == 1 then 'remaining_template_s' else 'remaining_template_pl')
+      return template_string.replace("{0}", count)
+    )
+    clear_text: ko.dependentObservable(->
+      count = collection_observable.collection().doneCount(); return '' if not count
+      template_string = locale_manager.get(if count == 1 then 'remaining_template_s' else 'remaining_template_pl')
+      return template_string.replace("{0}", count)
+    )
+  ko.applyBindings(stats_view_model, $('#todo-stats')[0])
 
   footer_view_model =
     instructions_text: locale_manager.get('instructions')
