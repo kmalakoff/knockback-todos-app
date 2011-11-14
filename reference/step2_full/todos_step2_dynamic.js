@@ -14,12 +14,35 @@ var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, par
   return child;
 }, __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 $(document).ready(function() {
-  var Todo, TodoList, TodoViewModel, collection_observable, create_view_model, footer_view_model, header_view_model, stats_view_model, todo_list_view_model, todos;
-  locale_manager.setLocale('en');
+  var $all_priority_pickers, LanguageOptionViewModel, PrioritiesSetting, PrioritySettingsViewModel, SortingOptionViewModel, Todo, TodoList, TodoViewModel, collection_observable, create_view_model, footer_view_model, header_view_model, locale, model, priorities, stats_view_model, todo_list_view_model, todos, _i, _j, _len, _len2, _ref, _ref2;
+  locale_manager.setLocale('it-IT');
   ko.bindingHandlers.dblclick = {
     init: function(element, value_accessor, all_bindings_accessor, view_model) {
       return $(element).dblclick(ko.utils.unwrapObservable(value_accessor()));
     }
+  };
+  PrioritiesSetting = (function() {
+    function PrioritiesSetting(attributes) {
+      this.attributes = attributes;
+    }
+    PrioritiesSetting.prototype.get = function(attribute_name) {
+      return this.attributes[attribute_name];
+    };
+    return PrioritiesSetting;
+  })();
+  priorities = {
+    models: [
+      new PrioritiesSetting({
+        id: 'high',
+        color: '#c00020'
+      }), new PrioritiesSetting({
+        id: 'medium',
+        color: '#c08040'
+      }), new PrioritiesSetting({
+        id: 'low',
+        color: '#00ff60'
+      })
+    ]
   };
   Todo = (function() {
     __extends(Todo, Backbone.Model);
@@ -76,6 +99,47 @@ $(document).ready(function() {
   })();
   todos = new TodoList();
   todos.fetch();
+  LanguageOptionViewModel = function(locale) {
+    this.id = locale;
+    this.label = locale_manager.localeToLabel(locale);
+    this.option_group = 'lang';
+    return this;
+  };
+  _ref = locale_manager.getLocales();
+  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+    locale = _ref[_i];
+    $('#todo-languages').append($("#option-template").tmpl(new LanguageOptionViewModel(locale)));
+  }
+  $('#todo-languages').find("#" + (locale_manager.getLocale())).attr({
+    checked: 'checked'
+  });
+  PrioritySettingsViewModel = function(model) {
+    this.priority = model.get('id');
+    this.priority_text = locale_manager.get(this.priority);
+    this.priority_color = model.get('color');
+    return this;
+  };
+  window.settings_view_model = {
+    priority_settings: [],
+    getColorByPriority: function(priority) {
+      var view_model, _j, _len2, _ref2;
+      _ref2 = settings_view_model.priority_settings;
+      for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+        view_model = _ref2[_j];
+        if (view_model.priority === priority) {
+          return view_model.priority_color;
+        }
+      }
+      return '';
+    }
+  };
+  _ref2 = priorities.models;
+  for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+    model = _ref2[_j];
+    settings_view_model.priority_settings.push(new PrioritySettingsViewModel(model));
+  }
+  settings_view_model.default_priority = settings_view_model.priority_settings[0].priority;
+  settings_view_model.default_priority_color = settings_view_model.priority_settings[0].priority_color;
   header_view_model = {
     title: "Todos"
   };
@@ -84,6 +148,7 @@ $(document).ready(function() {
     input_text: ko.observable(''),
     input_placeholder_text: locale_manager.get('placeholder_create'),
     input_tooltip_text: locale_manager.get('tooltip_create'),
+    priority_color: settings_view_model.default_priority_color,
     addTodo: function(event) {
       var text;
       text = this.input_text();
@@ -91,12 +156,19 @@ $(document).ready(function() {
         return true;
       }
       todos.create({
-        text: text
+        text: text,
+        priority: settings_view_model.default_priority
       });
       return this.input_text('');
     }
   };
   ko.applyBindings(create_view_model, $('#todo-create')[0]);
+  SortingOptionViewModel = function(string_id) {
+    this.id = string_id;
+    this.label = locale_manager.get(string_id);
+    this.option_group = 'list_sort';
+    return this;
+  };
   TodoViewModel = function(model) {
     this.text = kb.observable(model, {
       key: 'text',
@@ -125,6 +197,17 @@ $(document).ready(function() {
         return model.done(done);
       })
     }, this);
+    this.done_text = kb.observable(model, {
+      key: 'done_at',
+      read: (function() {
+        if (!!model.get('done_at')) {
+          return "" + (locale_manager.get('label_completed')) + ": " + (locale_manager.localizeDate(model.get('done_at')));
+        } else {
+          return '';
+        }
+      })
+    });
+    this.priority_color = settings_view_model.getColorByPriority(model.get('priority'));
     this.destroyTodo = __bind(function() {
       return model.destroy();
     }, this);
@@ -138,7 +221,14 @@ $(document).ready(function() {
       return new TodoViewModel(model);
     }
   });
+  todo_list_view_model.sort_visible = ko.dependentObservable(function() {
+    return collection_observable().length;
+  });
+  todo_list_view_model.sorting_options = [new SortingOptionViewModel('label_name'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_priority')];
   ko.applyBindings(todo_list_view_model, $('#todo-list')[0]);
+  $('#todo-list-sorting').find('#label_created').attr({
+    checked: 'checked'
+  });
   stats_view_model = {
     remaining_text: ko.dependentObservable(function() {
       var count;
@@ -157,11 +247,11 @@ $(document).ready(function() {
       return locale_manager.get((count === 1 ? 'clear_template_s' : 'clear_template_pl'), count);
     }),
     onDestroyDone: function() {
-      var model, _i, _len, _ref, _results;
-      _ref = todos.allDone();
+      var model, _k, _len3, _ref3, _results;
+      _ref3 = todos.allDone();
       _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        model = _ref[_i];
+      for (_k = 0, _len3 = _ref3.length; _k < _len3; _k++) {
+        model = _ref3[_k];
         _results.push(model.destroy());
       }
       return _results;
@@ -171,5 +261,18 @@ $(document).ready(function() {
   footer_view_model = {
     instructions_text: locale_manager.get('instructions')
   };
-  return $('#todo-footer').append($("#footer-template").tmpl(footer_view_model));
+  $('#todo-footer').append($("#footer-template").tmpl(footer_view_model));
+  $all_priority_pickers = $('body').find('.priority-picker-tooltip');
+  $('.colorpicker').mColorPicker();
+  $('.priority-color-swatch').click(function() {
+    var $priority_picker;
+    $priority_picker = $(this).children('.priority-picker-tooltip');
+    $all_priority_pickers.not($priority_picker).hide();
+    return $priority_picker.toggle();
+  });
+  return $('body').click(function(event) {
+    if (!$(event.target).children('.priority-picker-tooltip').length && !$(event.target).closest('.priority-picker-tooltip').length) {
+      return $all_priority_pickers.hide();
+    }
+  });
 });

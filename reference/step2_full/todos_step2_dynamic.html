@@ -26,6 +26,7 @@
 
     <!-- Demo Dependencies -->
     <script src="vendor/backbone-localstorage.js"></script>
+    <script src="vendor/backbone-modelref.js"></script>
 
     <!-- The Demo -->
     <link href="todos.css" media="all" rel="stylesheet" type="text/css"/>
@@ -43,6 +44,7 @@
       <div id="todo-list" data-bind="template: 'list-template'"></div>
       <div id="todo-stats" data-bind="template: 'stats-template'"></div>
       <div id="todo-footer"></div>
+      <div id="todo-languages" class="selection codestyle"></div>
     </div>
 
     <div id="credits">
@@ -63,7 +65,13 @@
     <!-- Templates -->
     <script type="text/x-jquery-tmpl" id="header-template">
       <div class="create-todo">
-        <div class="title"><h1>${title}</h1></div>
+        <div class="title">
+          <h1>${title}</h1>
+        </div>
+
+        <div id="color-settings">
+          {{tmpl(window.settings_view_model.priority_settings) "#priority-setting-template"}}
+        </div>
       </div>
     </script>
 
@@ -72,11 +80,17 @@
         <div id="create-todo">
           <input id="new-todo" placeholder="${input_placeholder_text}" type="text" data-bind="value: input_text, event: {keyup: addTodo}"/>
           <span class="ui-tooltip-top" style="display:none;">${input_tooltip_text}</span>
+          {{tmpl($item.priority_color) "#priority-swatch-picker-template"}}
         </div>
       </div>
     </script>
 
     <script type="text/x-jquery-tmpl" id="list-template">
+      <div class="todo-list-sorting-wrapper-outer" data-bind="visible: sort_visible">
+        <div class="todo-list-sorting-wrapper-inner">
+          <div id="todo-list-sorting" class="selection codestyle" data-bind="template: {name: 'option-template', foreach: sorting_options}"></div>
+        </div>
+      </div>
       <ul class="todo-list" data-bind="template: {name: 'item-template', foreach: todos}"></ul>
     </script>
 
@@ -85,7 +99,9 @@
         <div class="todo" data-bind="css: {done: done, editing: edit_mode}">
           <div class="display">
             <input class="check" type="checkbox" data-bind="checked: done" />
+            {{tmpl($item.priority_color) "#priority-swatch-picker-template"}}
             <div class="todo-text" data-bind="text: text, dblclick: toggleEditMode"></div>
+            <div class="todo-done-text" data-bind="text: done_text"></div>
             <div class="todo-destroy" data-bind="click: destroyTodo"></div>
           </div>
           <div class="edit">
@@ -105,6 +121,33 @@
         <li>${instructions_text}</li>
       </ul>
     </script>
+
+    <script type="text/x-jquery-tmpl" id="priority-swatch-picker-template">
+      <div class="priority-color-swatch todo create" style="background:${priority_color}">
+        <span class="priority-picker-tooltip ui-tooltip-top" style="display:none;">
+          {{tmpl(window.settings_view_model.priority_settings) "#priority-picker-template"}}
+        </span>
+      </div>
+    </script>
+
+    <script type="text/x-jquery-tmpl" id="priority-setting-template">
+      <div class="priority-color-entry">
+        <div class="priority-text">${priority_text}</div>
+        <input class='priority-color-swatch colorpicker' value="${priority_color}" data-text="hidden" data-hex="true"/>
+      </div>
+    </script>
+
+    <script type="text/x-jquery-tmpl" id="priority-picker-template">
+      <div class="priority-color-entry">
+        <div class="priority-text">${priority_text}</div>
+        <div class='priority-color-swatch' style="background:${priority_color}"></div>
+      </div>
+    </script>
+
+    <script type="text/x-jquery-tmpl" id="option-template">
+      <div class="option"><input id="${id}" type="radio" name="${option_group}"><label for="${id}">${label}</label></div>
+    </script>
+
   </body>
 
 </html>

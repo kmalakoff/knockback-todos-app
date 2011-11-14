@@ -123,7 +123,6 @@ $(document).ready(->
       return true if (!text || event.keyCode != 13)
       todos.create({text: text, priority: settings_view_model.default_priority()})
       @input_text('')
-
   ko.applyBindings(create_view_model, $('#todo-create')[0])
 
   # Content
@@ -172,7 +171,7 @@ $(document).ready(->
   todo_list_view_model.sorting_options = [new SortingOptionViewModel('label_name'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_priority')]
   ko.applyBindings(todo_list_view_model, $('#todo-list')[0])
 
-  # TODO: bug fix
+  # TODO: bug fix - also for locale
   todo_list_view_model._list_sorting_mode = 'label_name'
   todo_list_view_model.list_sorting_mode(todo_list_view_model._list_sorting_mode)
 

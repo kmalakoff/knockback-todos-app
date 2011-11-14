@@ -65,9 +65,7 @@
     <!-- Templates -->
     <script type="text/x-jquery-tmpl" id="header-template">
       <div class="create-todo">
-        <div class="title">
-          <h1>${title}</h1>
-        </div>
+        <div class="title"><h1 data-bind="text: title"></h1></div>
 
         <div id="color-settings" data-bind="template: {name: 'priority-setting-template', foreach: window.settings_view_model.priority_settings}"></div>
       </div>
@@ -76,8 +74,8 @@
     <script type="text/x-jquery-tmpl" id="create-template">
       <div class="content">
         <div id="create-todo">
-          <input id="new-todo" placeholder="${input_placeholder_text}" type="text" data-bind="value: input_text, event: {keyup: addTodo}"/>
-          <span class="ui-tooltip-top" style="display:none;">${input_tooltip_text}</span>
+          <input id="new-todo" type="text" data-bind="value: input_text, attr: {placeholder: input_placeholder_text}, event: {keyup: addTodo}"/>
+          <span class="ui-tooltip-top" style="display:none;" data-bind="text: input_tooltip_text"></span>
           <div data-bind="template: {name: 'priority-swatch-picker-template', templateOptions: {priority_color: priority_color, onSelect: setDefaultPriority} }"></div>
         </div>
       </div>
@@ -116,7 +114,7 @@
 
     <script type="text/x-jquery-tmpl" id="footer-template">
       <ul id="instructions">
-        <li>${instructions_text}</li>
+        <li data-bind="text: instructions_text"></li>
       </ul>
     </script>
 
@@ -130,20 +128,20 @@
 
     <script type="text/x-jquery-tmpl" id="priority-setting-template">
       <div class="priority-color-entry">
-        <div class="priority-text">${priority_text}</div>
-        <input id="${priority}" class='priority-color-swatch colorpicker' value="${priority_color}" data-text="hidden" data-hex="true"/>
+        <div class="priority-text" data-bind="text: priority_text"></div>
+        <input data-bind="css: {id: priority}, value: priority_color" class='priority-color-swatch colorpicker' data-text="hidden" data-hex="true"/>
       </div>
     </script>
 
     <script type="text/x-jquery-tmpl" id="priority-picker-template">
       <div class="priority-color-entry">
-        <div class="priority-text">${priority_text}</div>
-        <div class='priority-color-swatch' style="background:${priority_color}" data-bind="click: function(){$item.onSelect(priority)}"></div>
+        <div class="priority-text" data-bind="text: priority_text"></div>
+        <div class='priority-color-swatch' data-bind="style: {background:priority_color}, click: function(){$item.onSelect(priority)}"></div>
       </div>
     </script>
 
     <script type="text/x-jquery-tmpl" id="option-template">
-      <div class="option"><input id="${id}" type="radio" name="${option_group}" data-bind="value: id, checked: $item.selected_value"><label for="${id}">${label}</label></div>
+      <div class="option"><input type="radio" data-bind="attr: {id: id, name: option_group}, value: id, checked: $item.selected_value"><label data-bind="attr: {for: id}, text: label"></label></div>
     </script>
 
   </body>

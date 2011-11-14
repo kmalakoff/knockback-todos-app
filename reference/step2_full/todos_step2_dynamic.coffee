@@ -9,7 +9,7 @@
 $(document).ready(->
 
   # set the language
-  locale_manager.setLocale('en')
+  locale_manager.setLocale('it-IT')
 
   # add a doubleclick handler to KO
   ko.bindingHandlers.dblclick =
@@ -20,6 +20,18 @@ $(document).ready(->
   # Model: http://en.wikipedia.org/wiki/Model_view_controller
   # ORM: http://en.wikipedia.org/wiki/Object-relational_mapping
   ###################################
+
+  # Priority Settings
+  class PrioritiesSetting
+    constructor: (@attributes) ->
+    get: (attribute_name) -> return @attributes[attribute_name]
+
+  priorities =
+    models: [
+      new PrioritiesSetting({id:'high',   color:'#c00020'}),
+      new PrioritiesSetting({id:'medium', color:'#c08040'}),
+      new PrioritiesSetting({id:'low',    color:'#00ff60'})
+    ]
 
   # Todos
   class Todo extends Backbone.Model
@@ -45,6 +57,32 @@ $(document).ready(->
   # MVVM: http://en.wikipedia.org/wiki/Model_View_ViewModel
   ###################################
 
+  # Localization
+  LanguageOptionViewModel = (locale) ->
+    @id = locale
+    @label = locale_manager.localeToLabel(locale)
+    @option_group = 'lang'
+    return this
+
+  $('#todo-languages').append($("#option-template").tmpl(new LanguageOptionViewModel(locale))) for locale in locale_manager.getLocales()
+  $('#todo-languages').find("##{locale_manager.getLocale()}").attr(checked:'checked')
+
+  # Priority Settings
+  PrioritySettingsViewModel = (model) ->
+    @priority = model.get('id')
+    @priority_text = locale_manager.get(@priority)
+    @priority_color = model.get('color')
+    return this
+
+  window.settings_view_model =
+    priority_settings: []
+    getColorByPriority: (priority) ->
+      (return view_model.priority_color if view_model.priority == priority) for view_model in settings_view_model.priority_settings
+      return ''
+  settings_view_model.priority_settings.push(new PrioritySettingsViewModel(model)) for model in priorities.models
+  settings_view_model.default_priority = settings_view_model.priority_settings[0].priority
+  settings_view_model.default_priority_color = settings_view_model.priority_settings[0].priority_color
+
   # Header
   header_view_model =
     title: "Todos"
@@ -54,13 +92,22 @@ $(document).ready(->
     input_text:                 ko.observable('')
     input_placeholder_text:     locale_manager.get('placeholder_create')
     input_tooltip_text:         locale_manager.get('tooltip_create')
+    priority_color:             settings_view_model.default_priority_color
 
     addTodo: (event) ->
       text = @input_text()
       return true if (!text || event.keyCode != 13)
-      todos.create({text: text})
+      todos.create({text: text, priority: settings_view_model.default_priority})
       @input_text('')
+
   ko.applyBindings(create_view_model, $('#todo-create')[0])
+
+  # Content
+  SortingOptionViewModel = (string_id) ->
+    @id = string_id
+    @label =  locale_manager.get(string_id)
+    @option_group = 'list_sort'
+    return this
 
   TodoViewModel = (model) ->
     @text = kb.observable(model, {key: 'text', write: ((text) -> model.save({text: text}))}, this)
@@ -70,13 +117,20 @@ $(document).ready(->
 
     @created_at = model.get('created_at')
     @done = kb.observable(model, {key: 'done_at', read: (-> return model.isDone()), write: ((done) -> model.done(done)) }, this)
+    @done_text = kb.observable(model, {key: 'done_at', read: (->
+      return if !!model.get('done_at') then return "#{locale_manager.get('label_completed')}: #{locale_manager.localizeDate(model.get('done_at'))}" else ''
+    )})
+    @priority_color = settings_view_model.getColorByPriority(model.get('priority'))
     @destroyTodo = => model.destroy()
     return this
 
   todo_list_view_model =
     todos: ko.observableArray([])
   collection_observable = kb.collectionObservable(todos, todo_list_view_model.todos, { viewModelCreate: (model) -> return new TodoViewModel(model) })
+  todo_list_view_model.sort_visible = ko.dependentObservable(-> collection_observable().length)
+  todo_list_view_model.sorting_options = [new SortingOptionViewModel('label_name'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_priority')]
   ko.applyBindings(todo_list_view_model, $('#todo-list')[0])
+  $('#todo-list-sorting').find('#label_created').attr(checked:'checked')
 
   # Stats Footer
   stats_view_model =
@@ -94,4 +148,18 @@ $(document).ready(->
   footer_view_model =
     instructions_text: locale_manager.get('instructions')
   $('#todo-footer').append($("#footer-template").tmpl(footer_view_model))
+
+  ###################################
+  # Dynamic Interactions
+  # jQuery: http://jquery.com/
+  ###################################
+
+  $all_priority_pickers = $('body').find('.priority-picker-tooltip')
+  $('.colorpicker').mColorPicker()
+  $('.priority-color-swatch').click(->
+    $priority_picker = $(this).children('.priority-picker-tooltip')
+    $all_priority_pickers.not($priority_picker).hide()
+    $priority_picker.toggle()
+  )
+  $('body').click((event)-> $all_priority_pickers.hide() if not $(event.target).children('.priority-picker-tooltip').length and not $(event.target).closest('.priority-picker-tooltip').length ) # close all pickers
 )
