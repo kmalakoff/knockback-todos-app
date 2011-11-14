@@ -24,7 +24,7 @@ class LocaleManager
   get: (key, parameters) ->
     return @translations_by_locale[@current_locale][key] if arguments == 1
     string = @translations_by_locale[@current_locale][key]
-    string.replace("{#{index}}", arg) for arg, index in Array.prototype.slice.call(arguments, 1)
+    string = string.replace("{#{index}}", arg) for arg, index in Array.prototype.slice.call(arguments, 1)
     return string
 
 locale_manager = new LocaleManager({

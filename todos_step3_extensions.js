@@ -16,6 +16,11 @@ var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, par
 $(document).ready(function() {
   var $all_priority_pickers, LanguageOptionViewModel, PrioritiesSetting, PrioritySettingsViewModel, SortingOptionViewModel, Todo, TodoList, TodoViewModel, create_view_model, footer_view_model, header_view_model, locale, model, settings, stats_view_model, todo_list_view_model, todos, _i, _j, _len, _len2, _ref, _ref2;
   locale_manager.setLocale('it-IT');
+  ko.bindingHandlers.dblclick = {
+    init: function(element, value_accessor, all_bindings_accessor, view_model) {
+      return $(element).dblclick(ko.utils.unwrapObservable(value_accessor()));
+    }
+  };
   PrioritiesSetting = (function() {
     function PrioritiesSetting(attributes) {
       this.attributes = attributes;
@@ -204,7 +209,23 @@ $(document).ready(function() {
     return this;
   };
   TodoViewModel = function(model) {
-    this.text = model.get('text');
+    this.text = kb.observable(model, {
+      key: 'text',
+      write: (function(text) {
+        return model.save({
+          text: text
+        });
+      })
+    }, this);
+    this.edit_mode = ko.observable(false);
+    this.toggleEditMode = __bind(function() {
+      return this.edit_mode(!this.edit_mode());
+    }, this);
+    this.updateOnEnter = __bind(function(event) {
+      if (event.keyCode === 13) {
+        return this.toggleEditMode();
+      }
+    }, this);
     this.created_at = model.get('created_at');
     this.done = kb.observable(model, {
       key: 'done_at',

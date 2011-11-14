@@ -11,6 +11,11 @@ $(document).ready(->
   # set the language
   locale_manager.setLocale('it-IT')
 
+  # add a doubleclick handler to KO
+  ko.bindingHandlers.dblclick =
+    init: (element, value_accessor, all_bindings_accessor, view_model) ->
+      $(element).dblclick(ko.utils.unwrapObservable(value_accessor()))
+
   ###################################
   # Model: http://en.wikipedia.org/wiki/Model_view_controller
   # ORM: http://en.wikipedia.org/wiki/Object-relational_mapping
@@ -107,7 +112,11 @@ $(document).ready(->
     return this
 
   TodoViewModel = (model) ->
-    @text = model.get('text')
+    @text = kb.observable(model, {key: 'text', write: ((text) -> model.save({text: text}))}, this)
+    @edit_mode = ko.observable(false)
+    @toggleEditMode = => @edit_mode(!@edit_mode())
+    @updateOnEnter = (event) => @toggleEditMode() if (event.keyCode == 13)
+
     @created_at = model.get('created_at')
     @done = kb.observable(model, {key: 'done_at', read: (-> return model.isDone()), write: ((done) -> model.done(done)) }, this)
     @done_text = kb.observable(model, {key: 'done_at', read: (->

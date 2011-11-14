@@ -46,7 +46,7 @@ LocaleManager = (function() {
     _ref = Array.prototype.slice.call(arguments, 1);
     for (index = 0, _len = _ref.length; index < _len; index++) {
       arg = _ref[index];
-      string.replace("{" + index + "}", arg);
+      string = string.replace("{" + index + "}", arg);
     }
     return string;
   };

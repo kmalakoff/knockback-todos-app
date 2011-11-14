@@ -80,11 +80,7 @@
         <div id="create-todo">
           <input id="new-todo" placeholder="${input_placeholder_text}" type="text" data-bind="value: input_text, event: {keyup: addTodo}"/>
           <span class="ui-tooltip-top" style="display:none;">${input_tooltip_text}</span>
-          <div class="priority-color-swatch create" style="background:${priority_color}">
-            <span class="priority-picker-tooltip ui-tooltip-top" style="display:none;">
-              <div data-bind="template: {name: 'priority-picker-template', foreach: window.settings_view_model.priority_settings}"></div>
-            </span>
-          </div>
+          {{tmpl($item.priority_color) "#priority-swatch-picker-template"}}
         </div>
       </div>
     </script>
@@ -100,20 +96,16 @@
 
     <script type="text/x-jquery-tmpl" id="item-template">
       <li>
-        <div class="todo" data-bind="css: {done: done}">
+        <div class="todo" data-bind="css: {done: done, editing: edit_mode}">
           <div class="display">
             <input class="check" type="checkbox" data-bind="checked: done" />
-            <div class="priority-color-swatch todo" style="background:${priority_color}">
-              <span class="priority-picker-tooltip ui-tooltip-top" style="display:none;">
-                {{tmpl(window.settings_view_model.priority_settings) "#priority-picker-template"}}
-              </span>
-            </div>
-            <div class="todo-text">${text}</div>
-            <div class="todo-time-text" data-bind="text: done_text"></div>
+            {{tmpl($item.priority_color) "#priority-swatch-picker-template"}}
+            <div class="todo-text" data-bind="text: text, dblclick: toggleEditMode"></div>
+            <div class="todo-done-text" data-bind="text: done_text"></div>
             <div class="todo-destroy" data-bind="click: destroyTodo"></div>
           </div>
           <div class="edit">
-            <input class="todo-input" type="text" value="${text}" />
+            <input class="todo-input" type="text" data-bind="value: text, event: {keyup: updateOnEnter}" />
           </div>
         </div>
       </li>
@@ -128,6 +120,14 @@
       <ul id="instructions">
         <li>${instructions_text}</li>
       </ul>
+    </script>
+
+    <script type="text/x-jquery-tmpl" id="priority-swatch-picker-template">
+      <div class="priority-color-swatch todo create" style="background:${priority_color}">
+        <span class="priority-picker-tooltip ui-tooltip-top" style="display:none;">
+          {{tmpl(window.settings_view_model.priority_settings) "#priority-picker-template"}}
+        </span>
+      </div>
     </script>
 
     <script type="text/x-jquery-tmpl" id="priority-setting-template">
