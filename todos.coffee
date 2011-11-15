@@ -9,8 +9,11 @@
 $(document).ready(->
 
   ###################################
-  # Configure
+  # Knockback-powered enhancements - START
   ###################################
+
+  ###################################
+  # Configure
   # set the language
   kb.locale_manager.setLocale('en')
   kb.locale_change_observable = kb.triggeredObservable(kb.locale_manager, 'change') # use to register a localization dependency
@@ -21,23 +24,11 @@ $(document).ready(->
       $(element).dblclick(ko.utils.unwrapObservable(value_accessor()))
 
   # ko1.2.1 compatibility with 1.3
-  if _.isUndefined(ko.templateSource)
+  if _.isUndefined(ko.templateSources)
     _ko_native_apply_bindings = ko.applyBindings
     ko.applyBindings = (view_model, element) ->
       view_model['$data'] = view_model
       _ko_native_apply_bindings(view_model, element)
-
-  # TODO: remove
-  ko.reflector = (key, value) ->
-    ko._reflectors = {} if not ko._reflectors
-    ko._reflectors[key] = ko.observable() if not ko._reflectors.hasOwnProperty(key)
-    return ko._reflectors[key]() if arguments.length == 1
-    ko._reflectors[key](value)
-  ko.destroyReflector = (key) ->
-    return if not ko._reflectors
-    return if not ko._reflectors[key]
-    ko._reflectors[key].dispose()
-    delete ko._reflectors[key]
 
   ###################################
   # Model: http://en.wikipedia.org/wiki/Model_view_controller
@@ -50,37 +41,7 @@ $(document).ready(->
   class PrioritiesSettingList extends Backbone.Collection
     model: PrioritiesSetting
     localStorage: new Store("kb_priorities") # Save all of the todo items under the `"kb_priorities"` namespace.
-
   priorities = new PrioritiesSettingList()
-
-  # load the prioties late to show the dynamic nature of Knockback with Backbone.ModelRef
-  priorities.fetch(
-    success: (collection) ->
-      collection.create({id:'high', color:'#c00020'}) if not collection.get('high')
-      collection.create({id:'medium', color:'#c08040'}) if not collection.get('medium')
-      collection.create({id:'low', color:'#00ff60'}) if not collection.get('low')
-  )
-
-  # Todos
-  class Todo extends Backbone.Model
-    defaults: -> return {created_at: new Date()}
-    set: (attrs) ->
-      attrs['done_at'] = new Date(attrs['done_at']) if attrs and attrs.hasOwnProperty('done_at') and _.isString(attrs['done_at'])
-      attrs['created_at'] = new Date(attrs['created_at']) if attrs and attrs.hasOwnProperty('created_at') and _.isString(attrs['created_at'])
-      super
-    isDone: -> !!@get('done_at')
-    done: (done) -> @save({done_at: if done then new Date() else null})
-    destroyDone: (done) -> @save({done_at: if done then new Date() else null})
-
-  class TodoList extends Backbone.Collection
-    model: Todo
-    localStorage: new Store("kb_todos") # Save all of the todo items under the `"kb_todos"` namespace.
-    doneCount: -> @models.reduce(((prev,cur)-> return prev + if !!cur.get('done_at') then 1 else 0), 0)
-    remainingCount: -> @models.length - @doneCount()
-    allDone: -> return @filter((todo) -> return !!todo.get('done_at'))
-
-  todos = new TodoList()
-  todos.fetch()
 
   ###################################
   # MVVM: http://en.wikipedia.org/wiki/Model_View_ViewModel
@@ -117,12 +78,13 @@ $(document).ready(->
 
   SettingsViewModel = (priority_settings) ->
     @priority_settings = ko.observableArray(_.map(priority_settings, (model)-> return new PrioritySettingsViewModel(model)))
-    @default_priority = ko.observable('medium')
     @getColorByPriority = (priority) ->
-      check_color; color = ''
-      # make dependent on all of the models
-      (check_color = view_model.priority_color(); color = check_color if view_model.priority() == priority) for view_model in @priority_settings()
-      return color
+      @createColorsDependency()
+      (return view_model.priority_color() if view_model.priority() == priority) for view_model in @priority_settings()
+      return ''
+    @createColorsDependency = => view_model.priority_color() for view_model in @priority_settings()
+    @default_priority = ko.observable('medium')
+    @default_priority_color = ko.dependentObservable(=> return @getColorByPriority(@default_priority()))
     @priorityToRank = (priority) ->
       switch priority
         when 'high' then return 0
@@ -130,7 +92,47 @@ $(document).ready(->
         when 'low' then return 2
     return this
   window.settings_view_model = new SettingsViewModel([new Backbone.ModelRef(priorities, 'high'), new Backbone.ModelRef(priorities, 'medium'), new Backbone.ModelRef(priorities, 'low')])
-  settings_view_model.default_priority_color = ko.dependentObservable(-> return settings_view_model.getColorByPriority(settings_view_model.default_priority()))
+
+  # Content
+  SortingOptionViewModel = (string_id) ->
+    @id = string_id
+    @label = kb.observable(kb.locale_manager, {key: string_id})
+    @option_group = 'list_sort'
+    return this
+
+  ###################################
+  # Knockback-powered enhancements - END
+  ###################################
+
+  ###################################
+  # Model: http://en.wikipedia.org/wiki/Model_view_controller
+  # ORM: http://en.wikipedia.org/wiki/Object-relational_mapping
+  ###################################
+
+  # Todos
+  class Todo extends Backbone.Model
+    defaults: -> return {created_at: new Date()}
+    set: (attrs) ->
+      attrs['done_at'] = new Date(attrs['done_at']) if attrs and attrs.hasOwnProperty('done_at') and _.isString(attrs['done_at'])
+      attrs['created_at'] = new Date(attrs['created_at']) if attrs and attrs.hasOwnProperty('created_at') and _.isString(attrs['created_at'])
+      super
+    isDone: -> !!@get('done_at')
+    done: (done) -> @save({done_at: if done then new Date() else null})
+    destroyDone: (done) -> @save({done_at: if done then new Date() else null})
+
+  class TodoList extends Backbone.Collection
+    model: Todo
+    localStorage: new Store("kb_todos") # Save all of the todo items under the `"kb_todos"` namespace.
+    doneCount: -> @models.reduce(((prev,cur)-> return prev + if !!cur.get('done_at') then 1 else 0), 0)
+    remainingCount: -> @models.length - @doneCount()
+    allDone: -> return @filter((todo) -> return !!todo.get('done_at'))
+
+  todos = new TodoList()
+  todos.fetch()
+
+  ###################################
+  # MVVM: http://en.wikipedia.org/wiki/Model_View_ViewModel
+  ###################################
 
   # Header
   header_view_model =
@@ -148,7 +150,10 @@ $(document).ready(->
       @input_text('')
 
     @priority_color = ko.dependentObservable(-> return window.settings_view_model.default_priority_color())
-    @onSelectPriority = (priority) => @tooltip_visible(false); settings_view_model.default_priority(ko.utils.unwrapObservable(priority))
+    @onSelectPriority = (priority) =>
+      event.stopPropagation() if event
+      @tooltip_visible(false)
+      settings_view_model.default_priority(ko.utils.unwrapObservable(priority))
     @tooltip_visible = ko.observable(false)
     @onToggleTooltip = => @tooltip_visible(!@tooltip_visible())
     return this
@@ -156,12 +161,6 @@ $(document).ready(->
   ko.applyBindings(create_view_model, $('#todo-create')[0])
 
   # Content
-  SortingOptionViewModel = (string_id) ->
-    @id = string_id
-    @label = kb.observable(kb.locale_manager, {key: string_id})
-    @option_group = 'list_sort'
-    return this
-
   TodoViewModel = (model) ->
     @text = kb.observable(model, {key: 'text', write: ((text) -> model.save({text: text}))}, this)
     @edit_mode = ko.observable(false)
@@ -178,7 +177,10 @@ $(document).ready(->
     )
 
     @priority_color = kb.observable(model, {key: 'priority', read: -> return settings_view_model.getColorByPriority(model.get('priority'))})
-    @onSelectPriority = (priority) => @tooltip_visible(false); model.save({priority: ko.utils.unwrapObservable(priority)})
+    @onSelectPriority = (priority) =>
+      event.stopPropagation() if event
+      @tooltip_visible(false)
+      model.save({priority: ko.utils.unwrapObservable(priority)})
     @tooltip_visible = ko.observable(false)
     @onToggleTooltip = => @tooltip_visible(!@tooltip_visible())
 
@@ -205,6 +207,14 @@ $(document).ready(->
   todo_list_view_model = new TodoListViewModel(todos)
   ko.applyBindings(todo_list_view_model, $('#todo-list')[0])
 
+  footer_view_model =
+    instructions_text: kb.observable(kb.locale_manager, {key: 'instructions'})
+  ko.applyBindings(footer_view_model, $('#todo-footer')[0])
+
+  ###################################
+  # Knockback-powered enhancements - START
+  ###################################
+
   # Stats Footer
   StatsViewModel = (todos) ->
     @collection_observable = kb.collectionObservable(todos)
@@ -218,23 +228,30 @@ $(document).ready(->
       count = @collection_observable.collection().doneCount(); return '' if not count
       return kb.locale_manager.get((if count == 1 then 'clear_template_s' else 'clear_template_pl'), count)
     )
-    @onDestroyDone = -> model.destroy() for model in todos.allDone()
+    @onDestroyDone = => model.destroy() for model in todos.allDone()
     return this
   stats_view_model = new StatsViewModel(todos)
   ko.applyBindings(stats_view_model, $('#todo-stats')[0])
 
-  footer_view_model =
-    instructions_text: kb.observable(kb.locale_manager, {key: 'instructions'})
-  ko.applyBindings(footer_view_model, $('#todo-footer')[0])
+  ###################################
+  # Load the prioties late to show the dynamic nature of Knockback with Backbone.ModelRef
+  _.delay((->
+    priorities.fetch(
+      success: (collection) ->
+        collection.create({id:'high', color:'#c00020'}) if not collection.get('high')
+        collection.create({id:'medium', color:'#c08040'}) if not collection.get('medium')
+        collection.create({id:'low', color:'#00ff60'}) if not collection.get('low')
+    )
+
+    # set up color pickers
+    $('.colorpicker').mColorPicker()
+    $('.colorpicker').bind('colorpicked', ->
+      model = priorities.get($(this).attr('id'))
+      model.save({color: $(this).val()}) if model
+    )
+  ), 1000)
 
   ###################################
-  # Dynamic Interactions
-  # jQuery: http://jquery.com/
+  # Knockback-powered enhancements - END
   ###################################
-  $all_priority_pickers = $('body').find('.priority-picker-tooltip')
-  $('.colorpicker').mColorPicker()
-  $('.colorpicker').bind('colorpicked', ->
-    model = priorities.get($(this).attr('id'))
-    model.save({color: $(this).val()}) if model
-  )
 )

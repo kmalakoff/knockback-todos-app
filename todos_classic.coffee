@@ -92,7 +92,7 @@ $(document).ready(->
       count = @collection_observable.collection().doneCount(); return '' if not count
       return kb.locale_manager.get((if count == 1 then 'clear_template_s' else 'clear_template_pl'), count)
     )
-    @onDestroyDone = -> model.destroy() for model in todos.allDone()
+    @onDestroyDone = => model.destroy() for model in todos.allDone()
     return this
   stats_view_model = new StatsViewModel(todos)
   ko.applyBindings(stats_view_model, $('#todo-stats')[0])

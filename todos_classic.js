@@ -165,7 +165,7 @@ $(document).ready(function() {
       }
       return kb.locale_manager.get((count === 1 ? 'clear_template_s' : 'clear_template_pl'), count);
     }, this));
-    this.onDestroyDone = function() {
+    this.onDestroyDone = __bind(function() {
       var model, _i, _len, _ref, _results;
       _ref = todos.allDone();
       _results = [];
@@ -174,7 +174,7 @@ $(document).ready(function() {
         _results.push(model.destroy());
       }
       return _results;
-    };
+    }, this);
     return this;
   };
   stats_view_model = new StatsViewModel(todos);

@@ -14,7 +14,7 @@ var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, par
   return child;
 }, __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 $(document).ready(function() {
-  var $all_priority_pickers, CreateTodoViewModel, LanguageOptionViewModel, LanguagesViewModel, PrioritiesSetting, PrioritiesSettingList, PrioritySettingsViewModel, SettingsViewModel, SortingOptionViewModel, StatsViewModel, Todo, TodoList, TodoListViewModel, TodoViewModel, create_view_model, footer_view_model, header_view_model, languages_view_model, priorities, stats_view_model, todo_list_view_model, todos, _ko_native_apply_bindings;
+  var CreateTodoViewModel, LanguageOptionViewModel, LanguagesViewModel, PrioritiesSetting, PrioritiesSettingList, PrioritySettingsViewModel, SettingsViewModel, SortingOptionViewModel, StatsViewModel, Todo, TodoList, TodoListViewModel, TodoViewModel, create_view_model, footer_view_model, header_view_model, languages_view_model, priorities, stats_view_model, todo_list_view_model, todos, _ko_native_apply_bindings;
   kb.locale_manager.setLocale('en');
   kb.locale_change_observable = kb.triggeredObservable(kb.locale_manager, 'change');
   ko.bindingHandlers.dblclick = {
@@ -22,35 +22,13 @@ $(document).ready(function() {
       return $(element).dblclick(ko.utils.unwrapObservable(value_accessor()));
     }
   };
-  if (_.isUndefined(ko.templateSource)) {
+  if (_.isUndefined(ko.templateSources)) {
     _ko_native_apply_bindings = ko.applyBindings;
     ko.applyBindings = function(view_model, element) {
       view_model['$data'] = view_model;
       return _ko_native_apply_bindings(view_model, element);
     };
   }
-  ko.reflector = function(key, value) {
-    if (!ko._reflectors) {
-      ko._reflectors = {};
-    }
-    if (!ko._reflectors.hasOwnProperty(key)) {
-      ko._reflectors[key] = ko.observable();
-    }
-    if (arguments.length === 1) {
-      return ko._reflectors[key]();
-    }
-    return ko._reflectors[key](value);
-  };
-  ko.destroyReflector = function(key) {
-    if (!ko._reflectors) {
-      return;
-    }
-    if (!ko._reflectors[key]) {
-      return;
-    }
-    ko._reflectors[key].dispose();
-    return delete ko._reflectors[key];
-  };
   PrioritiesSetting = (function() {
     __extends(PrioritiesSetting, Backbone.Model);
     function PrioritiesSetting() {
@@ -68,28 +46,95 @@ $(document).ready(function() {
     return PrioritiesSettingList;
   })();
   priorities = new PrioritiesSettingList();
-  priorities.fetch({
-    success: function(collection) {
-      if (!collection.get('high')) {
-        collection.create({
-          id: 'high',
-          color: '#c00020'
-        });
+  LanguageOptionViewModel = function(locale) {
+    this.id = locale;
+    this.label = kb.locale_manager.localeToLabel(locale);
+    this.option_group = 'lang';
+    return this;
+  };
+  LanguagesViewModel = function(locales) {
+    this.language_options = ko.observableArray(_.map(locales, function(locale) {
+      return new LanguageOptionViewModel(locale);
+    }));
+    this.current_language = ko.observable(kb.locale_manager.getLocale());
+    this.selected_value = ko.dependentObservable({
+      read: __bind(function() {
+        return this.current_language();
+      }, this),
+      write: __bind(function(new_locale) {
+        kb.locale_manager.setLocale(new_locale);
+        return this.current_language(new_locale);
+      }, this),
+      owner: this
+    });
+    return this;
+  };
+  languages_view_model = new LanguagesViewModel(kb.locale_manager.getLocales());
+  ko.applyBindings(languages_view_model, $('#todo-languages')[0]);
+  PrioritySettingsViewModel = function(model) {
+    this.priority = kb.observable(model, {
+      key: 'id'
+    });
+    this.priority_text = ko.dependentObservable(__bind(function() {
+      kb.locale_change_observable();
+      return kb.locale_manager.get(this.priority());
+    }, this));
+    this.priority_color = kb.observable(model, {
+      key: 'color'
+    });
+    return this;
+  };
+  SettingsViewModel = function(priority_settings) {
+    this.priority_settings = ko.observableArray(_.map(priority_settings, function(model) {
+      return new PrioritySettingsViewModel(model);
+    }));
+    this.getColorByPriority = function(priority) {
+      var view_model, _i, _len, _ref;
+      this.createColorsDependency();
+      _ref = this.priority_settings();
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        view_model = _ref[_i];
+        if (view_model.priority() === priority) {
+          return view_model.priority_color();
+        }
       }
-      if (!collection.get('medium')) {
-        collection.create({
-          id: 'medium',
-          color: '#c08040'
-        });
+      return '';
+    };
+    this.createColorsDependency = __bind(function() {
+      var view_model, _i, _len, _ref, _results;
+      _ref = this.priority_settings();
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        view_model = _ref[_i];
+        _results.push(view_model.priority_color());
       }
-      if (!collection.get('low')) {
-        return collection.create({
-          id: 'low',
-          color: '#00ff60'
-        });
+      return _results;
+    }, this);
+    this.default_priority = ko.observable('medium');
+    this.default_priority_color = ko.dependentObservable(__bind(function() {
+      return this.getColorByPriority(this.default_priority());
+    }, this));
+    this.priorityToRank = function(priority) {
+      switch (priority) {
+        case 'high':
+          return 0;
+        case 'medium':
+          return 1;
+        case 'low':
+          return 2;
       }
-    }
-  });
+    };
+    return this;
+  };
+  window.settings_view_model = new SettingsViewModel([new Backbone.ModelRef(priorities, 'high'), new Backbone.ModelRef(priorities, 'medium'), new Backbone.ModelRef(priorities, 'low')]);
+  SortingOptionViewModel = function(string_id) {
+    this.id = string_id;
+    this.label = kb.observable(kb.locale_manager, {
+      key: string_id
+    });
+    this.option_group = 'list_sort';
+    return this;
+  };
   Todo = (function() {
     __extends(Todo, Backbone.Model);
     function Todo() {
@@ -148,79 +193,6 @@ $(document).ready(function() {
   })();
   todos = new TodoList();
   todos.fetch();
-  LanguageOptionViewModel = function(locale) {
-    this.id = locale;
-    this.label = kb.locale_manager.localeToLabel(locale);
-    this.option_group = 'lang';
-    return this;
-  };
-  LanguagesViewModel = function(locales) {
-    this.language_options = ko.observableArray(_.map(locales, function(locale) {
-      return new LanguageOptionViewModel(locale);
-    }));
-    this.current_language = ko.observable(kb.locale_manager.getLocale());
-    this.selected_value = ko.dependentObservable({
-      read: __bind(function() {
-        return this.current_language();
-      }, this),
-      write: __bind(function(new_locale) {
-        kb.locale_manager.setLocale(new_locale);
-        return this.current_language(new_locale);
-      }, this),
-      owner: this
-    });
-    return this;
-  };
-  languages_view_model = new LanguagesViewModel(kb.locale_manager.getLocales());
-  ko.applyBindings(languages_view_model, $('#todo-languages')[0]);
-  PrioritySettingsViewModel = function(model) {
-    this.priority = kb.observable(model, {
-      key: 'id'
-    });
-    this.priority_text = ko.dependentObservable(__bind(function() {
-      kb.locale_change_observable();
-      return kb.locale_manager.get(this.priority());
-    }, this));
-    this.priority_color = kb.observable(model, {
-      key: 'color'
-    });
-    return this;
-  };
-  SettingsViewModel = function(priority_settings) {
-    this.priority_settings = ko.observableArray(_.map(priority_settings, function(model) {
-      return new PrioritySettingsViewModel(model);
-    }));
-    this.default_priority = ko.observable('medium');
-    this.getColorByPriority = function(priority) {
-      check_color;
-      var check_color, color, view_model, _i, _len, _ref;
-      color = '';
-      _ref = this.priority_settings();
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        view_model = _ref[_i];
-        check_color = view_model.priority_color();
-        if (view_model.priority() === priority) {
-          color = check_color;
-        }
-      }
-      return color;
-    };
-    this.priorityToRank = function(priority) {
-      switch (priority) {
-        case 'high':
-          return 0;
-        case 'medium':
-          return 1;
-        case 'low':
-          return 2;
-      }
-    };
-    return this;
-  };
-  window.settings_view_model = new SettingsViewModel([new Backbone.ModelRef(priorities, 'high'), new Backbone.ModelRef(priorities, 'medium'), new Backbone.ModelRef(priorities, 'low')]);
-  settings_view_model.default_priority_color = ko.dependentObservable(function() {
-    return settings_view_model.getColorByPriority(settings_view_model.default_priority());
-  });
   header_view_model = {
     title: "Todos"
   };
@@ -249,6 +221,9 @@ $(document).ready(function() {
       return window.settings_view_model.default_priority_color();
     });
     this.onSelectPriority = __bind(function(priority) {
+      if (event) {
+        event.stopPropagation();
+      }
       this.tooltip_visible(false);
       return settings_view_model.default_priority(ko.utils.unwrapObservable(priority));
     }, this);
@@ -260,14 +235,6 @@ $(document).ready(function() {
   };
   create_view_model = new CreateTodoViewModel();
   ko.applyBindings(create_view_model, $('#todo-create')[0]);
-  SortingOptionViewModel = function(string_id) {
-    this.id = string_id;
-    this.label = kb.observable(kb.locale_manager, {
-      key: string_id
-    });
-    this.option_group = 'list_sort';
-    return this;
-  };
   TodoViewModel = function(model) {
     this.text = kb.observable(model, {
       key: 'text',
@@ -320,6 +287,9 @@ $(document).ready(function() {
       }
     });
     this.onSelectPriority = __bind(function(priority) {
+      if (event) {
+        event.stopPropagation();
+      }
       this.tooltip_visible(false);
       return model.save({
         priority: ko.utils.unwrapObservable(priority)
@@ -377,6 +347,12 @@ $(document).ready(function() {
   };
   todo_list_view_model = new TodoListViewModel(todos);
   ko.applyBindings(todo_list_view_model, $('#todo-list')[0]);
+  footer_view_model = {
+    instructions_text: kb.observable(kb.locale_manager, {
+      key: 'instructions'
+    })
+  };
+  ko.applyBindings(footer_view_model, $('#todo-footer')[0]);
   StatsViewModel = function(todos) {
     this.collection_observable = kb.collectionObservable(todos);
     this.remaining_text = ko.dependentObservable(__bind(function() {
@@ -397,7 +373,7 @@ $(document).ready(function() {
       }
       return kb.locale_manager.get((count === 1 ? 'clear_template_s' : 'clear_template_pl'), count);
     }, this));
-    this.onDestroyDone = function() {
+    this.onDestroyDone = __bind(function() {
       var model, _i, _len, _ref, _results;
       _ref = todos.allDone();
       _results = [];
@@ -406,26 +382,43 @@ $(document).ready(function() {
         _results.push(model.destroy());
       }
       return _results;
-    };
+    }, this);
     return this;
   };
   stats_view_model = new StatsViewModel(todos);
   ko.applyBindings(stats_view_model, $('#todo-stats')[0]);
-  footer_view_model = {
-    instructions_text: kb.observable(kb.locale_manager, {
-      key: 'instructions'
-    })
-  };
-  ko.applyBindings(footer_view_model, $('#todo-footer')[0]);
-  $all_priority_pickers = $('body').find('.priority-picker-tooltip');
-  $('.colorpicker').mColorPicker();
-  return $('.colorpicker').bind('colorpicked', function() {
-    var model;
-    model = priorities.get($(this).attr('id'));
-    if (model) {
-      return model.save({
-        color: $(this).val()
-      });
-    }
-  });
+  return _.delay((function() {
+    priorities.fetch({
+      success: function(collection) {
+        if (!collection.get('high')) {
+          collection.create({
+            id: 'high',
+            color: '#c00020'
+          });
+        }
+        if (!collection.get('medium')) {
+          collection.create({
+            id: 'medium',
+            color: '#c08040'
+          });
+        }
+        if (!collection.get('low')) {
+          return collection.create({
+            id: 'low',
+            color: '#00ff60'
+          });
+        }
+      }
+    });
+    $('.colorpicker').mColorPicker();
+    return $('.colorpicker').bind('colorpicked', function() {
+      var model;
+      model = priorities.get($(this).attr('id'));
+      if (model) {
+        return model.save({
+          color: $(this).val()
+        });
+      }
+    });
+  }), 1000);
 });

@@ -8,6 +8,10 @@
 
 $(document).ready(->
 
+  ###################################
+  # Knockback-powered enhancements - START
+  ###################################
+
   # set the language
   kb.locale_manager.setLocale('it-IT')
 
@@ -22,24 +26,7 @@ $(document).ready(->
     get: (attribute_name) -> return @attributes[attribute_name]
 
   priorities =
-    models: [
-      new PrioritiesSetting({id:'high',   color:'#c00020'}),
-      new PrioritiesSetting({id:'medium', color:'#c08040'}),
-      new PrioritiesSetting({id:'low',    color:'#00ff60'})
-    ]
-
-  # Todos
-  class Todo
-    constructor: (@attributes) ->
-      @attributes['created_at'] = new Date() if not @attributes['created_at']
-    get: (attribute_name) -> return @attributes[attribute_name]
-
-  todos =
-    models: [
-      new Todo({text:'Test task text 1', priority:'medium'}),
-      new Todo({text:'Test task text 2', priority:'low'}),
-      new Todo({text:'Test task text 3', priority:'high', done_at:new Date()})
-    ]
+    models: [new PrioritiesSetting({id:'high',   color:'#c00020'}), new PrioritiesSetting({id:'medium', color:'#c08040'}), new PrioritiesSetting({id:'low',    color:'#00ff60'})]
 
   ###################################
   # MVVM: http://en.wikipedia.org/wiki/Model_View_ViewModel
@@ -62,14 +49,48 @@ $(document).ready(->
     @priority_color = model.get('color')
     return this
 
-  window.settings_view_model =
-    priority_settings: []
-    getColorByPriority: (priority) ->
-      (return view_model.priority_color if view_model.priority == priority) for view_model in settings_view_model.priority_settings
+  SettingsViewModel = (priority_settings) ->
+    @priority_settings = []
+    @priority_settings.push(new PrioritySettingsViewModel(model)) for model in priority_settings
+    @getColorByPriority = (priority) =>
+      (return view_model.priority_color if view_model.priority == priority) for view_model in @priority_settings
       return ''
+    @default_priority = @priority_settings[1]
+    @default_priority_color = @getColorByPriority(@default_priority)
+  window.settings_view_model = new SettingsViewModel(priorities.models)
 
-  settings_view_model.priority_settings.push(new PrioritySettingsViewModel(model)) for model in priorities.models
-  settings_view_model.default_setting = settings_view_model.priority_settings[0]
+  # Content
+  SortingOptionViewModel = (string_id) ->
+    @id = string_id
+    @label =  kb.locale_manager.get(string_id)
+    @option_group = 'list_sort'
+    return this
+
+  ###################################
+  # Knockback-powered enhancements - END
+  ###################################
+
+  ###################################
+  # Model: http://en.wikipedia.org/wiki/Model_view_controller
+  # ORM: http://en.wikipedia.org/wiki/Object-relational_mapping
+  ###################################
+
+  # Todos
+  class Todo
+    constructor: (@attributes) ->
+      @attributes['created_at'] = new Date() if not @attributes['created_at']
+    get: (attribute_name) -> return @attributes[attribute_name]
+
+  todos =
+    models: [
+      new Todo({text:'Test task text 1', priority:'medium'}),
+      new Todo({text:'Test task text 2', priority:'low'}),
+      new Todo({text:'Test task text 3', priority:'high', done_at:new Date()})
+    ]
+
+  ###################################
+  # MVVM: http://en.wikipedia.org/wiki/Model_View_ViewModel
+  ###################################
 
   # Header
   header_view_model =
@@ -83,13 +104,6 @@ $(document).ready(->
     return this
   create_view_model = new CreateTodoViewModel()
   $('#todo-create').append($("#create-template").tmpl(create_view_model))
-
-  # Content
-  SortingOptionViewModel = (string_id) ->
-    @id = string_id
-    @label =  kb.locale_manager.get(string_id)
-    @option_group = 'list_sort'
-    return this
 
   TodoViewModel = (model) ->
     @text = model.get('text')

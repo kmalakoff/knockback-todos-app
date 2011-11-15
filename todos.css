@@ -85,6 +85,9 @@ html {
     border-style: solid;
     border-width: 1px;
   }
+  #todoapp .priority-color-swatch.colorpicker {
+    display: none;
+  }
   #todoapp .priority-picker-tooltip {
     width: 80px;
     padding: 10px 5px;
