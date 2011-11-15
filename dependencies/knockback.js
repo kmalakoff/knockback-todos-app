@@ -1,5 +1,5 @@
 /*
-  knockback.js 0.6.0
+  knockback.js 0.8.0
   (c) 2011 Kevin Malakoff.
   Knockback.js is freely distributable under the MIT license.
   See the following for full license details:
@@ -17,7 +17,7 @@ if (!this._ || !this._.VERSION) {
 }
 this.Knockback || (this.Knockback = {});
 this.kb || (this.kb = this.Knockback);
-Knockback.VERSION = '0.6.0';
+Knockback.VERSION = '0.8.0';
 Knockback.locale_manager;
 Knockback.wrappedObservable = function(instance) {
   if (!instance._kb_observable) {
@@ -31,7 +31,7 @@ Knockback.viewModelDestroyObservables = Knockback.vmDestroy = function(view_mode
   for (key in view_model) {
     observable = view_model[key];
     _results.push((function(key, observable) {
-      if (!observable || !(observable.__kb_owner || (observable instanceof kb.Observables) || (observable instanceof kb.CollectionObservable))) {
+      if (!observable || !((ko.isObservable(observable) && observable.destroy) || (observable instanceof kb.Observables))) {
         return;
       }
       observable.destroy();
@@ -47,7 +47,14 @@ Knockback.viewModelDestroyObservables = Knockback.vmDestroy = function(view_mode
   See the following for full license details:
     https://github.com/kmalakoff/knockback/blob/master/LICENSE
 */
-var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
+  for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
+  function ctor() { this.constructor = child; }
+  ctor.prototype = parent.prototype;
+  child.prototype = new ctor;
+  child.__super__ = parent.prototype;
+  return child;
+};
 if (!this.Knockback) {
   throw new Error('Knockback: Dependency alert! knockback_core.js must be included before this file');
 }
@@ -68,7 +75,7 @@ Knockback.CollectionObservable = (function() {
     if (!this.options.viewModelCreate) {
       throw new Error('CollectionObservable: options.viewModelCreate is missing');
     }
-    _.bindAll(this, 'destroy', 'collection', 'sorting', 'viewModelByModel', 'eachViewModel');
+    _.bindAll(this, 'destroy', 'collection', 'sorting', 'viewModelByModel', 'eachViewModel', 'bind', 'unbind', 'trigger');
     _.bindAll(this, '_onGetValue', '_onCollectionReset', '_onCollectionResort', '_onModelAdd', '_onModelRemove', '_onModelChanged');
     this._kb_collection = collection;
     if (this._kb_collection.retain) {
@@ -96,6 +103,9 @@ Knockback.CollectionObservable = (function() {
     this._kb_observable.viewModelByModel = this.viewModelByModel;
     this._kb_observable.eachViewModel = this.eachViewModel;
     this._kb_observable.sorting = this.sorting;
+    this._kb_observable.bind = this.bind;
+    this._kb_observable.unbind = this.unbind;
+    this._kb_observable.trigger = this.trigger;
     this._onCollectionReset(this._kb_collection);
     return kb.wrappedObservable(this);
   }
@@ -120,16 +130,26 @@ Knockback.CollectionObservable = (function() {
       this._kb_collection.release();
     }
     this._kb_collection = null;
+    this._kb_value_observable = null;
     this._kb_observable.dispose();
     this._kb_observable = null;
-    this._kb_value_observable.dispose();
-    this._kb_value_observable = null;
     this.observable_array = null;
     return this.options = null;
   };
   CollectionObservable.prototype.collection = function() {
     this._kb_value_observable();
     return this._kb_collection;
+  };
+  CollectionObservable.prototype.sorting = function(sortedIndex, sort_attribute) {
+    if (arguments.length === 0) {
+      return {
+        sortedIndex: this.options.sortedIndex,
+        sort_attribute: this.options.sort_attribute
+      };
+    }
+    this.options.sort_attribute = sort_attribute;
+    this.options.sortedIndex = sortedIndex;
+    return this._onCollectionReset();
   };
   CollectionObservable.prototype.viewModelByModel = function(model) {
     var id_attribute;
@@ -148,39 +168,23 @@ Knockback.CollectionObservable = (function() {
     }
     return _results;
   };
-  CollectionObservable.prototype.sorting = function(sortedIndex, sort_attribute) {
-    if (arguments.length === 0) {
-      return {
-        sortedIndex: this.options.sortedIndex,
-        sort_attribute: this.options.sort_attribute
-      };
-    }
-    this.options.sort_attribute = sort_attribute;
-    this.options.sortedIndex = sortedIndex;
-    return this._onCollectionReset();
-  };
   CollectionObservable.prototype._onGetValue = function() {
     return this._kb_value_observable();
   };
   CollectionObservable.prototype._onCollectionReset = function() {
-    var model, models, view_model, view_models, _fn, _fn2, _i, _j, _k, _l, _len, _len2, _len3, _len4, _ref, _ref2, _ref3, _results;
+    var model, models, view_model, view_models, _fn, _i, _j, _k, _len, _len2, _len3, _ref, _ref2;
+    this.trigger('remove', this.observable_array());
     view_models = this.observable_array.removeAll();
-    _fn = __bind(function(view_model) {
-      if (this.options.onViewModelRemove) {
-        this.options.onViewModelRemove(view_model);
-      }
-      return kb.vmDestroy(view_model);
-    }, this);
     for (_i = 0, _len = view_models.length; _i < _len; _i++) {
       view_model = view_models[_i];
-      _fn(view_model);
+      kb.vmDestroy(view_model);
     }
     this._kb_value_observable.removeAll();
     view_models = [];
     if (this.options.sortedIndex) {
       models = [];
       _ref = this._kb_collection.models;
-      _fn2 = __bind(function(model) {
+      _fn = __bind(function(model) {
         var add_index;
         view_model = this._viewModelCreate(model);
         add_index = this.options.sortedIndex(models, model);
@@ -189,7 +193,7 @@ Knockback.CollectionObservable = (function() {
       }, this);
       for (_j = 0, _len2 = _ref.length; _j < _len2; _j++) {
         model = _ref[_j];
-        _fn2(model);
+        _fn(model);
       }
     } else {
       _ref2 = this._kb_collection.models;
@@ -201,31 +205,22 @@ Knockback.CollectionObservable = (function() {
     }
     this.observable_array(view_models);
     this._kb_value_observable(models);
-    if (this.options.onViewModelAdd) {
-      _ref3 = this.observable_array();
-      _results = [];
-      for (_l = 0, _len4 = _ref3.length; _l < _len4; _l++) {
-        view_model = _ref3[_l];
-        _results.push(this.options.onViewModelAdd(view_model));
-      }
-      return _results;
-    }
+    return this.trigger('add', this.observable_array());
   };
   CollectionObservable.prototype._onCollectionResort = function(model_or_models) {
-    var model, _i, _len, _results;
+    var model, _i, _len;
     if (this.options.sortedIndex) {
       throw new Error("CollectionObservable: collection sorting unexpected");
     }
     if (_.isArray(model_or_models)) {
-      _results = [];
       for (_i = 0, _len = model_or_models.length; _i < _len; _i++) {
         model = model_or_models[_i];
-        _results.push(this._viewModelResort(this.viewModelByModel(model)));
+        this._viewModelResort(this.viewModelByModel(model));
       }
-      return _results;
     } else {
-      return this._viewModelResort(this.viewModelByModel(model_or_models));
+      this._viewModelResort(this.viewModelByModel(model_or_models));
     }
+    return this.trigger('resort', this.observable_array());
   };
   CollectionObservable.prototype._onModelAdd = function(model) {
     var add_index, sorted_models, view_model;
@@ -238,9 +233,7 @@ Knockback.CollectionObservable = (function() {
     }
     this.observable_array.splice(add_index, 0, view_model);
     this._kb_value_observable.splice(add_index, 0, model);
-    if (this.options.onViewModelAdd) {
-      return this.options.onViewModelAdd(view_model, this.observable_array());
-    }
+    return this.trigger('add', view_model, this.observable_array());
   };
   CollectionObservable.prototype._onModelRemove = function(model) {
     var view_model;
@@ -250,9 +243,7 @@ Knockback.CollectionObservable = (function() {
     }
     this.observable_array.remove(view_model);
     this._kb_value_observable.remove(model);
-    if (this.options.onViewModelRemove) {
-      this.options.onViewModelRemove(view_model, this.observable_array());
-    }
+    this.trigger('remove', view_model, this.observable_array());
     kb.vmDestroy(view_model);
     return view_model.__kb_model = null;
   };
@@ -294,12 +285,11 @@ Knockback.CollectionObservable = (function() {
     this.observable_array.splice(new_index, 0, view_model);
     this._kb_value_observable.splice(previous_index, 1);
     this._kb_value_observable.splice(new_index, 0, model);
-    if (this.options.onViewModelResort) {
-      return this.options.onViewModelResort(view_model, this.observable_array(), new_index);
-    }
+    return this.trigger('resort', view_model, this.observable_array(), new_index);
   };
   return CollectionObservable;
 })();
+__extends(Knockback.CollectionObservable.prototype, Backbone.Events);
 Knockback.collectionObservable = function(collection, observable_array, options) {
   return new Knockback.CollectionObservable(collection, observable_array, options);
 };
@@ -363,15 +353,21 @@ Knockback.LocalizedObservable = (function() {
   }
   LocalizedObservable.prototype.destroy = function() {
     kb.locale_manager.unbind('change', this._onLocaleChange);
+    this._kb_value_observable = null;
     this._kb_observable.dispose();
     this._kb_observable = null;
-    this._kb_value_observable = null;
     this.options = {};
     return this.view_model = null;
   };
   LocalizedObservable.prototype.setToDefault = function() {
-    this._kb_value_observable(null);
-    return this._onSetValue(this._getDefaultValue());
+    var current_value, default_value;
+    current_value = this._kb_value_observable();
+    default_value = this._getDefaultValue();
+    if (current_value !== default_value) {
+      return this._onSetValue(default_value);
+    } else {
+      return this._kb_value_observable.valueHasMutated();
+    }
   };
   LocalizedObservable.prototype.resetToCurrent = function() {
     this._kb_value_observable(null);
@@ -435,18 +431,18 @@ Knockback.localizedObservable = function(value, options, view_model) {
   throw new Error('Knockback: Dependency alert! knockback_core.js must be included before this file');
 }
 Knockback.Observable = (function() {
-  function Observable(model, bind_info, view_model) {
+  function Observable(model, options, view_model) {
     this.model = model;
-    this.bind_info = bind_info;
+    this.options = options;
     this.view_model = view_model;
     if (!this.model) {
-      throw new Error('Observable: value is missing');
+      throw new Error('Observable: model is missing');
     }
-    if (!this.bind_info) {
-      throw new Error('Observable: bind_info is missing');
+    if (!this.options) {
+      throw new Error('Observable: options is missing');
     }
-    if (!this.bind_info.key) {
-      throw new Error('Observable: bind_info.key is missing');
+    if (!this.options.key) {
+      throw new Error('Observable: options.key is missing');
     }
     _.bindAll(this, 'destroy', 'setToDefault', '_onGetValue', '_onSetValue', '_onValueChange', '_onModelLoaded', '_onModelUnloaded');
     if (Backbone.ModelRef && (this.model instanceof Backbone.ModelRef)) {
@@ -457,10 +453,10 @@ Knockback.Observable = (function() {
       this.model = this.model_ref.getModel();
     }
     this._kb_value_observable = ko.observable();
-    if (this.bind_info.localizer) {
-      this._kb_localizer = this.bind_info.localizer(this._getCurrentValue());
+    if (this.options.localizer) {
+      this._kb_localizer = this.options.localizer(this._getCurrentValue());
     }
-    if (this.bind_info.write) {
+    if (this.options.write) {
       if (!this.view_model) {
         throw new Error('Observable: view_model is missing for read_write model attribute');
       }
@@ -480,9 +476,9 @@ Knockback.Observable = (function() {
     return kb.wrappedObservable(this);
   }
   Observable.prototype.destroy = function() {
+    this._kb_value_observable = null;
     this._kb_observable.dispose();
     this._kb_observable = null;
-    this._kb_value_observable = null;
     if (this.model) {
       this._onModelUnloaded(this.model);
     }
@@ -492,7 +488,7 @@ Knockback.Observable = (function() {
       this.model_ref.release();
       this.model_ref = null;
     }
-    this.bind_info = null;
+    this.options = null;
     return this.view_model = null;
   };
   Observable.prototype.setToDefault = function() {
@@ -505,23 +501,23 @@ Knockback.Observable = (function() {
     return this._kb_value_observable(value);
   };
   Observable.prototype._getDefaultValue = function() {
-    if (!this.bind_info.hasOwnProperty('default')) {
+    if (!this.options.hasOwnProperty('default')) {
       return '';
     }
-    if (_.isFunction(this.bind_info["default"])) {
-      return this.bind_info["default"]();
+    if (_.isFunction(this.options["default"])) {
+      return this.options["default"]();
     } else {
-      return this.bind_info["default"];
+      return this.options["default"];
     }
   };
   Observable.prototype._getCurrentValue = function() {
     if (!this.model) {
       return this._getDefaultValue();
     }
-    if (this.bind_info.read) {
-      return this.bind_info.read.apply(this.view_model, [this.model, this.bind_info.key]);
+    if (this.options.read) {
+      return this.options.read.apply(this.view_model, [this.model, this.options.key]);
     } else {
-      return this.model.get(this.bind_info.key);
+      return this.model.get(this.options.key);
     }
   };
   Observable.prototype._onGetValue = function() {
@@ -544,9 +540,9 @@ Knockback.Observable = (function() {
     }
     if (this.model) {
       set_info = {};
-      set_info[this.bind_info.key] = value;
-      if (_.isFunction(this.bind_info.write)) {
-        this.bind_info.write.apply(this.view_model, [value, this.model, set_info]);
+      set_info[this.options.key] = value;
+      if (_.isFunction(this.options.write)) {
+        this.options.write.apply(this.view_model, [value, this.model, set_info]);
       } else {
         this.model.set(set_info);
       }
@@ -560,7 +556,7 @@ Knockback.Observable = (function() {
   Observable.prototype._onModelLoaded = function(model) {
     this.model = model;
     this.model.bind('change', this._onValueChange);
-    this.model.bind("change:" + this.bind_info.key, this._onValueChange);
+    this.model.bind("change:" + this.options.key, this._onValueChange);
     return this._onValueChange();
   };
   Observable.prototype._onModelUnloaded = function() {
@@ -569,7 +565,7 @@ Knockback.Observable = (function() {
       this._kb_localizer = null;
     }
     this.model.unbind('change', this._onValueChange);
-    this.model.unbind("change:" + this.bind_info.key, this._onValueChange);
+    this.model.unbind("change:" + this.options.key, this._onValueChange);
     return this.model = null;
   };
   Observable.prototype._onValueChange = function() {
@@ -583,8 +579,8 @@ Knockback.Observable = (function() {
   };
   return Observable;
 })();
-Knockback.observable = function(model, bind_info, view_model) {
-  return new Knockback.Observable(model, bind_info, view_model);
+Knockback.observable = function(model, options, view_model) {
+  return new Knockback.Observable(model, options, view_model);
 };
 /*
   knockback_observables.js
@@ -647,4 +643,85 @@ Knockback.Observables = (function() {
 })();
 Knockback.observables = function(model, mappings_info, view_model) {
   return new Knockback.Observables(model, mappings_info, view_model);
+};
+/*
+  knockback_triggered_observable.js
+  (c) 2011 Kevin Malakoff.
+  Knockback.Observable is freely distributable under the MIT license.
+  See the following for full license details:
+    https://github.com/kmalakoff/knockback/blob/master/LICENSE
+*/if (!this.Knockback) {
+  throw new Error('Knockback: Dependency alert! knockback_core.js must be included before this file');
+}
+Knockback.TriggeredObservable = (function() {
+  function TriggeredObservable(model, event_name) {
+    this.model = model;
+    this.event_name = event_name;
+    if (!this.model) {
+      throw new Error('Observable: model is missing');
+    }
+    if (!this.event_name) {
+      throw new Error('Observable: event_name is missing');
+    }
+    _.bindAll(this, 'destroy', '_onGetValue', '_onValueChange', '_onModelLoaded', '_onModelUnloaded');
+    if (Backbone.ModelRef && (this.model instanceof Backbone.ModelRef)) {
+      this.model_ref = this.model;
+      this.model_ref.retain();
+      this.model_ref.bind('loaded', this._onModelLoaded);
+      this.model_ref.bind('unloaded', this._onModelUnloaded);
+      this.model = this.model_ref.getModel();
+    }
+    this._kb_value_observable = ko.observable();
+    this._kb_observable = ko.dependentObservable(this._onGetValue);
+    this._kb_observable.destroy = this.destroy;
+    if (!this.model_ref || this.model_ref.isLoaded()) {
+      this._onModelLoaded(this.model);
+    }
+    return kb.wrappedObservable(this);
+  }
+  TriggeredObservable.prototype.destroy = function() {
+    this._kb_observable.dispose();
+    this._kb_observable = null;
+    this._kb_value_observable = null;
+    if (this.model) {
+      this._onModelUnloaded(this.model);
+    }
+    if (this.model_ref) {
+      this.model_ref.unbind('loaded', this._onModelLoaded);
+      this.model_ref.unbind('unloaded', this._onModelUnloaded);
+      this.model_ref.release();
+      this.model_ref = null;
+    }
+    this.options = null;
+    return this.view_model = null;
+  };
+  TriggeredObservable.prototype._onGetValue = function() {
+    return this._kb_value_observable();
+  };
+  TriggeredObservable.prototype._onModelLoaded = function(model) {
+    this.model = model;
+    this.model.bind(this.event_name, this._onValueChange);
+    return this._onValueChange();
+  };
+  TriggeredObservable.prototype._onModelUnloaded = function() {
+    if (this._kb_localizer && this._kb_localizer.destroy) {
+      this._kb_localizer.destroy();
+      this._kb_localizer = null;
+    }
+    this.model.unbind(this.event_name, this._onValueChange);
+    return this.model = null;
+  };
+  TriggeredObservable.prototype._onValueChange = function() {
+    var current_value;
+    current_value = this._kb_value_observable();
+    if (current_value !== this.model) {
+      return this._kb_value_observable(this.model);
+    } else {
+      return this._kb_value_observable.valueHasMutated();
+    }
+  };
+  return TriggeredObservable;
+})();
+Knockback.triggeredObservable = function(model, event_name) {
+  return new Knockback.TriggeredObservable(model, event_name);
 };

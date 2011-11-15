@@ -10,12 +10,23 @@ $(document).ready(->
 
   # set the language
   kb.locale_manager.setLocale('en')
-  kb.localized_dummy = kb.observable(kb.locale_manager, {key: 'remaining_template_s'}) # use to register a localization dependency
+  kb.localized_dummy = kb.triggeredObservable(kb.locale_manager, 'change') # use to register a localization dependency
 
   # add a doubleclick handler to KO
   ko.bindingHandlers.dblclick =
     init: (element, value_accessor, all_bindings_accessor, view_model) ->
       $(element).dblclick(ko.utils.unwrapObservable(value_accessor()))
+
+  ko.reflector = (key, value) ->
+    ko._reflectors = {} if not ko._reflectors
+    ko._reflectors[key] = ko.observable() if not ko._reflectors.hasOwnProperty(key)
+    return ko._reflectors[key]() if arguments.length == 1
+    ko._reflectors[key](value)
+  ko.destroyReflector = (key) ->
+    return if not ko._reflectors
+    return if not ko._reflectors[key]
+    ko._reflectors[key].dispose()
+    delete ko._reflectors[key]
 
   ###################################
   # Model: http://en.wikipedia.org/wiki/Model_view_controller

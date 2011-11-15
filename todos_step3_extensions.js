@@ -16,13 +16,33 @@ var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, par
 $(document).ready(function() {
   var $all_priority_pickers, LanguageOptionViewModel, PrioritiesSetting, PrioritiesSettingList, PrioritySettingsViewModel, SortingOptionViewModel, Todo, TodoList, TodoViewModel, create_view_model, footer_view_model, header_view_model, languages_view_model, locale, priorities, stats_view_model, todo_list_view_model, todos, _i, _len, _ref;
   kb.locale_manager.setLocale('en');
-  kb.localized_dummy = kb.observable(kb.locale_manager, {
-    key: 'remaining_template_s'
-  });
+  kb.localized_dummy = kb.triggeredObservable(kb.locale_manager, 'change');
   ko.bindingHandlers.dblclick = {
     init: function(element, value_accessor, all_bindings_accessor, view_model) {
       return $(element).dblclick(ko.utils.unwrapObservable(value_accessor()));
     }
+  };
+  ko.reflector = function(key, value) {
+    if (!ko._reflectors) {
+      ko._reflectors = {};
+    }
+    if (!ko._reflectors.hasOwnProperty(key)) {
+      ko._reflectors[key] = ko.observable();
+    }
+    if (arguments.length === 1) {
+      return ko._reflectors[key]();
+    }
+    return ko._reflectors[key](value);
+  };
+  ko.destroyReflector = function(key) {
+    if (!ko._reflectors) {
+      return;
+    }
+    if (!ko._reflectors[key]) {
+      return;
+    }
+    ko._reflectors[key].dispose();
+    return delete ko._reflectors[key];
   };
   PrioritiesSetting = (function() {
     __extends(PrioritiesSetting, Backbone.Model);
