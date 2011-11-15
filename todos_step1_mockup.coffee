@@ -76,10 +76,12 @@ $(document).ready(->
     title: "Todos"
   $('#todo-header').append($("#header-template").tmpl(header_view_model))
 
-  create_view_model =
-    input_placeholder_text:     kb.locale_manager.get('placeholder_create')
-    input_tooltip_text:         kb.locale_manager.get('tooltip_create')
-    priority_color:             settings_view_model.default_setting.priority_color
+  CreateTodoViewModel = ->
+    @input_placeholder_text = kb.locale_manager.get('placeholder_create')
+    @input_tooltip_text = kb.locale_manager.get('tooltip_create')
+    @priority_color = settings_view_model.default_setting.priority_color
+    return this
+  create_view_model = new CreateTodoViewModel()
   $('#todo-create').append($("#create-template").tmpl(create_view_model))
 
   # Content
@@ -96,19 +98,22 @@ $(document).ready(->
     @priority_color = settings_view_model.getColorByPriority(model.get('priority'))
     return this
 
-  todo_list_view_model =
-    todos: []
-  todo_list_view_model.todos.push(new TodoViewModel(model)) for model in todos.models
-  todo_list_view_model.sort_visible = (todos.models.length>0)
-  todo_list_view_model.sorting_options = [new SortingOptionViewModel('label_name'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_priority')]
+  TodoListViewModel = (todos) ->
+    @todos = []
+    @todos.push(new TodoViewModel(model)) for model in todos
+    @sort_visible = (@todos.length>0)
+    @sorting_options = [new SortingOptionViewModel('label_name'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_priority')]
+    return true
+  todo_list_view_model = new TodoListViewModel(todos.models)
   $("#todo-list").append($("#list-template").tmpl(todo_list_view_model))
   $('#todo-list-sorting').find('#label_created').attr(checked:'checked')
 
   # Stats Footer
-  stats_view_model =
-    total:      todos.models.length
-    done:       todos.models.reduce(((prev,cur)-> return prev + if cur.get('done_at') then 1 else 0), 0)
-    remaining:  todos.models.reduce(((prev,cur)-> return prev + if cur.get('done_at') then 0 else 1), 0)
+  StatsViewModel = (todos) ->
+    @total = todos.models.length
+    @done = todos.models.reduce(((prev,cur)-> return prev + if cur.get('done_at') then 1 else 0), 0)
+    @remaining = todos.models.reduce(((prev,cur)-> return prev + if cur.get('done_at') then 0 else 1), 0)
+  stats_view_model = new StatsViewModel (todos)
   $('#todo-stats').append($("#stats-template").tmpl(stats_view_model))
 
   footer_view_model =

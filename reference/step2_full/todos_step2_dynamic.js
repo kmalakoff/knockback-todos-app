@@ -180,7 +180,9 @@ $(document).ready(function() {
     }, this);
     this.edit_mode = ko.observable(false);
     this.toggleEditMode = __bind(function() {
-      return this.edit_mode(!this.edit_mode());
+      if (!this.done) {
+        return this.edit_mode(!this.edit_mode());
+      }
     }, this);
     this.onEnterEndEdit = __bind(function(event) {
       if (event.keyCode === 13) {

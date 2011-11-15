@@ -8,15 +8,26 @@
 
 $(document).ready(->
 
+  ###################################
+  # Configure
+  ###################################
   # set the language
   kb.locale_manager.setLocale('en')
-  kb.localized_dummy = kb.triggeredObservable(kb.locale_manager, 'change') # use to register a localization dependency
+  kb.locale_change_observable = kb.triggeredObservable(kb.locale_manager, 'change') # use to register a localization dependency
 
   # add a doubleclick handler to KO
   ko.bindingHandlers.dblclick =
     init: (element, value_accessor, all_bindings_accessor, view_model) ->
       $(element).dblclick(ko.utils.unwrapObservable(value_accessor()))
 
+  # ko1.2.1 compatibility with 1.3
+  if _.isUndefined(ko.templateSource)
+    _ko_native_apply_bindings = ko.applyBindings
+    ko.applyBindings = (view_model, element) ->
+      view_model['$data'] = view_model
+      _ko_native_apply_bindings(view_model, element)
+
+  # TODO: remove
   ko.reflector = (key, value) ->
     ko._reflectors = {} if not ko._reflectors
     ko._reflectors[key] = ko.observable() if not ko._reflectors.hasOwnProperty(key)
@@ -80,45 +91,45 @@ $(document).ready(->
     @id = locale
     @label = kb.locale_manager.localeToLabel(locale)
     @option_group = 'lang'
-    @onClick = ->
     return this
 
-  languages_view_model =
-    language_options: ko.observableArray([])
-  languages_view_model.current_language = ko.dependentObservable(
-    read: -> return kb.locale_manager.getLocale()
-    write: (new_locale) -> kb.locale_manager.setLocale(new_locale)
-    owner: todo_list_view_model
-  )
-  languages_view_model.language_options.push(new LanguageOptionViewModel(locale)) for locale in kb.locale_manager.getLocales()
+  LanguagesViewModel = (locales) ->
+    @language_options = ko.observableArray(_.map(locales, (locale) -> return new LanguageOptionViewModel(locale)))
+    @current_language = ko.observable(kb.locale_manager.getLocale()) # used to create a dependency
+    @selected_value = ko.dependentObservable(
+      read: => return @current_language()
+      write: (new_locale) => kb.locale_manager.setLocale(new_locale); @current_language(new_locale)
+      owner: this
+    )
+    return this
+  languages_view_model = new LanguagesViewModel(kb.locale_manager.getLocales())
   ko.applyBindings(languages_view_model, $('#todo-languages')[0])
 
   # Settings
   PrioritySettingsViewModel = (model) ->
     @priority = kb.observable(model, {key: 'id'})
     @priority_text = ko.dependentObservable(=>
-      kb.localized_dummy() # use to register a localization dependency -> kb only works with fixed keys
+      kb.locale_change_observable() # use to register a localization dependency -> kb only works with fixed keys
       return kb.locale_manager.get(@priority())
     )
     @priority_color = kb.observable(model, {key: 'color'})
     return this
 
-  window.settings_view_model =
-    priority_settings: ko.observableArray([])
-    default_priority: ko.observable('medium')
-    getColorByPriority: (priority) ->
+  SettingsViewModel = (priority_settings) ->
+    @priority_settings = ko.observableArray(_.map(priority_settings, (model)-> return new PrioritySettingsViewModel(model)))
+    @default_priority = ko.observable('medium')
+    @getColorByPriority = (priority) ->
       check_color; color = ''
       # make dependent on all of the models
-      (check_color = view_model.priority_color(); color = check_color if view_model.priority() == priority) for view_model in settings_view_model.priority_settings()
+      (check_color = view_model.priority_color(); color = check_color if view_model.priority() == priority) for view_model in @priority_settings()
       return color
-    priorityToRank: (priority) ->
+    @priorityToRank = (priority) ->
       switch priority
         when 'high' then return 0
         when 'medium' then return 1
         when 'low' then return 2
-  settings_view_model.priority_settings.push(new PrioritySettingsViewModel(new Backbone.ModelRef(priorities, 'high')))
-  settings_view_model.priority_settings.push(new PrioritySettingsViewModel(new Backbone.ModelRef(priorities, 'medium')))
-  settings_view_model.priority_settings.push(new PrioritySettingsViewModel(new Backbone.ModelRef(priorities, 'low')))
+    return this
+  window.settings_view_model = new SettingsViewModel([new Backbone.ModelRef(priorities, 'high'), new Backbone.ModelRef(priorities, 'medium'), new Backbone.ModelRef(priorities, 'low')])
   settings_view_model.default_priority_color = ko.dependentObservable(-> return settings_view_model.getColorByPriority(settings_view_model.default_priority()))
 
   # Header
@@ -126,18 +137,22 @@ $(document).ready(->
     title: "Todos"
   ko.applyBindings(header_view_model, $('#todo-header')[0])
 
-  create_view_model =
-    input_text:                 ko.observable('')
-    input_placeholder_text:     kb.observable(kb.locale_manager, {key: 'placeholder_create'})
-    input_tooltip_text:         kb.observable(kb.locale_manager, {key: 'tooltip_create'})
-    priority_color:             ko.dependentObservable(-> return window.settings_view_model.default_priority_color())
-
-    setDefaultPriority: (priority) -> settings_view_model.default_priority(ko.utils.unwrapObservable(priority))
-    addTodo: (event) ->
+  CreateTodoViewModel = ->
+    @input_text = ko.observable('')
+    @input_placeholder_text = kb.observable(kb.locale_manager, {key: 'placeholder_create'})
+    @input_tooltip_text = kb.observable(kb.locale_manager, {key: 'tooltip_create'})
+    @addTodo = (event) ->
       text = @input_text()
       return true if (!text || event.keyCode != 13)
       todos.create({text: text, priority: settings_view_model.default_priority()})
       @input_text('')
+
+    @priority_color = ko.dependentObservable(-> return window.settings_view_model.default_priority_color())
+    @onSelectPriority = (priority) => @tooltip_visible(false); settings_view_model.default_priority(ko.utils.unwrapObservable(priority))
+    @tooltip_visible = ko.observable(false)
+    @onToggleTooltip = => @tooltip_visible(!@tooltip_visible())
+    return this
+  create_view_model = new CreateTodoViewModel()
   ko.applyBindings(create_view_model, $('#todo-create')[0])
 
   # Content
@@ -150,58 +165,62 @@ $(document).ready(->
   TodoViewModel = (model) ->
     @text = kb.observable(model, {key: 'text', write: ((text) -> model.save({text: text}))}, this)
     @edit_mode = ko.observable(false)
-    @toggleEditMode = => @edit_mode(!@edit_mode())
+    @toggleEditMode = => @edit_mode(!@edit_mode()) if not @done()
     @onEnterEndEdit = (event) => @toggleEditMode() if (event.keyCode == 13)
 
     @created_at = model.get('created_at')
     @done = kb.observable(model, {key: 'done_at', read: (-> return model.isDone()), write: ((done) -> model.done(done)) }, this)
 
     @done_at = kb.observable(model, {key: 'done_at', localizer: (value) -> return new LongDateLocalizer(value)})
-    @done_text = ko.dependentObservable(=>return if !!model.get('done_at') then return "#{kb.locale_manager.get('label_completed')}: #{@done_at()}" else '')
+    @done_text = ko.dependentObservable(=>
+      done_at = @done_at() # ensure there is a dependency
+      return if !!done_at then return "#{kb.locale_manager.get('label_completed')}: #{done_at}" else ''
+    )
 
-    @setTodoPriority = (priority) -> model.save({priority: ko.utils.unwrapObservable(priority)})
     @priority_color = kb.observable(model, {key: 'priority', read: -> return settings_view_model.getColorByPriority(model.get('priority'))})
+    @onSelectPriority = (priority) => @tooltip_visible(false); model.save({priority: ko.utils.unwrapObservable(priority)})
+    @tooltip_visible = ko.observable(false)
+    @onToggleTooltip = => @tooltip_visible(!@tooltip_visible())
 
     @destroyTodo = => model.destroy()
     return this
 
-  todo_list_view_model =
-    todos: ko.observableArray([])
-    # _list_sorting_mode: 'label_name'
-    _list_sorting_mode: null # TODO: bug fix
-
-  todo_list_view_model.list_sorting_mode = ko.dependentObservable(
-    read: -> return todo_list_view_model._list_sorting_mode
-    write: (new_mode) ->
-      todo_list_view_model._list_sorting_mode = new_mode
-      switch new_mode
-        when 'label_name' then window.collection_observable.sorting((models, model)-> return _.sortedIndex(models, model, (test) -> test.get('text')))
-        when 'label_created' then window.collection_observable.sorting((models, model)-> return _.sortedIndex(models, model, (test) -> test.get('created_at').valueOf()))
-        when 'label_priority' then window.collection_observable.sorting((models, model)-> return _.sortedIndex(models, model, (test) -> settings_view_model.priorityToRank(test.get('priority'))))
-    owner: todo_list_view_model
-  )
-  window.collection_observable = kb.collectionObservable(todos, todo_list_view_model.todos, { viewModelCreate: (model) -> return new TodoViewModel(model) })
-  todo_list_view_model.sort_visible = ko.dependentObservable(-> collection_observable().length)
-  todo_list_view_model.sorting_options = [new SortingOptionViewModel('label_name'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_priority')]
+  TodoListViewModel = (todos) ->
+    @todos = ko.observableArray([])
+    @sort_mode = ko.observable('label_name')  # used to create a dependency
+    @selected_value = ko.dependentObservable(
+      read: => return @sort_mode()
+      write: (new_mode) =>
+        @sort_mode(new_mode)
+        switch new_mode
+          when 'label_name' then @collection_observable.sorting((models, model)-> return _.sortedIndex(models, model, (test) -> test.get('text')))
+          when 'label_created' then @collection_observable.sorting((models, model)-> return _.sortedIndex(models, model, (test) -> test.get('created_at').valueOf()))
+          when 'label_priority' then @collection_observable.sorting((models, model)-> return _.sortedIndex(models, model, (test) -> settings_view_model.priorityToRank(test.get('priority'))))
+      owner: this
+    )
+    @collection_observable = kb.collectionObservable(todos, @todos, {view_model: TodoViewModel})
+    @sort_visible = ko.dependentObservable(=> @collection_observable().length)
+    @sorting_options = [new SortingOptionViewModel('label_name'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_priority')]
+    return this
+  todo_list_view_model = new TodoListViewModel(todos)
   ko.applyBindings(todo_list_view_model, $('#todo-list')[0])
 
-  # TODO: bug fix - also for locale
-  todo_list_view_model._list_sorting_mode = 'label_name'
-  todo_list_view_model.list_sorting_mode(todo_list_view_model._list_sorting_mode)
-
   # Stats Footer
-  stats_view_model =
-    remaining_text: ko.dependentObservable(->
-      kb.localized_dummy() # use to register a localization dependency
-      count = collection_observable.collection().remainingCount(); return '' if not count
+  StatsViewModel = (todos) ->
+    @collection_observable = kb.collectionObservable(todos)
+    @remaining_text = ko.dependentObservable(=>
+      kb.locale_change_observable() # use to register a localization dependency
+      count = @collection_observable.collection().remainingCount(); return '' if not count
       return kb.locale_manager.get((if count == 1 then 'remaining_template_s' else 'remaining_template_pl'), count)
     )
-    clear_text: ko.dependentObservable(->
-      kb.localized_dummy() # use to register a localization dependency
-      count = collection_observable.collection().doneCount(); return '' if not count
+    @clear_text = ko.dependentObservable(=>
+      kb.locale_change_observable() # use to register a localization dependency
+      count = @collection_observable.collection().doneCount(); return '' if not count
       return kb.locale_manager.get((if count == 1 then 'clear_template_s' else 'clear_template_pl'), count)
     )
-    onDestroyDone: -> model.destroy() for model in todos.allDone()
+    @onDestroyDone = -> model.destroy() for model in todos.allDone()
+    return this
+  stats_view_model = new StatsViewModel(todos)
   ko.applyBindings(stats_view_model, $('#todo-stats')[0])
 
   footer_view_model =
@@ -218,10 +237,4 @@ $(document).ready(->
     model = priorities.get($(this).attr('id'))
     model.save({color: $(this).val()}) if model
   )
-  $('.priority-color-swatch').click(->
-    $priority_picker = $(this).children('.priority-picker-tooltip')
-    $all_priority_pickers.not($priority_picker).hide()
-    $priority_picker.toggle()
-  )
-  $('body').click((event)-> $all_priority_pickers.hide() if not $(event.target).children('.priority-picker-tooltip').length and not $(event.target).closest('.priority-picker-tooltip').length ) # close all pickers
 )

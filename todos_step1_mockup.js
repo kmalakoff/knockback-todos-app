@@ -5,7 +5,7 @@
   See the following for full license details:
     https:#github.com/kmalakoff/knockback-todos/blob/master/LICENSE
 */$(document).ready(function() {
-  var $all_priority_pickers, LanguageOptionViewModel, PrioritiesSetting, PrioritySettingsViewModel, SortingOptionViewModel, Todo, TodoViewModel, create_view_model, footer_view_model, header_view_model, locale, model, priorities, stats_view_model, todo_list_view_model, todos, _i, _j, _k, _len, _len2, _len3, _ref, _ref2, _ref3;
+  var $all_priority_pickers, CreateTodoViewModel, LanguageOptionViewModel, PrioritiesSetting, PrioritySettingsViewModel, SortingOptionViewModel, StatsViewModel, Todo, TodoListViewModel, TodoViewModel, create_view_model, footer_view_model, header_view_model, locale, model, priorities, stats_view_model, todo_list_view_model, todos, _i, _j, _len, _len2, _ref, _ref2;
   kb.locale_manager.setLocale('it-IT');
   PrioritiesSetting = (function() {
     function PrioritiesSetting(attributes) {
@@ -101,11 +101,13 @@
     title: "Todos"
   };
   $('#todo-header').append($("#header-template").tmpl(header_view_model));
-  create_view_model = {
-    input_placeholder_text: kb.locale_manager.get('placeholder_create'),
-    input_tooltip_text: kb.locale_manager.get('tooltip_create'),
-    priority_color: settings_view_model.default_setting.priority_color
+  CreateTodoViewModel = function() {
+    this.input_placeholder_text = kb.locale_manager.get('placeholder_create');
+    this.input_tooltip_text = kb.locale_manager.get('tooltip_create');
+    this.priority_color = settings_view_model.default_setting.priority_color;
+    return this;
   };
+  create_view_model = new CreateTodoViewModel();
   $('#todo-create').append($("#create-template").tmpl(create_view_model));
   SortingOptionViewModel = function(string_id) {
     this.id = string_id;
@@ -122,29 +124,32 @@
     this.priority_color = settings_view_model.getColorByPriority(model.get('priority'));
     return this;
   };
-  todo_list_view_model = {
-    todos: []
+  TodoListViewModel = function(todos) {
+    var model, _k, _len3;
+    this.todos = [];
+    for (_k = 0, _len3 = todos.length; _k < _len3; _k++) {
+      model = todos[_k];
+      this.todos.push(new TodoViewModel(model));
+    }
+    this.sort_visible = this.todos.length > 0;
+    this.sorting_options = [new SortingOptionViewModel('label_name'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_priority')];
+    return true;
   };
-  _ref3 = todos.models;
-  for (_k = 0, _len3 = _ref3.length; _k < _len3; _k++) {
-    model = _ref3[_k];
-    todo_list_view_model.todos.push(new TodoViewModel(model));
-  }
-  todo_list_view_model.sort_visible = todos.models.length > 0;
-  todo_list_view_model.sorting_options = [new SortingOptionViewModel('label_name'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_priority')];
+  todo_list_view_model = new TodoListViewModel(todos.models);
   $("#todo-list").append($("#list-template").tmpl(todo_list_view_model));
   $('#todo-list-sorting').find('#label_created').attr({
     checked: 'checked'
   });
-  stats_view_model = {
-    total: todos.models.length,
-    done: todos.models.reduce((function(prev, cur) {
+  StatsViewModel = function(todos) {
+    this.total = todos.models.length;
+    this.done = todos.models.reduce((function(prev, cur) {
       return prev + (cur.get('done_at') ? 1 : 0);
-    }), 0),
-    remaining: todos.models.reduce((function(prev, cur) {
+    }), 0);
+    return this.remaining = todos.models.reduce((function(prev, cur) {
       return prev + (cur.get('done_at') ? 0 : 1);
-    }), 0)
+    }), 0);
   };
+  stats_view_model = new StatsViewModel(todos);
   $('#todo-stats').append($("#stats-template").tmpl(stats_view_model));
   footer_view_model = {
     instructions_text: kb.locale_manager.get('instructions')

@@ -112,7 +112,7 @@ $(document).ready(->
   TodoViewModel = (model) ->
     @text = kb.observable(model, {key: 'text', write: ((text) -> model.save({text: text}))}, this)
     @edit_mode = ko.observable(false)
-    @toggleEditMode = => @edit_mode(!@edit_mode())
+    @toggleEditMode = => @edit_mode(!@edit_mode()) if not @done
     @onEnterEndEdit = (event) => @toggleEditMode() if (event.keyCode == 13)
 
     @created_at = model.get('created_at')

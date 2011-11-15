@@ -50,22 +50,23 @@ $(document).ready(->
     title: "Todos"
   $('#todo-header').append($("#header-template").tmpl(header_view_model))
 
-  create_view_model =
-    input_text:                 ko.observable('')
-    input_placeholder_text:     kb.locale_manager.get('placeholder_create')
-    input_tooltip_text:         kb.locale_manager.get('tooltip_create')
-
-    addTodo: (event) ->
+  CreateTodoViewModel = ->
+    @input_text = ko.observable('')
+    @input_placeholder_text = kb.observable(kb.locale_manager, {key: 'placeholder_create'})
+    @input_tooltip_text = kb.observable(kb.locale_manager, {key: 'tooltip_create'})
+    @addTodo = (event) ->
       text = @input_text()
       return true if (!text || event.keyCode != 13)
       todos.create({text: text})
       @input_text('')
+    return true
+  create_view_model = new CreateTodoViewModel()
   ko.applyBindings(create_view_model, $('#todo-create')[0])
 
   TodoViewModel = (model) ->
     @text = kb.observable(model, {key: 'text', write: ((text) -> model.save({text: text}))}, this)
     @edit_mode = ko.observable(false)
-    @toggleEditMode = => @edit_mode(!@edit_mode())
+    @toggleEditMode = => @edit_mode(!@edit_mode()) if not @done()
     @onEnterEndEdit = (event) => @toggleEditMode() if (event.keyCode == 13)
 
     @created_at = model.get('created_at')
@@ -73,22 +74,27 @@ $(document).ready(->
     @destroyTodo = => model.destroy()
     return this
 
-  todo_list_view_model =
-    todos: ko.observableArray([])
-  collection_observable = kb.collectionObservable(todos, todo_list_view_model.todos, { viewModelCreate: (model) -> return new TodoViewModel(model) })
+  TodoListViewModel = (todos) ->
+    @todos = ko.observableArray([])
+    @collection_observable = kb.collectionObservable(todos, @todos, { view_model: TodoViewModel })
+    return true
+  todo_list_view_model = new TodoListViewModel(todos)
   ko.applyBindings(todo_list_view_model, $('#todo-list')[0])
 
   # Stats Footer
-  stats_view_model =
-    remaining_text: ko.dependentObservable(->
-      count = collection_observable.collection().remainingCount(); return '' if not count
+  StatsViewModel = (todos) ->
+    @collection_observable = kb.collectionObservable(todos, @todos)
+    @remaining_text = ko.dependentObservable(=>
+      count = @collection_observable.collection().remainingCount(); return '' if not count
       return kb.locale_manager.get((if count == 1 then 'remaining_template_s' else 'remaining_template_pl'), count)
     )
-    clear_text: ko.dependentObservable(->
-      count = collection_observable.collection().doneCount(); return '' if not count
+    @clear_text = ko.dependentObservable(=>
+      count = @collection_observable.collection().doneCount(); return '' if not count
       return kb.locale_manager.get((if count == 1 then 'clear_template_s' else 'clear_template_pl'), count)
     )
-    onDestroyDone: -> model.destroy() for model in todos.allDone()
+    @onDestroyDone = -> model.destroy() for model in todos.allDone()
+    return this
+  stats_view_model = new StatsViewModel(todos)
   ko.applyBindings(stats_view_model, $('#todo-stats')[0])
 
   footer_view_model =
