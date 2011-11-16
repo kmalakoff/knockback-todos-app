@@ -149,11 +149,12 @@ $(document).ready(->
       @input_text('')
 
     @priority_color = ko.dependentObservable(-> return window.settings_view_model.default_priority_color())
-    @onSelectPriority = (priority) =>
-      event.stopPropagation() if event
-      @tooltip_visible(false)
-      settings_view_model.default_priority(ko.utils.unwrapObservable(priority))
     @tooltip_visible = ko.observable(false)
+    tooltip_visible = @tooltip_visible # closured for onSelectPriority
+    @onSelectPriority = (event) ->
+      event.stopPropagation()
+      tooltip_visible(false)
+      settings_view_model.default_priority(ko.utils.unwrapObservable(@priority))
     @onToggleTooltip = => @tooltip_visible(!@tooltip_visible())
     return this
   create_view_model = new CreateTodoViewModel()
@@ -176,11 +177,12 @@ $(document).ready(->
     )
 
     @priority_color = kb.observable(model, {key: 'priority', read: -> return settings_view_model.getColorByPriority(model.get('priority'))})
-    @onSelectPriority = (priority) =>
-      event.stopPropagation() if event
-      @tooltip_visible(false)
-      model.save({priority: ko.utils.unwrapObservable(priority)})
     @tooltip_visible = ko.observable(false)
+    tooltip_visible = @tooltip_visible # closured for onSelectPriority
+    @onSelectPriority = (event) ->
+      event.stopPropagation()
+      tooltip_visible(false)
+      model.save({priority: ko.utils.unwrapObservable(@priority)})
     @onToggleTooltip = => @tooltip_visible(!@tooltip_visible())
 
     @destroyTodo = => model.destroy()

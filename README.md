@@ -652,3 +652,17 @@ TodoViewModel = (model) ->
 ```
 
 **Note:** Knockback's observables are all ko.dependentObservables behind-the-scenes so the same rules apply to them as for any ko.dependentObservable
+
+### Template Syntax
+
+This is really small, but I've encountered it a few times. You have to be careful with curly braces inside your templates.
+
+"} }" is right:
+```html
+<div id="todo-list-sorting" class="selection codestyle" data-bind="template: {name: 'option-template', foreach: sorting_options, templateOptions: {selected_value: selected_value} }"></div>
+```
+
+"}}" is wrong (the "}}" is interpreted as template control flow by jquery-tmpl)
+```html
+<div id="todo-list-sorting" class="selection codestyle" data-bind="template: {name: 'option-template', foreach: sorting_options, templateOptions: {selected_value: selected_value}}"></div>
+```

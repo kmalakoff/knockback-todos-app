@@ -182,6 +182,7 @@ $(document).ready(function() {
   };
   ko.applyBindings(header_view_model, $('#todo-header')[0]);
   CreateTodoViewModel = function() {
+    var tooltip_visible;
     this.input_text = ko.observable('');
     this.input_placeholder_text = kb.observable(kb.locale_manager, {
       key: 'placeholder_create'
@@ -204,14 +205,13 @@ $(document).ready(function() {
     this.priority_color = ko.dependentObservable(function() {
       return window.settings_view_model.default_priority_color();
     });
-    this.onSelectPriority = __bind(function(priority) {
-      if (event) {
-        event.stopPropagation();
-      }
-      this.tooltip_visible(false);
-      return settings_view_model.default_priority(ko.utils.unwrapObservable(priority));
-    }, this);
     this.tooltip_visible = ko.observable(false);
+    tooltip_visible = this.tooltip_visible;
+    this.onSelectPriority = function(event) {
+      event.stopPropagation();
+      tooltip_visible(false);
+      return settings_view_model.default_priority(ko.utils.unwrapObservable(this.priority));
+    };
     this.onToggleTooltip = __bind(function() {
       return this.tooltip_visible(!this.tooltip_visible());
     }, this);
@@ -220,6 +220,7 @@ $(document).ready(function() {
   create_view_model = new CreateTodoViewModel();
   ko.applyBindings(create_view_model, $('#todo-create')[0]);
   TodoViewModel = function(model) {
+    var tooltip_visible;
     this.text = kb.observable(model, {
       key: 'text',
       write: (function(text) {
@@ -268,16 +269,15 @@ $(document).ready(function() {
         return settings_view_model.getColorByPriority(model.get('priority'));
       }
     });
-    this.onSelectPriority = __bind(function(priority) {
-      if (event) {
-        event.stopPropagation();
-      }
-      this.tooltip_visible(false);
-      return model.save({
-        priority: ko.utils.unwrapObservable(priority)
-      });
-    }, this);
     this.tooltip_visible = ko.observable(false);
+    tooltip_visible = this.tooltip_visible;
+    this.onSelectPriority = function(event) {
+      event.stopPropagation();
+      tooltip_visible(false);
+      return model.save({
+        priority: ko.utils.unwrapObservable(this.priority)
+      });
+    };
     this.onToggleTooltip = __bind(function() {
       return this.tooltip_visible(!this.tooltip_visible());
     }, this);

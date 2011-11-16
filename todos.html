@@ -138,7 +138,7 @@
     <script type="text/x-jquery-tmpl" id="priority-picker-template">
       <div class="priority-color-entry">
         <div class="priority-text" data-bind="text: priority_text"></div>
-        <div class='priority-color-swatch' data-bind="style: {background: priority_color}, click: function(){$item.onSelectPriority(priority)}"></div>
+        <div class='priority-color-swatch' data-bind="style: {background: priority_color}, click: $item.onSelectPriority"></div>
       </div>
     </script>
 

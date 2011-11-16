@@ -128,7 +128,6 @@ html {
     position: absolute;
     top: 2px;
     right: 0;
-    height: 45px;
   }
 
   #create-todo .priority-picker-tooltip {
