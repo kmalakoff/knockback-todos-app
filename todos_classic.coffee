@@ -33,7 +33,7 @@ $(document).ready(->
 
   class TodoList extends Backbone.Collection
     model: Todo
-    localStorage: new Store("kb_todos") # Save all of the todo items under the `"todos"` namespace.
+    localStorage: new Store("kb_todos") # Save all of the todo items under the `"kb_todos"` namespace.
     doneCount: -> @models.reduce(((prev,cur)-> return prev + if !!cur.get('done_at') then 1 else 0), 0)
     remainingCount: -> @models.length - @doneCount()
     allDone: -> return @filter((todo) -> return !!todo.get('done_at'))
