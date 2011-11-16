@@ -23,7 +23,7 @@ You can get Knockback.js:
 [1]: https://github.com/kmalakoff/knockback/raw/master/knockback.js
 [2]: https://github.com/kmalakoff/knockback/raw/master/knockback.min.js
 
-Here are the dependent libraries [Knockout.js][3], [Backbone.js][4], and [Underscore.js][5]. [Backbone.ModelRef.js][6] is optional.
+Here are the dependent libraries [Knockout.js][3], [Backbone.js][4], [Underscore.js][5], and [Backbone.ModelRef.js (optional)][6].
 
 [3]: http://knockoutjs.com/
 [4]: http://documentcloud.github.com/backbone/
@@ -37,24 +37,24 @@ Both Knockout and Backbone have their strengths and weaknesses, but together the
 
 ### Backbone
 
-+ ORM: Backbone's Model and Collection provide a great, extensible [ORM][7] layer for loading, saving, and manipulating model data.
-+ ORM: provides notifications like jQuery (bind/unbind, trigger) for model and collection changes.
-- Controllers/Views/Templates: provides minimal helpers (like events bindings) to make views dynamic, but requires significant boilerplate and customization for complex dynamic logic. Views end up being a type of [controller][8] in [MVC][9] and templates often need conditional logic embedded in them.
+* (+) ORM: Backbone's Model and Collection provide a great, extensible [ORM][7] layer for loading, saving, and manipulating model data.
+* (+) ORM: provides notifications like jQuery (bind/unbind, trigger) for model and collection changes.
+* (-) Controllers/Views/Templates: provides minimal helpers (like events bindings) to make views dynamic, but requires significant boilerplate and customization for complex dynamic logic. Views end up being a type of [controller][8] in [MVC][9] and templates often need conditional logic embedded in them.
 
 ### Knockout
 
-+ Controllers/Views/Templates: follows the [MVVM][10] pattern to more cleanly separate model, controller, and view logic.
-+ Controllers/Views/Templates: provides a mechanism to dynamically update templates incrementally.
-+ Controllers/Views/Templates: reduces/eliminates the need for embedded conditional logic in your templates making a cleaner separation between presentation logic and presentation attributes.
-+ Controllers/Views/Templates: simplifies jQuery logic by providing built-in or custom handlers bound in data-bind attributes.
-- ORM: Knockout provides some JSON serialization functionality, but it is quite limited compared to Backbone. In addition, it view model-focussed instead of model-focussed meaning it mixes model manipulation with display logic manipulation and when you start having multiple view models per model, manual client-side synchronization is required.
+* (+) Controllers/Views/Templates: follows the [MVVM][10] pattern to more cleanly separate model, controller, and view logic.
+* (+) Controllers/Views/Templates: provides a mechanism to dynamically update templates incrementally.
+* (+) Controllers/Views/Templates: reduces/eliminates the need for embedded conditional logic in your templates making a cleaner separation between presentation logic and presentation attributes.
+* (+) Controllers/Views/Templates: simplifies jQuery logic by providing built-in or custom handlers bound in data-bind attributes.
+* (-) ORM: Knockout provides some JSON serialization functionality, but it is quite limited compared to Backbone. In addition, it view model-focussed instead of model-focussed meaning it mixes model manipulation with display logic manipulation and when you start having multiple view models per model, manual client-side synchronization is required.
 
 ### Knockback
 
-+ ORM and Controllers/Views/Templates: bridges the ORM of Backbone with the MVVM of Knockout so you can have the best of both worlds.
-+ ORM and Controllers/Views/Templates: helps separate your MVC model logic from your MVVM controller/view/template logic.
-+ ORM and Controllers/Views/Templates: automates collection model synchronization with your rendering.
-+ Localization: provides a convention using a locale manager and Backbone events to easily localize your views, to dynamically change locales, and to customize the presentation of your date/times, compound/dependent attributes, etc.
+* (+) ORM and Controllers/Views/Templates: bridges the ORM of Backbone with the MVVM of Knockout so you can have the best of both worlds.
+* (+) ORM and Controllers/Views/Templates: helps separate your MVC model logic from your MVVM controller/view/template logic.
+* (+) ORM and Controllers/Views/Templates: automates collection model synchronization with your rendering.
+* (+) Localization: provides a convention using a locale manager and Backbone events to easily localize your views, to dynamically change locales, and to customize the presentation of your date/times, compound/dependent attributes, etc.
 
 There is much more that can be compared and debated..."Google the Internets" if you want more!
 
@@ -233,6 +233,7 @@ ko.applyBindings(todo_list_view_model, $('#todo-list')[0])
 To render nested templates from the html, you need to use something like the following...
 
 For a template with externally supplied view models (using ko.applyBindings):
+
 ```html
 <div id="todo-list" data-bind="template: 'list-template'"></div>
 ```
@@ -255,7 +256,6 @@ if _.isUndefined(ko.templateSources)
     view_model['$data'] = view_model
     _ko_native_apply_bindings(view_model, element)
 ```
-
 ```html
 <div data-bind="template: {name: 'priority-swatch-picker-template', data: $data}"></div>
 ```
@@ -270,6 +270,7 @@ A kb.Observable is used to observe a model attribute and update itself or notify
 4. If the attribute doesn't exist, if the setToDefault function is called, or if using a Backbone.ModelRef which is not yet loaded, it returns the default value property "default: 'foo'"
 
 Some examples:
+
 ```coffeescript
 CreateTodoViewModel = ->
   ...
@@ -296,6 +297,7 @@ A kb.CollectionObservable has three main types of functionality:
 In this step, we only use the first two types.
 
 In the list view model, we need to render the view models per todo so we use type 2, lifecycle management.
+
 ```coffeescript
 TodoListViewModel = (todos) ->
   @todos = ko.observableArray([])
@@ -304,6 +306,7 @@ TodoListViewModel = (todos) ->
 ```
 
 In the stats view model (displaying remaining and allowing clearing), we need to know when the collection or its models are modified.
+
 ```coffeescript
 # Stats Footer
 StatsViewModel = (todos) ->
@@ -314,8 +317,7 @@ StatsViewModel = (todos) ->
   )
 ```
 
-* **Note:** even if we can easily access the todos directly, we use "@collection_observable.collection()" to create a dependency on the collection observable so we get notified when it changes. See the "Knockout Dependencies" section for an explanation.
-
+**Note:** even if we can easily access the todos directly, we use "@collection_observable.collection()" to create a dependency on the collection observable so we get notified when it changes. See the "Knockout Dependencies" section for an explanation.
 
 Todos - Knockback Complete
 --------------------------
@@ -325,6 +327,7 @@ Todos - Knockback Complete
 By using a date localizer and a dependent observable, a custom localized message can be added to each todo.
 
 In the view model, localize the date/time in "done_at" and in "done_text", combine the date/time string with a localized label 'label_completed'.
+
 ```coffeescript
 TodoViewModel = (model) ->
   ...
@@ -337,6 +340,7 @@ TodoViewModel = (model) ->
 **Note:** see the "Knockout Dependencies" section for an explanation of the "# ensure there is a dependency" comment.
 
 Add the text to the item template:
+
 ```html
 <script type="text/x-jquery-tmpl" id="item-template">
   <li>
@@ -352,6 +356,7 @@ Add the text to the item template:
 Knockback's kb.CollectionObservable allows you to either use the Backbone.Collection's comparator-based sorting or to put the sorting under the control of the kb.CollectionObservable.
 
 kb.CollectionObservable sorting API allows sorting to be specified at creation like:
+
 ```coffeescript
 collection_observable = kb.collectionObservable(collection, view_models_array, {
   view_model:         TodoViewModel
@@ -360,14 +365,17 @@ collection_observable = kb.collectionObservable(collection, view_models_array, {
 ```
 
 or dynamically like:
+
 ```coffeescript
 collection_observable.sortAttribute('text')
 collection_observable.sortedIndex((models, model)-> return _.sortedIndex(models, model, (test) -> test.get('created_at').valueOf()))
 collection_observable.sortedIndex((models, model)-> return _.sortedIndex(models, model, (test) -> settings_view_model.priorityToRank(test.get('priority'))))
 ```
+
 * for 'created_at', we convert it to a sortable integer, and for 'priority', we convert it to a sortable number.
 
 We provide a standardized option view model that can be used with the "option-template" template:
+
 ```coffeescript
 SortingOptionViewModel = (string_id) ->
   @id = string_id
@@ -375,11 +383,13 @@ SortingOptionViewModel = (string_id) ->
   @option_group = 'list_sort'
   return this
 ```
+
 * **id**: used in the callback to update the selection
 * **label**: a label that is dynamically localized by observing an attribute in the kb.locale_manager
 * **option_group**: used by the radio button 'name' attribute for grouping them together
 
 We upgrade the list view model for sorting:
+
 ```coffeescript
 TodoListViewModel = (todos) ->
   ...
@@ -399,6 +409,7 @@ TodoListViewModel = (todos) ->
   @collection_observable = kb.collectionObservable(todos, @todos, {view_model: TodoViewModel, sort_attribute: 'text'})
   @sort_visible = ko.dependentObservable(=> @collection_observable().length)
 ```
+
 * **sort_mode**: stores the current mode
 * **sort_options**: provides the per option information to the template
 * **selected_value**: provides the selection to the template and updates the application state when it changes
@@ -406,6 +417,7 @@ TodoListViewModel = (todos) ->
 * **sort_visible**: tells the template whether to hide/show the list sorting interface
 
 The sorting html added to the list template:
+
 ```html
 <script type="text/x-jquery-tmpl" id="list-template">
     ...
@@ -415,6 +427,7 @@ The sorting html added to the list template:
 ```
 
 which renders the following group of radio buttons:
+
 ```html
 <script type="text/x-jquery-tmpl" id="option-template">
   <div class="option"><input type="radio" data-bind="attr: {id: id, name: option_group}, value: id, checked: $item.selected_value"><label data-bind="attr: {for: id}, text: label"></label></div>
@@ -424,6 +437,7 @@ which renders the following group of radio buttons:
 ### Priorities
 
 Priority settings are stored in a non-specialized Backbone model with the id being the priority identifier and assuming the color is stored in an attribute named color, and loaded into a collection:
+
 ```coffeescript
 class PrioritiesSettingList extends Backbone.Collection
   localStorage: new Store("kb_priorities") # Save all of the todo items under the `"kb_priorities"` namespace.
@@ -431,6 +445,7 @@ priorities = new PrioritiesSettingList()
 ```
 
 To display the localized name of the priority and to render its color, the model is mapped onto a view model as follows:
+
 ```coffeescript
 PrioritySettingsViewModel = (model) ->
   @priority = model.get('id')
@@ -440,6 +455,7 @@ PrioritySettingsViewModel = (model) ->
 ```
 
 The tricky part is to set up the dependencies (see below section "Knockout Dependencies") for the settings display, the tooltip, and the model priority swatch. To do this, I wrote a small helper method "createColorsDependency" to manually create dependencies on all of the view model properties (which are themselves dependent on the model's 'color' attribute through the PrioritySettingsViewModel):
+
 ```coffeescript
 SettingsViewModel = (priority_settings) ->
   @priority_settings = ko.observableArray(_.map(priority_settings, (model)-> return new PrioritySettingsViewModel(model)))
@@ -451,6 +467,7 @@ SettingsViewModel = (priority_settings) ->
 ```
 
 The priority color settings are rendered as follows:
+
 ```html
 <script type="text/x-jquery-tmpl" id="header-template">
     ...
@@ -459,6 +476,7 @@ The priority color settings are rendered as follows:
 </script>
 ```
 using this template:
+
 ```html
 <script type="text/x-jquery-tmpl" id="priority-setting-template">
   <div class="priority-color-entry">
@@ -469,6 +487,8 @@ using this template:
 ```
 
 The tooltipped-priority is rendered in the create section template like:
+
+```html
 <script type="text/x-jquery-tmpl" id="create-template">
   <div class="content">
       ...
@@ -476,8 +496,10 @@ The tooltipped-priority is rendered in the create section template like:
       ...
   </div>
 </script>
+```
 
 The tooltipped-priority is rendered in the todo template like:
+
 ```html
 <script type="text/x-jquery-tmpl" id="item-template">
   <li>
@@ -486,9 +508,10 @@ The tooltipped-priority is rendered in the todo template like:
         ...
   </li>
 </script>
-```...
+```
 
 using this template for the color swatch:
+
 ```html
 <script type="text/x-jquery-tmpl" id="priority-swatch-picker-template">
   <div class="priority-color-swatch todo create" data-bind="style: {background: priority_color}, click: onToggleTooltip">
@@ -498,7 +521,9 @@ using this template for the color swatch:
   </div>
 </script>
 ```
+
 and this template for each available color in the tool tip:
+
 ```html
 <script type="text/x-jquery-tmpl" id="priority-picker-template">
   <div class="priority-color-entry">
@@ -509,6 +534,7 @@ and this template for each available color in the tool tip:
 ```
 
 Finally, for the sorting, I wrote a small helper to turn the priority identifier into a number that could be used by Underscore's sortedIndex:
+
 ```coffeescript
 SettingsViewModel = (priority_settings) ->
   ...
@@ -537,11 +563,13 @@ Knockback does not provide a locale manager (although there is a sample with thi
 ```
 
 Register your custom locale manager like:
+
 ```coffeescript
 kb.locale_manager = new MyLocaleManager()
 ```
 
 Also, if you want to perform some specialized formatting above and beyond a string lookup, you can provide custom localizer classes derived from kb.LocalizedObservable:
+
 ```coffeescript
 class LongDateLocalizer extends kb.LocalizedObservable
   constructor: -> return super
@@ -556,6 +584,7 @@ class LongDateLocalizer extends kb.LocalizedObservable
 As for the "Todos - Knockout Complete" demo...
 
 You can simply watch an attribute on the locale manager as follows:
+
 ```coffeescript
 CreateTodoViewModel = ->
   ...
@@ -563,6 +592,7 @@ CreateTodoViewModel = ->
 ```
 
 Or model attributes can be localized automatically when your locale manager triggers a change:
+
 ```coffeescript
 TodoViewModel = (model) ->
   ...
@@ -574,6 +604,7 @@ TodoViewModel = (model) ->
 By using Knockback with [Backbone.ModelRef][18], you can start rendering your views before the models are loaded.
 
 As demonstration, you can see that the colors arrive a little after the rendering. It is achieved by passing model references instead of models to the settings view model:
+
 ```coffeescript
 SettingsViewModel = (priority_settings) ->
   @priority_settings = ko.observableArray(_.map(priority_settings, (model)-> return new PrioritySettingsViewModel(model)))
@@ -586,6 +617,7 @@ window.settings_view_model = new SettingsViewModel([
 ```
 
 and then lazy fetching them (which creates them if they don't exist):
+
 ```coffeescript
 # Load the prioties late to show the dynamic nature of Knockback with Backbone.ModelRef
 _.delay((->
@@ -629,6 +661,7 @@ class MvView
 The big gotcha with Knockout is its implicit dependencies for ko.dependentObservables. Sometimes you need to include an unnecessary call to a dependent observable within you read function just to register dependencies.
 
 In this case, the displayed text "remaining_text" needs to be updated with the locale_changes, but because the string id is dynamic and it inserts the count number, a manual locale dependency is used.
+
 ```coffeescript
 StatsViewModel = (todos) ->
   kb.locale_change_observable = kb.triggeredObservable(kb.locale_manager, 'change') # use to register a localization dependency
@@ -641,6 +674,7 @@ StatsViewModel = (todos) ->
 ```
 
 In this case, "done_at" changes when the the "done_at" attribute changes or locale changes (through LongDateLocalizer). So "done_text" will be relocalized correctly.
+
 ```coffeescript
 TodoViewModel = (model) ->
   ...
@@ -658,11 +692,13 @@ TodoViewModel = (model) ->
 This is really small, but I've encountered it a few times. You have to be careful with curly braces inside your templates.
 
 "} }" is right:
+
 ```html
 <div id="todo-list-sorting" class="selection codestyle" data-bind="template: {name: 'option-template', foreach: sorting_options, templateOptions: {selected_value: selected_value} }"></div>
 ```
 
 "}}" is wrong (the "}}" is interpreted as template control flow by jquery-tmpl)
+
 ```html
 <div id="todo-list-sorting" class="selection codestyle" data-bind="template: {name: 'option-template', foreach: sorting_options, templateOptions: {selected_value: selected_value}}"></div>
 ```
