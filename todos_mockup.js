@@ -136,7 +136,7 @@ $(document).ready(function() {
       this.todos.push(new TodoViewModel(model));
     }
     this.sort_visible = this.todos.length > 0;
-    this.sorting_options = [new SortingOptionViewModel('label_name'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_priority')];
+    this.sorting_options = [new SortingOptionViewModel('label_text'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_priority')];
     return true;
   };
   todo_list_view_model = new TodoListViewModel(todos.models);

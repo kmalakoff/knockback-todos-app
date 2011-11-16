@@ -45,11 +45,6 @@ $(document).ready(function() {
         done_at: done ? new Date() : null
       });
     };
-    Todo.prototype.destroyDone = function(done) {
-      return this.save({
-        done_at: done ? new Date() : null
-      });
-    };
     return Todo;
   })();
   TodoList = (function() {

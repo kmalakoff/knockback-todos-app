@@ -29,7 +29,6 @@ $(document).ready(->
       super
     isDone: -> !!@get('done_at')
     done: (done) -> @save({done_at: if done then new Date() else null})
-    destroyDone: (done) -> @save({done_at: if done then new Date() else null})
 
   class TodoList extends Backbone.Collection
     model: Todo

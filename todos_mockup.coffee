@@ -116,7 +116,7 @@ $(document).ready(->
     @todos = []
     @todos.push(new TodoViewModel(model)) for model in todos
     @sort_visible = (@todos.length>0)
-    @sorting_options = [new SortingOptionViewModel('label_name'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_priority')]
+    @sorting_options = [new SortingOptionViewModel('label_text'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_priority')]
     return true
   todo_list_view_model = new TodoListViewModel(todos.models)
   $("#todo-list").append($("#list-template").tmpl(todo_list_view_model))

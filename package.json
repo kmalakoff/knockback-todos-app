@@ -1,6 +1,6 @@
 {
   "name"          : "knockback-todos",
-  "description"   : "Knockback-Todos.js ",
+  "description"   : "Knockback-Todos: the obligatory todo app for Knockback.js",
   "homepage"      : "https://github.com/kmalakoff/knockback-todos",
   "keywords"      : ["backbone", "knockout", "javascript", "coffeescript", "browser"],
   "author"        : "Kevin Malakoff <xmann.intl@gmail.com>, Pier Paolo Ramon (https://github.com/yuchi)",

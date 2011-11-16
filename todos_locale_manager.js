@@ -90,7 +90,7 @@ kb.locale_manager = new LocaleManager(null, {
   'en': {
     placeholder_create: 'What needs to be done?',
     tooltip_create: 'Press Enter to save this task',
-    label_name: 'Name',
+    label_text: 'Name',
     label_created: 'Created',
     label_priority: 'Priority',
     label_completed: 'Completed',
@@ -106,7 +106,7 @@ kb.locale_manager = new LocaleManager(null, {
   'fr-FR': {
     placeholder_create: 'Que faire?',
     tooltip_create: 'Appuyez sur Enter pour enregistrer cette tâche',
-    label_name: 'Nom',
+    label_text: 'Nom',
     label_created: 'Création',
     label_priority: 'Priorité',
     label_completed: 'Complété',
@@ -122,7 +122,7 @@ kb.locale_manager = new LocaleManager(null, {
   'it-IT': {
     placeholder_create: 'Cosa fare?',
     tooltip_create: 'Premere Enter per salvare questo compito',
-    label_name: 'Nome',
+    label_text: 'Nome',
     label_created: 'Creato',
     label_priority: 'Priorità',
     label_completed: 'Completato',

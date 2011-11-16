@@ -162,11 +162,6 @@ $(document).ready(function() {
         done_at: done ? new Date() : null
       });
     };
-    Todo.prototype.destroyDone = function(done) {
-      return this.save({
-        done_at: done ? new Date() : null
-      });
-    };
     return Todo;
   })();
   TodoList = (function() {
@@ -306,7 +301,8 @@ $(document).ready(function() {
   };
   TodoListViewModel = function(todos) {
     this.todos = ko.observableArray([]);
-    this.sort_mode = ko.observable('label_name');
+    this.sort_mode = ko.observable('label_text');
+    this.sorting_options = [new SortingOptionViewModel('label_text'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_priority')];
     this.selected_value = ko.dependentObservable({
       read: __bind(function() {
         return this.sort_mode();
@@ -314,20 +310,16 @@ $(document).ready(function() {
       write: __bind(function(new_mode) {
         this.sort_mode(new_mode);
         switch (new_mode) {
-          case 'label_name':
-            return this.collection_observable.sorting(function(models, model) {
-              return _.sortedIndex(models, model, function(test) {
-                return test.get('text');
-              });
-            });
+          case 'label_text':
+            return this.collection_observable.sortAttribute('text');
           case 'label_created':
-            return this.collection_observable.sorting(function(models, model) {
+            return this.collection_observable.sortedIndex(function(models, model) {
               return _.sortedIndex(models, model, function(test) {
                 return test.get('created_at').valueOf();
               });
             });
           case 'label_priority':
-            return this.collection_observable.sorting(function(models, model) {
+            return this.collection_observable.sortedIndex(function(models, model) {
               return _.sortedIndex(models, model, function(test) {
                 return settings_view_model.priorityToRank(test.get('priority'));
               });
@@ -337,12 +329,12 @@ $(document).ready(function() {
       owner: this
     });
     this.collection_observable = kb.collectionObservable(todos, this.todos, {
-      view_model: TodoViewModel
+      view_model: TodoViewModel,
+      sort_attribute: 'text'
     });
     this.sort_visible = ko.dependentObservable(__bind(function() {
       return this.collection_observable().length;
     }, this));
-    this.sorting_options = [new SortingOptionViewModel('label_name'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_priority')];
     return this;
   };
   todo_list_view_model = new TodoListViewModel(todos);

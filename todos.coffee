@@ -118,7 +118,6 @@ $(document).ready(->
       super
     isDone: -> !!@get('done_at')
     done: (done) -> @save({done_at: if done then new Date() else null})
-    destroyDone: (done) -> @save({done_at: if done then new Date() else null})
 
   class TodoList extends Backbone.Collection
     model: Todo
@@ -189,20 +188,21 @@ $(document).ready(->
 
   TodoListViewModel = (todos) ->
     @todos = ko.observableArray([])
-    @sort_mode = ko.observable('label_name')  # used to create a dependency
+    @sort_mode = ko.observable('label_text')  # used to create a dependency
+    @sorting_options = [new SortingOptionViewModel('label_text'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_priority')]
     @selected_value = ko.dependentObservable(
       read: => return @sort_mode()
       write: (new_mode) =>
         @sort_mode(new_mode)
+        # update the collection observable's sorting function
         switch new_mode
-          when 'label_name' then @collection_observable.sorting((models, model)-> return _.sortedIndex(models, model, (test) -> test.get('text')))
-          when 'label_created' then @collection_observable.sorting((models, model)-> return _.sortedIndex(models, model, (test) -> test.get('created_at').valueOf()))
-          when 'label_priority' then @collection_observable.sorting((models, model)-> return _.sortedIndex(models, model, (test) -> settings_view_model.priorityToRank(test.get('priority'))))
+          when 'label_text' then @collection_observable.sortAttribute('text')
+          when 'label_created' then @collection_observable.sortedIndex((models, model)-> return _.sortedIndex(models, model, (test) -> test.get('created_at').valueOf()))
+          when 'label_priority' then @collection_observable.sortedIndex((models, model)-> return _.sortedIndex(models, model, (test) -> settings_view_model.priorityToRank(test.get('priority'))))
       owner: this
     )
-    @collection_observable = kb.collectionObservable(todos, @todos, {view_model: TodoViewModel})
+    @collection_observable = kb.collectionObservable(todos, @todos, {view_model: TodoViewModel, sort_attribute: 'text'})
     @sort_visible = ko.dependentObservable(=> @collection_observable().length)
-    @sorting_options = [new SortingOptionViewModel('label_name'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_priority')]
     return this
   todo_list_view_model = new TodoListViewModel(todos)
   ko.applyBindings(todo_list_view_model, $('#todo-list')[0])
