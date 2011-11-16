@@ -14,7 +14,7 @@ var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, par
   return child;
 }, __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 $(document).ready(function() {
-  var CreateTodoViewModel, LanguageOptionViewModel, LanguagesViewModel, PrioritiesSetting, PrioritiesSettingList, PrioritySettingsViewModel, SettingsViewModel, SortingOptionViewModel, StatsViewModel, Todo, TodoList, TodoListViewModel, TodoViewModel, create_view_model, footer_view_model, header_view_model, languages_view_model, priorities, stats_view_model, todo_list_view_model, todos, _ko_native_apply_bindings;
+  var CreateTodoViewModel, LanguageOptionViewModel, LanguagesViewModel, PrioritiesSettingList, PrioritySettingsViewModel, SettingsViewModel, SortingOptionViewModel, StatsViewModel, Todo, TodoList, TodoListViewModel, TodoViewModel, create_view_model, footer_view_model, header_view_model, languages_view_model, priorities, stats_view_model, todo_list_view_model, todos, _ko_native_apply_bindings;
   kb.locale_manager.setLocale('en');
   kb.locale_change_observable = kb.triggeredObservable(kb.locale_manager, 'change');
   ko.bindingHandlers.dblclick = {
@@ -29,19 +29,11 @@ $(document).ready(function() {
       return _ko_native_apply_bindings(view_model, element);
     };
   }
-  PrioritiesSetting = (function() {
-    __extends(PrioritiesSetting, Backbone.Model);
-    function PrioritiesSetting() {
-      PrioritiesSetting.__super__.constructor.apply(this, arguments);
-    }
-    return PrioritiesSetting;
-  })();
   PrioritiesSettingList = (function() {
     __extends(PrioritiesSettingList, Backbone.Collection);
     function PrioritiesSettingList() {
       PrioritiesSettingList.__super__.constructor.apply(this, arguments);
     }
-    PrioritiesSettingList.prototype.model = PrioritiesSetting;
     PrioritiesSettingList.prototype.localStorage = new Store("kb_priorities");
     return PrioritiesSettingList;
   })();
@@ -72,13 +64,10 @@ $(document).ready(function() {
   languages_view_model = new LanguagesViewModel(kb.locale_manager.getLocales());
   ko.applyBindings(languages_view_model, $('#todo-languages')[0]);
   PrioritySettingsViewModel = function(model) {
-    this.priority = kb.observable(model, {
-      key: 'id'
+    this.priority = model.get('id');
+    this.priority_text = kb.observable(kb.locale_manager, {
+      key: this.priority
     });
-    this.priority_text = ko.dependentObservable(__bind(function() {
-      kb.locale_change_observable();
-      return kb.locale_manager.get(this.priority());
-    }, this));
     this.priority_color = kb.observable(model, {
       key: 'color'
     });
@@ -94,7 +83,7 @@ $(document).ready(function() {
       _ref = this.priority_settings();
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         view_model = _ref[_i];
-        if (view_model.priority() === priority) {
+        if (view_model.priority === priority) {
           return view_model.priority_color();
         }
       }
@@ -154,10 +143,10 @@ $(document).ready(function() {
       }
       return Todo.__super__.set.apply(this, arguments);
     };
-    Todo.prototype.isDone = function() {
-      return !!this.get('done_at');
-    };
     Todo.prototype.done = function(done) {
+      if (arguments.length === 0) {
+        return !!this.get('done_at');
+      }
       return this.save({
         done_at: done ? new Date() : null
       });
@@ -254,7 +243,7 @@ $(document).ready(function() {
     this.done = kb.observable(model, {
       key: 'done_at',
       read: (function() {
-        return model.isDone();
+        return model.done();
       }),
       write: (function(done) {
         return model.done(done);
@@ -262,9 +251,7 @@ $(document).ready(function() {
     }, this);
     this.done_at = kb.observable(model, {
       key: 'done_at',
-      localizer: function(value) {
-        return new LongDateLocalizer(value);
-      }
+      localizer: LongDateLocalizer
     });
     this.done_text = ko.dependentObservable(__bind(function() {
       var done_at;

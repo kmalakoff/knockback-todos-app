@@ -9,11 +9,11 @@
 $(document).ready(->
 
   ###################################
-  # Knockback-powered enhancements - START
+  # Knockback-powered enhancements - BEGIN
   ###################################
 
   # set the language
-  kb.locale_manager.setLocale('it-IT')
+  kb.locale_manager.setLocale('en')
 
   ###################################
   # Model: http://en.wikipedia.org/wiki/Model_view_controller
@@ -55,8 +55,9 @@ $(document).ready(->
     @getColorByPriority = (priority) =>
       (return view_model.priority_color if view_model.priority == priority) for view_model in @priority_settings
       return ''
-    @default_priority = @priority_settings[1]
+    @default_priority = @priority_settings[1].priority
     @default_priority_color = @getColorByPriority(@default_priority)
+    return this
   window.settings_view_model = new SettingsViewModel(priorities.models)
 
   # Content
@@ -100,7 +101,7 @@ $(document).ready(->
   CreateTodoViewModel = ->
     @input_placeholder_text = kb.locale_manager.get('placeholder_create')
     @input_tooltip_text = kb.locale_manager.get('tooltip_create')
-    @priority_color = settings_view_model.default_setting.priority_color
+    @priority_color = settings_view_model.default_priority_color
     return this
   create_view_model = new CreateTodoViewModel()
   $('#todo-create').append($("#create-template").tmpl(create_view_model))

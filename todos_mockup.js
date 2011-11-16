@@ -8,7 +8,7 @@
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 $(document).ready(function() {
   var $all_priority_pickers, CreateTodoViewModel, LanguageOptionViewModel, PrioritiesSetting, PrioritySettingsViewModel, SettingsViewModel, SortingOptionViewModel, StatsViewModel, Todo, TodoListViewModel, TodoViewModel, create_view_model, footer_view_model, header_view_model, locale, priorities, stats_view_model, todo_list_view_model, todos, _i, _len, _ref;
-  kb.locale_manager.setLocale('it-IT');
+  kb.locale_manager.setLocale('en');
   PrioritiesSetting = (function() {
     function PrioritiesSetting(attributes) {
       this.attributes = attributes;
@@ -70,8 +70,9 @@ $(document).ready(function() {
       }
       return '';
     }, this);
-    this.default_priority = this.priority_settings[1];
-    return this.default_priority_color = this.getColorByPriority(this.default_priority);
+    this.default_priority = this.priority_settings[1].priority;
+    this.default_priority_color = this.getColorByPriority(this.default_priority);
+    return this;
   };
   window.settings_view_model = new SettingsViewModel(priorities.models);
   SortingOptionViewModel = function(string_id) {
@@ -114,7 +115,7 @@ $(document).ready(function() {
   CreateTodoViewModel = function() {
     this.input_placeholder_text = kb.locale_manager.get('placeholder_create');
     this.input_tooltip_text = kb.locale_manager.get('tooltip_create');
-    this.priority_color = settings_view_model.default_setting.priority_color;
+    this.priority_color = settings_view_model.default_priority_color;
     return this;
   };
   create_view_model = new CreateTodoViewModel();

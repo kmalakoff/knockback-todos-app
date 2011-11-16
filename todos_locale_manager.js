@@ -136,22 +136,20 @@ kb.locale_manager = new LocaleManager(null, {
     clear_template_pl: 'Rimuovere {0} elementi completato'
   }
 });
-LongDateLocalizer = (function() {
-  __extends(LongDateLocalizer, kb.LocalizedObservable);
-  function LongDateLocalizer(value, options, view_model) {
-    LongDateLocalizer.__super__.constructor.apply(this, arguments);
-    return kb.wrappedObservable(this);
-  }
-  LongDateLocalizer.prototype.read = function(value) {
-    return Globalize.format(value, Globalize.cultures[kb.locale_manager.getLocale()].calendars.standard.patterns.f, kb.locale_manager.getLocale());
-  };
-  LongDateLocalizer.prototype.write = function(localized_string, value, observable) {
-    var new_value;
-    new_value = Globalize.parseDate(localized_string, Globalize.cultures[kb.locale_manager.getLocale()].calendars.standard.patterns.d, kb.locale_manager.getLocale());
-    if (!(new_value && _.isDate(new_value))) {
-      return observable.resetToCurrent();
+if (!!window.Backbone) {
+  LongDateLocalizer = (function() {
+    __extends(LongDateLocalizer, kb.LocalizedObservable);
+    function LongDateLocalizer() {
+      return LongDateLocalizer.__super__.constructor.apply(this, arguments);
     }
-    return value.setTime(new_value.valueOf());
-  };
-  return LongDateLocalizer;
-})();
+    LongDateLocalizer.prototype.read = function(value) {
+      return Globalize.format(value, Globalize.cultures[kb.locale_manager.getLocale()].calendars.standard.patterns.f, kb.locale_manager.getLocale());
+    };
+    LongDateLocalizer.prototype.write = function(localized_string, value, observable) {
+      var new_value;
+      new_value = Globalize.parseDate(localized_string, Globalize.cultures[kb.locale_manager.getLocale()].calendars.standard.patterns.d, kb.locale_manager.getLocale());
+      return value.setTime(new_value.valueOf());
+    };
+    return LongDateLocalizer;
+  })();
+}

@@ -27,8 +27,9 @@ $(document).ready(->
     set: (attrs) ->
       attrs['done_at'] = new Date(attrs['done_at']) if attrs and attrs.hasOwnProperty('done_at') and _.isString(attrs['done_at'])
       super
-    isDone: -> !!@get('done_at')
-    done: (done) -> @save({done_at: if done then new Date() else null})
+    done: (done) ->
+      return !!@get('done_at') if arguments.length == 0
+      @save({done_at: if done then new Date() else null})
 
   class TodoList extends Backbone.Collection
     model: Todo
@@ -69,7 +70,7 @@ $(document).ready(->
     @onEnterEndEdit = (event) => @toggleEditMode() if (event.keyCode == 13)
 
     @created_at = model.get('created_at')
-    @done = kb.observable(model, {key: 'done_at', read: (-> return model.isDone()), write: ((done) -> model.done(done)) }, this)
+    @done = kb.observable(model, {key: 'done_at', read: (-> return model.done()), write: ((done) -> model.done(done)) }, this)
     @destroyTodo = => model.destroy()
     return this
 
@@ -82,7 +83,7 @@ $(document).ready(->
 
   # Stats Footer
   StatsViewModel = (todos) ->
-    @collection_observable = kb.collectionObservable(todos, @todos)
+    @collection_observable = kb.collectionObservable(todos)
     @remaining_text = ko.dependentObservable(=>
       count = @collection_observable.collection().remainingCount(); return '' if not count
       return kb.locale_manager.get((if count == 1 then 'remaining_template_s' else 'remaining_template_pl'), count)

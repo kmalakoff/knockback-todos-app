@@ -98,12 +98,11 @@ kb.locale_manager = new LocaleManager(null, {
 #######################################
 # Date localizer
 #######################################
-class LongDateLocalizer extends kb.LocalizedObservable
-  constructor: (value, options, view_model) ->
-    super; return kb.wrappedObservable(this)
-  read: (value) ->
-    return Globalize.format(value, Globalize.cultures[kb.locale_manager.getLocale()].calendars.standard.patterns.f, kb.locale_manager.getLocale())
-  write: (localized_string, value, observable) ->
-    new_value = Globalize.parseDate(localized_string, Globalize.cultures[kb.locale_manager.getLocale()].calendars.standard.patterns.d, kb.locale_manager.getLocale())
-    return observable.resetToCurrent() if not (new_value and _.isDate(new_value)) # reset if invalid
-    value.setTime(new_value.valueOf())
+if !!window.Backbone
+  class LongDateLocalizer extends kb.LocalizedObservable
+    constructor: -> return super
+    read: (value) ->
+      return Globalize.format(value, Globalize.cultures[kb.locale_manager.getLocale()].calendars.standard.patterns.f, kb.locale_manager.getLocale())
+    write: (localized_string, value, observable) ->
+      new_value = Globalize.parseDate(localized_string, Globalize.cultures[kb.locale_manager.getLocale()].calendars.standard.patterns.d, kb.locale_manager.getLocale())
+      value.setTime(new_value.valueOf())

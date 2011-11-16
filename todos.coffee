@@ -9,7 +9,7 @@
 $(document).ready(->
 
   ###################################
-  # Knockback-powered enhancements - START
+  # Knockback-powered enhancements - BEGIN
   ###################################
 
   ###################################
@@ -36,10 +36,7 @@ $(document).ready(->
   ###################################
 
   # Settings
-  class PrioritiesSetting extends Backbone.Model
-
   class PrioritiesSettingList extends Backbone.Collection
-    model: PrioritiesSetting
     localStorage: new Store("kb_priorities") # Save all of the todo items under the `"kb_priorities"` namespace.
   priorities = new PrioritiesSettingList()
 
@@ -68,11 +65,8 @@ $(document).ready(->
 
   # Settings
   PrioritySettingsViewModel = (model) ->
-    @priority = kb.observable(model, {key: 'id'})
-    @priority_text = ko.dependentObservable(=>
-      kb.locale_change_observable() # use to register a localization dependency -> kb only works with fixed keys
-      return kb.locale_manager.get(@priority())
-    )
+    @priority = model.get('id')
+    @priority_text = kb.observable(kb.locale_manager, {key: @priority})
     @priority_color = kb.observable(model, {key: 'color'})
     return this
 
@@ -80,7 +74,7 @@ $(document).ready(->
     @priority_settings = ko.observableArray(_.map(priority_settings, (model)-> return new PrioritySettingsViewModel(model)))
     @getColorByPriority = (priority) ->
       @createColorsDependency()
-      (return view_model.priority_color() if view_model.priority() == priority) for view_model in @priority_settings()
+      (return view_model.priority_color() if view_model.priority == priority) for view_model in @priority_settings()
       return ''
     @createColorsDependency = => view_model.priority_color() for view_model in @priority_settings()
     @default_priority = ko.observable('medium')
@@ -91,7 +85,11 @@ $(document).ready(->
         when 'medium' then return 1
         when 'low' then return 2
     return this
-  window.settings_view_model = new SettingsViewModel([new Backbone.ModelRef(priorities, 'high'), new Backbone.ModelRef(priorities, 'medium'), new Backbone.ModelRef(priorities, 'low')])
+  window.settings_view_model = new SettingsViewModel([
+    new Backbone.ModelRef(priorities, 'high'),
+    new Backbone.ModelRef(priorities, 'medium'),
+    new Backbone.ModelRef(priorities, 'low')
+  ])
 
   # Content
   SortingOptionViewModel = (string_id) ->
@@ -113,11 +111,13 @@ $(document).ready(->
   class Todo extends Backbone.Model
     defaults: -> return {created_at: new Date()}
     set: (attrs) ->
+      # note: this is to convert between Dates as JSON strings and Date objects. To automate this, take a look at Backbone.Articulation: https://github.com/kmalakoff/backbone-articulation
       attrs['done_at'] = new Date(attrs['done_at']) if attrs and attrs.hasOwnProperty('done_at') and _.isString(attrs['done_at'])
       attrs['created_at'] = new Date(attrs['created_at']) if attrs and attrs.hasOwnProperty('created_at') and _.isString(attrs['created_at'])
       super
-    isDone: -> !!@get('done_at')
-    done: (done) -> @save({done_at: if done then new Date() else null})
+    done: (done) ->
+      return !!@get('done_at') if arguments.length == 0
+      @save({done_at: if done then new Date() else null})
 
   class TodoList extends Backbone.Collection
     model: Todo
@@ -167,9 +167,9 @@ $(document).ready(->
     @onEnterEndEdit = (event) => @toggleEditMode() if (event.keyCode == 13)
 
     @created_at = model.get('created_at')
-    @done = kb.observable(model, {key: 'done_at', read: (-> return model.isDone()), write: ((done) -> model.done(done)) }, this)
+    @done = kb.observable(model, {key: 'done_at', read: (-> return model.done()), write: ((done) -> model.done(done)) }, this)
 
-    @done_at = kb.observable(model, {key: 'done_at', localizer: (value) -> return new LongDateLocalizer(value)})
+    @done_at = kb.observable(model, {key: 'done_at', localizer: LongDateLocalizer})
     @done_text = ko.dependentObservable(=>
       done_at = @done_at() # ensure there is a dependency
       return if !!done_at then return "#{kb.locale_manager.get('label_completed')}: #{done_at}" else ''
@@ -212,7 +212,7 @@ $(document).ready(->
   ko.applyBindings(footer_view_model, $('#todo-footer')[0])
 
   ###################################
-  # Knockback-powered enhancements - START
+  # Knockback-powered enhancements - BEGIN
   ###################################
 
   # Stats Footer

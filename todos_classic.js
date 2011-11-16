@@ -37,10 +37,10 @@ $(document).ready(function() {
       }
       return Todo.__super__.set.apply(this, arguments);
     };
-    Todo.prototype.isDone = function() {
-      return !!this.get('done_at');
-    };
     Todo.prototype.done = function(done) {
+      if (arguments.length === 0) {
+        return !!this.get('done_at');
+      }
       return this.save({
         done_at: done ? new Date() : null
       });
@@ -122,7 +122,7 @@ $(document).ready(function() {
     this.done = kb.observable(model, {
       key: 'done_at',
       read: (function() {
-        return model.isDone();
+        return model.done();
       }),
       write: (function(done) {
         return model.done(done);
@@ -143,7 +143,7 @@ $(document).ready(function() {
   todo_list_view_model = new TodoListViewModel(todos);
   ko.applyBindings(todo_list_view_model, $('#todo-list')[0]);
   StatsViewModel = function(todos) {
-    this.collection_observable = kb.collectionObservable(todos, this.todos);
+    this.collection_observable = kb.collectionObservable(todos);
     this.remaining_text = ko.dependentObservable(__bind(function() {
       var count;
       count = this.collection_observable.collection().remainingCount();
