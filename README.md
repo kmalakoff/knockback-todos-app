@@ -138,7 +138,7 @@ With the MVVM pattern, instead of Model, View, Controller you use Model, View, V
 
 The Classic application is an upgraded port of the Backbone Todos application so it has the same ORM with Todo (Backbone.Model) and TodoList (Backbone.Collection), but the two views are replaced by various ViewModels and templates for each section of the screen (the header, footer, create a new Todo section, the Todos list, and the stats section).
 
-In a real-world app, you may merge some of these ViewModels and templates or to separate them into reusable views (see "Routing and View Lifecycle Management" section for an example) depending on your needs. I kept them separate to compartmentalize their functionality to simplify the descriptions of their functionality.
+In a real-world app, you may merge some of these ViewModels and templates or to separate them into reusable views (see "Routing and View Lifecycle Management" section for an example) depending on your needs. I kept them separate to compartmentalize their functionality to simplify the descriptions of their functionality. With Knockout 1.3's $data, $parent, $parents, and $root syntax, nesting the ViewModels into a single ApplicationViewModel and a single template also becomes more easy to do, if you want.
 
 **Models (Backbone.Model + Backbone.Collection)**
 
