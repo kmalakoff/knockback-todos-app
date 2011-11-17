@@ -607,13 +607,7 @@ using this template:
 </script>
 ```
 
-The tooltipped-priority is rendered in the create section template like:
-
-```html
-<div data-bind="template: {name: 'priority-swatch-picker-template', data: $data}"></div>
-```
-
-The tooltipped-priority is rendered in the todo template like:
+The tooltipped-priority is rendered in the create section and todo item template like:
 
 ```html
 <div data-bind="template: {name: 'priority-swatch-picker-template', data: $data}"></div>
