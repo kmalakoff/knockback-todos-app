@@ -138,7 +138,7 @@ With the MVVM pattern, instead of Model, View, Controller you use Model, View, V
 
 The Classic application is an upgraded port of the Backbone Todos application so it has the same ORM with Todo (Backbone.Model) and TodoList (Backbone.Collection), but the two views are replaced by various ViewModels and templates for each section of the screen (the header, footer, create a new Todo section, the Todos list, and the stats section).
 
-In a real-world app, you may merge some of these ViewModels and templates or to separate them into reusable views (see "Routing and View Lifecycle Management" section for an example) depending on your needs. I kept them separate to compartmentalize their functionality to simplify the descriptions of their functionality.
+In a real-world app, you may merge some of these ViewModels and templates or to separate them into reusable views (see "Routing and View Lifecycle Management" section for an example) depending on your needs. I kept them separate to compartmentalize their functionality to simplify the descriptions of their functionality. With Knockout 1.3's $data, $parent, $parents, and $root syntax, nesting the ViewModels into a single ApplicationViewModel and a single template also becomes more easy to do, if you want.
 
 **Models (Backbone.Model + Backbone.Collection)**
 
@@ -156,19 +156,19 @@ In a real-world app, you may merge some of these ViewModels and templates or to 
 
 **Views (jQuery-Tmpl templates)**
 
-* **header-template:** binds a div with the title text from the HeaderViewModel
-* **create-template:** binds the input element for adding a new Todo and binds the key events to the CreateTodoViewModel for the Enter key
-* **list-template:** binds an unordered list element with a foreach template to render each of the Todos
+* **Header Section:** binds a div with the title text from the HeaderViewModel
+* **Create Section:** binds the input element for adding a new Todo and binds the key events to the CreateTodoViewModel for the Enter key
+* **List Section:** binds an unordered list element with a foreach template to render each of the Todos
 * **item-template:** binds all the elements to render a Todo (in both view and edit modes) and binds the TodoViewModel handlers like double click to enter edit mode, changing the Todo model's done state when the checkbox state changes, etc
-* **stats-template:** binds elements to display the summary stats using the StatsViewModel properties
-* **footer-template:** binds the localized instructions text from FooterViewModel
+* **Stats Section:** binds elements to display the summary stats using the StatsViewModel properties
+* **Footer Section:** binds the localized instructions text from FooterViewModel
 
 **Note:** In order to provide localized text, all text was refactored out into templates which is why there is so many templates where there were few before.
-**Note:** the header-template is not really needed in this application, but in the "Todos - Knockback Complete" application, additional functionality will be added to it.
+**Note:** the Header Section is not really needed in this application, but in the "Todos - Knockback Complete" application, additional functionality will be added to it.
 
 
 # MVVM in "Todos - Knockback Complete"/"Todos - Mockup"
-This application extends the "Todos - Classic" by adding ORM for PrioritySettings/PrioritiesSettingList to configure display colors based on Todo priority, adding the priority localized labels and colors to the relevant views ('header-template' for global settings editing, 'create-template' for new Todos' priority, and 'item-template' to display and edit the Todo's priority), adding list sorting options into the 'list-template', and  localization options to the 'footer-template'.
+This application extends the "Todos - Classic" by adding ORM for PrioritySettings/PrioritiesSettingList to configure display colors based on Todo priority, adding the priority localized labels and colors to the relevant views ('Header Section' for global settings editing, 'Create Section' for new Todos' priority, and 'item-template' to display and edit the Todo's priority), adding list sorting options into the 'List Section', and  localization options to the 'Footer Section'.
 
 **Models (Backbone.Model + Backbone.Collection)**
 
@@ -178,27 +178,27 @@ This application extends the "Todos - Classic" by adding ORM for PrioritySetting
 **ViewModels**
 
 * **PrioritySettingsViewModel:** provides localized text (that shouldn't be saved to the server) and color properties to the 'priority-setting-template' template
-* **SettingsViewModel:** provides both the PrioritySettingsViewModel globally to the application, but also the current default priority and color to the 'create-template', and a priority ranking to the TodoListViewModel for sorting.
+* **SettingsViewModel:** provides both the PrioritySettingsViewModel globally to the application, but also the current default priority and color to the 'Create Section', and a priority ranking to the TodoListViewModel for sorting.
 * **LanguageOptionViewModel:** this is a ViewModel without a formal model since it programmatically converts the available locales in the locale manager ('en', 'fr-FR', 'it-IT') into display strings ('EN', 'FR', 'IT')
-* **SortingOptionViewModel:** this provides a localized label to the sorting radio buttons in the 'list-template' template
+* **SortingOptionViewModel:** this provides a localized label to the sorting radio buttons in the 'List Section'
 * **CreateTodoViewModel:** upgraded to expose properties for rendering the current default Todo priority and a hook to show/hide the tooltip for selecting the default priority
 * **TodoViewModel:** upgraded to expose properties for rendering its Todo priority and a hook to show/hide the tooltip for selecting the Todo priority
-* **TodoListViewModel:** upgraded to expose sorting labels to the radio buttons and to change the sorting function of the kb.collectionObservable when the handler is triggered in the 'list-template' template
+* **TodoListViewModel:** upgraded to expose sorting labels to the radio buttons and to change the sorting function of the kb.collectionObservable when the handler is triggered in the 'List Section'
 * **FooterViewModel:** upgraded to expose the language selection options and currently selected item to the 'option-template' template
 
 **Views (jQuery-Tmpl templates)**
 
-* **header-template:** bindings upgraded to render the priority labels and colors using the 'priority-setting-template' template
-* **create-template:** bindings upgraded to render the priority colors and bind the tooltip visibility template/handlers
-* **list-template:** bindings upgraded to render the sorting options and handlers
+* **Header Section:** bindings upgraded to render the priority labels and colors using the 'priority-setting-template' template
+* **Create Section:** bindings upgraded to render the priority colors and bind the tooltip visibility template/handlers
+* **List Section:** bindings upgraded to render the sorting options and handlers
 * **item-template:** bindings upgraded to render the priority colors and bind the tooltip visibility template/handlers
-* **footer-template:** bindings upgraded to render the language options and to to bind option selection logic.
+* **Footer Section:** bindings upgraded to render the language options and to to bind option selection logic.
 * **priority-setting-template:** renders the priority labels and colors from SettingsViewModel with a color picker (instead of tool tip)
 * **priority-swatch-picker-template:** renders just the color swatch for a supplied priority (either from CreateTodoViewModel or TodoViewModel) and binds the handler for a tooltip (instead of a color picker)
 * **priority-picker-template:** renders the priority labels and colors, and custom binds the action to be taken when the color swatch is selected (for either setting the default new Todo priority or updating an existing Todo's priority)
 
 
-# Relationships between Models and ViewModels - One-To-Many
+# Relationships between Models and ViewModels - Often One-To-Many
 
 In the Todos applications, there is a one-to-one relationship between Models and ViewModels, but the distinction is important:
 
@@ -228,11 +228,12 @@ TodoViewModel = (model) ->
     model.save({priority: ko.utils.unwrapObservable(@priority)})
 ```
 
-# Relationships between ViewModels and Views
+# Relationships between ViewModels and Views/Templates
 
 You can see in the Todos application that there is a many-to-one relationship between the LanguagesViewModel and TodoListViewModel with the 'option-template' View. Each ViewModel provides a similar signature of option items view data to the template, but the options ViewModels are different: LanguageOptionViewModel and SortingOptionViewModel, respectively.
 
 The language options are mapped from the available locales in the locale manager through a LanguageOptionViewModel:
+
 ```coffeescript
 LanguagesViewModel = (locales) ->
   @current_language = ko.observable(kb.locale_manager.getLocale())
@@ -241,6 +242,7 @@ LanguagesViewModel = (locales) ->
 ```
 
 The sort options are hard coded but identifier and exposed through a SortingOptionViewModel:
+
 ```coffeescript
 TodoListViewModel = (todos) ->
   @sort_mode = ko.observable('label_text')
@@ -251,15 +253,18 @@ TodoListViewModel = (todos) ->
 Finally, each option is rendered through a 'foreach' in a parent template using an 'option-template' template:
 
 Language options:
+
 ```html
 <div id="todo-languages" class="selection codestyle" data-bind="template: {name: 'option-template', foreach: language_options, templateOptions: {selected_value: selected_value} }"></div>
 ```
 
 Sorting options:
+
 ```html
 <div id="todo-list-sorting" class="selection codestyle" data-bind="template: {name: 'option-template', foreach: sorting_options, templateOptions: {selected_value: selected_value} }"></div>
 ```
 The template per option:
+
 ```html
 <script type="text/x-jquery-tmpl" id="option-template">
   <div class="option"><input type="radio" data-bind="attr: {id: id, name: option_group}, value: id, checked: $item.selected_value"><label data-bind="attr: {for: id}, text: label"></label></div>
@@ -303,14 +308,12 @@ Some highlights:
 * To help with localization, all strings need to be put into templates so they can be replaced. Sometimes templates are nested so that they can be reused on a collection:
 
 ```html
-<script type="text/x-jquery-tmpl" id="header-template">
-  <div class="create-todo">
-    <div class="title"><h1>${title}</h1></div>
-    <div id="color-settings">
-      {{tmpl(window.settings_view_model.priority_settings) "#priority-setting-template"}}
-    </div>
+<div class="create-todo">
+  <div class="title"><h1>${title}</h1></div>
+  <div id="color-settings">
+    {{tmpl(window.settings_view_model.priority_settings) "#priority-setting-template"}}
   </div>
-</script>
+</div>
 
 <script type="text/x-jquery-tmpl" id="priority-setting-template">
   <div class="priority-color-entry">
@@ -368,15 +371,7 @@ To render nested templates from the html, you need to use something like the fol
 For a template with externally supplied view models (using ko.applyBindings):
 
 ```html
-<div id="todo-list" data-bind="template: 'list-template'"></div>
-```
-
-For a template with data supplied from within your view models:
-
-```html
-<script type="text/x-jquery-tmpl" id="list-template">
-  <ul class="todo-list" data-bind="template: {name: 'item-template', foreach: todos}"></ul>
-</script>
+<ul class="todo-list" data-bind="template: {name: 'item-template', foreach: todo_list.todos}"></ul>
 ```
 
 **Note:** for compatibility between Knockout 1.2.1 and 1.3.0beta (template data passed down the template chain using the 1.3.0beta syntax), I've slightly modified ko.applyBindings:
@@ -552,11 +547,7 @@ TodoListViewModel = (todos) ->
 The sorting html added to the list template:
 
 ```html
-<script type="text/x-jquery-tmpl" id="list-template">
-    ...
-    <div id="todo-list-sorting" class="selection codestyle" data-bind="template: {name: 'option-template', foreach: sorting_options, templateOptions: {selected_value: selected_value} }"></div>
-    ...
-</script>
+<div id="todo-list-sorting" class="selection codestyle" data-bind="template: {name: 'option-template', foreach: sorting_options, templateOptions: {selected_value: selected_value} }"></div>
 ```
 
 which renders the following group of radio buttons:
@@ -602,11 +593,7 @@ SettingsViewModel = (priority_settings) ->
 The priority color settings are rendered as follows:
 
 ```html
-<script type="text/x-jquery-tmpl" id="header-template">
-    ...
-    <div id="color-settings" data-bind="template: {name: 'priority-setting-template', foreach: window.settings_view_model.priority_settings}"></div>
-    ...
-</script>
+<div id="color-settings" data-bind="template: {name: 'priority-setting-template', foreach: window.settings_view_model.priority_settings}"></div>
 ```
 using this template:
 
@@ -622,25 +609,13 @@ using this template:
 The tooltipped-priority is rendered in the create section template like:
 
 ```html
-<script type="text/x-jquery-tmpl" id="create-template">
-  <div class="content">
-      ...
-      <div data-bind="template: {name: 'priority-swatch-picker-template', data: $data}"></div>
-      ...
-  </div>
-</script>
+<div data-bind="template: {name: 'priority-swatch-picker-template', data: $data}"></div>
 ```
 
 The tooltipped-priority is rendered in the todo template like:
 
 ```html
-<script type="text/x-jquery-tmpl" id="item-template">
-  <li>
-        ...
-        <div data-bind="template: {name: 'priority-swatch-picker-template', data: $data}"></div>
-        ...
-  </li>
-</script>
+<div data-bind="template: {name: 'priority-swatch-picker-template', data: $data}"></div>
 ```
 
 using this template for the color swatch:
@@ -861,19 +836,3 @@ TodoViewModel = (model) ->
 ```
 
 **Note:** Knockback's observables are all ko.dependentObservables behind-the-scenes so the same rules apply to them as for any ko.dependentObservable
-
-### Template Syntax
-
-This is really small, but I've encountered it a few times. You have to be careful with curly braces inside your templates.
-
-"} }" is right:
-
-```html
-<div id="todo-list-sorting" class="selection codestyle" data-bind="template: {name: 'option-template', foreach: sorting_options, templateOptions: {selected_value: selected_value} }"></div>
-```
-
-"}}" is wrong (the "}}" is interpreted as template control flow by jquery-tmpl)
-
-```html
-<div id="todo-list-sorting" class="selection codestyle" data-bind="template: {name: 'option-template', foreach: sorting_options, templateOptions: {selected_value: selected_value}}"></div>
-```

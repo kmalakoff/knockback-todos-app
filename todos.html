@@ -41,11 +41,47 @@
 
     <!-- Todo App Interface -->
     <div id="todoapp">
-      <div id="todo-header" data-bind="template: 'header-template'"></div>
-      <div id="todo-create" data-bind="template: 'create-template'"></div>
-      <div id="todo-list" data-bind="template: 'list-template'"></div>
-      <div id="todo-stats" data-bind="template: 'stats-template'"></div>
-      <div id="todo-footer" data-bind="template: 'footer-template'"></div>
+
+      <!-- Header and Settings Section -->
+      <div id="todo-header">
+        <div class="title"><h1 data-bind="text: header.title"></h1></div>
+        <div id="color-settings" data-bind="template: {name: 'priority-setting-template', foreach: window.settings_view_model.priority_settings}"></div>
+      </div>
+
+      <!-- Create Todo Section -->
+      <div id="todo-create">
+        <div class="content">
+          <div id="create-todo">
+            <input id="new-todo" type="text" data-bind="value: create.input_text, placeholder: create.input_placeholder_text, event: {keyup: create.addTodo}"/>
+            <span class="ui-tooltip-top" style="display:none;" data-bind="text: create.input_tooltip_text"></span>
+            <div data-bind="template: {name: 'priority-swatch-picker-template', data: create}"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Todos List Section -->
+      <div id="todo-list">
+        <div class="todo-list-sorting-wrapper-outer" data-bind="visible: todo_list.sort_visible">
+          <div class="todo-list-sorting-wrapper-inner">
+            <div id="todo-list-sorting" class="selection codestyle" data-bind="template: {name: 'option-template', foreach: todo_list.sorting_options, templateOptions: {selected_value: todo_list.selected_value} }"></div>
+          </div>
+        </div>
+        <ul class="todo-list" data-bind="template: {name: 'item-template', foreach: todo_list.todos}"></ul>
+      </div>
+
+      <!-- Stats Section -->
+      <div id="todo-stats">
+        <span class="todo-count" data-bind="text: stats.remaining_text"></span>
+        <span class="todo-clear"> <a href="#" data-bind="text: stats.clear_text, click: stats.onDestroyDone"></a></span>
+      </div>
+
+      <!-- Footer Section -->
+      <div id="todo-footer">
+        <ul id="instructions">
+          <li data-bind="text: footer.instructions_text"></li>
+        </ul>
+        <div id="todo-languages" class="selection codestyle" data-bind="template: {name: 'option-template', foreach: footer.language_options, templateOptions: {selected_value: footer.selected_value} }"></div>
+      </div>
     </div>
 
     <div id="credits">
@@ -64,30 +100,6 @@
     </div>
 
     <!-- Templates -->
-    <script type="text/x-jquery-tmpl" id="header-template">
-      <div class="title"><h1 data-bind="text: title"></h1></div>
-      <div id="color-settings" data-bind="template: {name: 'priority-setting-template', foreach: window.settings_view_model.priority_settings}"></div>
-    </script>
-
-    <script type="text/x-jquery-tmpl" id="create-template">
-      <div class="content">
-        <div id="create-todo">
-          <input id="new-todo" type="text" data-bind="value: input_text, attr: {placeholder: input_placeholder_text}, event: {keyup: addTodo}"/>
-          <span class="ui-tooltip-top" style="display:none;" data-bind="text: input_tooltip_text"></span>
-          <div data-bind="template: {name: 'priority-swatch-picker-template', data: $data}"></div>
-        </div>
-      </div>
-    </script>
-
-    <script type="text/x-jquery-tmpl" id="list-template">
-      <div class="todo-list-sorting-wrapper-outer" data-bind="visible: sort_visible">
-        <div class="todo-list-sorting-wrapper-inner">
-          <div id="todo-list-sorting" class="selection codestyle" data-bind="template: {name: 'option-template', foreach: sorting_options, templateOptions: {selected_value: selected_value} }"></div>
-        </div>
-      </div>
-      <ul class="todo-list" data-bind="template: {name: 'item-template', foreach: todos}"></ul>
-    </script>
-
     <script type="text/x-jquery-tmpl" id="item-template">
       <li>
         <div class="todo" data-bind="css: {done: done, done_enhanced: done, editing: edit_mode}">
@@ -103,18 +115,6 @@
           </div>
         </div>
       </li>
-    </script>
-
-    <script type="text/x-jquery-tmpl" id="stats-template">
-      <span class="todo-count" data-bind="text: remaining_text"></span>
-      <span class="todo-clear"> <a href="#" data-bind="text: clear_text, click: onDestroyDone"></a></span>
-    </script>
-
-    <script type="text/x-jquery-tmpl" id="footer-template">
-      <ul id="instructions">
-        <li data-bind="text: instructions_text"></li>
-      </ul>
-      <div id="todo-languages" class="selection codestyle" data-bind="template: {name: 'option-template', foreach: language_options, templateOptions: {selected_value: selected_value} }"></div>
     </script>
 
     <script type="text/x-jquery-tmpl" id="priority-setting-template">

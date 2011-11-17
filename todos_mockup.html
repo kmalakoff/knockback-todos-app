@@ -28,13 +28,7 @@
   <body>
 
     <!-- Todo App Interface -->
-    <div id="todoapp">
-      <div id="todo-header"></div>
-      <div id="todo-create"></div>
-      <div id="todo-list"></div>
-      <div id="todo-stats"></div>
-      <div id="todo-footer"></div>
-    </div>
+    <div id="todoapp"></div>
 
     <div id="credits">
       Created by
@@ -52,30 +46,62 @@
     </div>
 
     <!-- Templates -->
-    <script type="text/x-jquery-tmpl" id="header-template">
-      <div class="title"><h1>${title}</h1></div>
-      <div id="color-settings">
-        {{tmpl(window.settings_view_model.priority_settings) "#priority-setting-template"}}
-      </div>
-    </script>
+    <script type="text/x-jquery-tmpl" id="todoapp-template">
 
-    <script type="text/x-jquery-tmpl" id="create-template">
-      <div class="content">
-        <div id="create-todo">
-          <input id="new-todo" placeholder="${input_placeholder_text}" type="text" />
-          <span class="ui-tooltip-top" style="display:none;">${input_tooltip_text}</span>
-          {{tmpl($item.priority_color) "#priority-swatch-picker-template"}}
+      <!-- Header and Settings Section -->
+      <div id="todo-header">
+        <div class="title"><h1>${header.title}</h1></div>
+        <div id="color-settings">
+          {{tmpl(window.settings_view_model.priority_settings) "#priority-setting-template"}}
         </div>
       </div>
-    </script>
 
-    <script type="text/x-jquery-tmpl" id="list-template">
-      <div class="todo-list-sorting-wrapper-outer" style="display:${sort_visible};">
-        <div class="todo-list-sorting-wrapper-inner">
-          <div id="todo-list-sorting" class="selection codestyle" >{{tmpl(sorting_options) "#option-template"}}</div>
+      <!-- Create Todo Section -->
+      <div id="todo-create">
+        <div class="content">
+          <div id="create-todo">
+            <input id="new-todo" placeholder="${create.input_placeholder_text}" type="text" />
+            <span class="ui-tooltip-top" style="display:none;">${create.input_tooltip_text}</span>
+            {{tmpl(create) "#priority-swatch-picker-template"}}
+          </div>
         </div>
       </div>
-      <ul>{{tmpl(todos) "#item-template"}}</ul>
+
+      <!-- Todos List Section -->
+      <div id="todo-list">
+        <div class="todo-list-sorting-wrapper-outer" style="display:${todo_list.sort_visible};">
+          <div class="todo-list-sorting-wrapper-inner">
+            <div id="todo-list-sorting" class="selection codestyle" >{{tmpl(todo_list.sorting_options) "#option-template"}}</div>
+          </div>
+        </div>
+        <ul>{{tmpl(todo_list.todos) "#item-template"}}</ul>
+      </div>
+
+      <!-- Stats Section -->
+      <div id="todo-stats">
+        {{if total}}
+          <span class="todo-count">
+            <span class="number">${stats.remaining}</span>
+            <span class="word">{{if (stats.remaining == 1)}} 'item' {{else}} 'items' {{/if}}</span> left.
+          </span>
+        {{/if}}
+        {{if done}}
+          <span class="todo-clear">
+            <a href="#">
+              Clear <span class="number-done">${stats.done}</span>
+              completed <span class="word-done">{{if (stats.done == 1)}} 'item' {{else}} 'items' {{/if}}</span>
+            </a>
+          </span>
+        {{/if}}
+      </div>
+
+      <!-- Footer Section -->
+      <div id="todo-footer">
+        <ul id="instructions">
+          <li>${footer.instructions_text}</li>
+        </ul>
+        <div id="todo-languages" class="selection codestyle">{{tmpl(footer.language_options) "#option-template"}}</div>
+      </div>
     </script>
 
     <script type="text/x-jquery-tmpl" id="item-template">
@@ -93,30 +119,6 @@
           </div>
         </div>
       </li>
-    </script>
-
-    <script type="text/x-jquery-tmpl" id="stats-template">
-      {{if total}}
-        <span class="todo-count">
-          <span class="number">${remaining}</span>
-          <span class="word">{{if (remaining == 1)}} 'item' {{else}} 'items' {{/if}}</span> left.
-        </span>
-      {{/if}}
-      {{if done}}
-        <span class="todo-clear">
-          <a href="#">
-            Clear <span class="number-done">${done}</span>
-            completed <span class="word-done">{{if (done == 1)}} 'item' {{else}} 'items' {{/if}}</span>
-          </a>
-        </span>
-      {{/if}}
-    </script>
-
-    <script type="text/x-jquery-tmpl" id="footer-template">
-      <ul id="instructions">
-        <li>${instructions_text}</li>
-      </ul>
-      <div id="todo-languages" class="selection codestyle"></div>
     </script>
 
     <script type="text/x-jquery-tmpl" id="priority-swatch-picker-template">

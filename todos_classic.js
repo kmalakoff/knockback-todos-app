@@ -14,11 +14,16 @@ var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, par
   return child;
 }, __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 $(document).ready(function() {
-  var CreateTodoViewModel, FooterViewModel, HeaderViewModel, StatsViewModel, Todo, TodoList, TodoListViewModel, TodoViewModel, todos;
+  var CreateTodoViewModel, FooterViewModel, HeaderViewModel, StatsViewModel, Todo, TodoList, TodoListViewModel, TodoViewModel, app_view_model, todos;
   kb.locale_manager.setLocale('en');
   ko.bindingHandlers.dblclick = {
     init: function(element, value_accessor, all_bindings_accessor, view_model) {
       return $(element).dblclick(ko.utils.unwrapObservable(value_accessor()));
+    }
+  };
+  ko.bindingHandlers.placeholder = {
+    update: function(element, value_accessor, all_bindings_accessor, view_model) {
+      return $(element).attr('placeholder', ko.utils.unwrapObservable(value_accessor()));
     }
   };
   Todo = (function() {
@@ -75,7 +80,6 @@ $(document).ready(function() {
     this.title = "Todos";
     return this;
   };
-  $('#todo-header').append($("#header-template").tmpl(new HeaderViewModel()));
   CreateTodoViewModel = function() {
     this.input_text = ko.observable('');
     this.input_placeholder_text = kb.observable(kb.locale_manager, {
@@ -86,18 +90,17 @@ $(document).ready(function() {
     });
     this.addTodo = function(event) {
       var text;
-      text = this.input_text();
+      text = this.create.input_text();
       if (!text || event.keyCode !== 13) {
         return true;
       }
       todos.create({
         text: text
       });
-      return this.input_text('');
+      return this.create.input_text('');
     };
     return true;
   };
-  ko.applyBindings(new CreateTodoViewModel(), $('#todo-create')[0]);
   TodoViewModel = function(model) {
     this.text = kb.observable(model, {
       key: 'text',
@@ -140,7 +143,6 @@ $(document).ready(function() {
     });
     return true;
   };
-  ko.applyBindings(new TodoListViewModel(todos), $('#todo-list')[0]);
   StatsViewModel = function(todos) {
     this.collection_observable = kb.collectionObservable(todos);
     this.remaining_text = ko.dependentObservable(__bind(function() {
@@ -171,10 +173,16 @@ $(document).ready(function() {
     }, this);
     return this;
   };
-  ko.applyBindings(new StatsViewModel(todos), $('#todo-stats')[0]);
   FooterViewModel = function() {
     this.instructions_text = kb.locale_manager.get('instructions');
     return this;
   };
-  return $('#todo-footer').append($("#footer-template").tmpl(new FooterViewModel()));
+  app_view_model = {
+    header: new HeaderViewModel(),
+    create: new CreateTodoViewModel(),
+    todo_list: new TodoListViewModel(todos),
+    footer: new FooterViewModel(kb.locale_manager.getLocales()),
+    stats: new StatsViewModel(todos)
+  };
+  return ko.applyBindings(app_view_model, $('#todoapp')[0]);
 });

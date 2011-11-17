@@ -14,12 +14,17 @@ var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, par
   return child;
 }, __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 $(document).ready(function() {
-  var CreateTodoViewModel, FooterViewModel, HeaderViewModel, LanguageOptionViewModel, PrioritiesSettingList, PrioritySetting, PrioritySettingsViewModel, SettingsViewModel, SortingOptionViewModel, StatsViewModel, Todo, TodoList, TodoListViewModel, TodoViewModel, priorities, todos, _ko_native_apply_bindings;
+  var CreateTodoViewModel, FooterViewModel, HeaderViewModel, LanguageOptionViewModel, PrioritiesSettingList, PrioritySetting, PrioritySettingsViewModel, SettingsViewModel, SortingOptionViewModel, StatsViewModel, Todo, TodoList, TodoListViewModel, TodoViewModel, app_view_model, priorities, todos, _ko_native_apply_bindings;
   kb.locale_manager.setLocale('en');
   kb.locale_change_observable = kb.triggeredObservable(kb.locale_manager, 'change');
   ko.bindingHandlers.dblclick = {
     init: function(element, value_accessor, all_bindings_accessor, view_model) {
       return $(element).dblclick(ko.utils.unwrapObservable(value_accessor()));
+    }
+  };
+  ko.bindingHandlers.placeholder = {
+    update: function(element, value_accessor, all_bindings_accessor, view_model) {
+      return $(element).attr('placeholder', ko.utils.unwrapObservable(value_accessor()));
     }
   };
   if (_.isUndefined(ko.templateSources)) {
@@ -104,7 +109,6 @@ $(document).ready(function() {
     };
     return this;
   };
-  window.settings_view_model = new SettingsViewModel([new Backbone.ModelRef(priorities, 'high'), new Backbone.ModelRef(priorities, 'medium'), new Backbone.ModelRef(priorities, 'low')]);
   SortingOptionViewModel = function(string_id) {
     this.id = string_id;
     this.label = kb.observable(kb.locale_manager, {
@@ -170,7 +174,6 @@ $(document).ready(function() {
     this.title = "Todos";
     return this;
   };
-  ko.applyBindings(new HeaderViewModel(), $('#todo-header')[0]);
   CreateTodoViewModel = function() {
     var tooltip_visible;
     this.input_text = ko.observable('');
@@ -182,15 +185,15 @@ $(document).ready(function() {
     });
     this.addTodo = function(event) {
       var text;
-      text = this.input_text();
+      text = this.create.input_text();
       if (!text || event.keyCode !== 13) {
         return true;
       }
       todos.create({
         text: text,
-        priority: settings_view_model.default_priority()
+        priority: window.settings_view_model.default_priority()
       });
-      return this.input_text('');
+      return this.create.input_text('');
     };
     this.priority_color = ko.dependentObservable(function() {
       return window.settings_view_model.default_priority_color();
@@ -200,14 +203,13 @@ $(document).ready(function() {
     this.onSelectPriority = function(event) {
       event.stopPropagation();
       tooltip_visible(false);
-      return settings_view_model.default_priority(ko.utils.unwrapObservable(this.priority));
+      return window.settings_view_model.default_priority(ko.utils.unwrapObservable(this.priority));
     };
     this.onToggleTooltip = __bind(function() {
       return this.tooltip_visible(!this.tooltip_visible());
     }, this);
     return this;
   };
-  ko.applyBindings(new CreateTodoViewModel(), $('#todo-create')[0]);
   TodoViewModel = function(model) {
     var tooltip_visible;
     this.text = kb.observable(model, {
@@ -255,7 +257,7 @@ $(document).ready(function() {
     this.priority_color = kb.observable(model, {
       key: 'priority',
       read: function() {
-        return settings_view_model.getColorByPriority(model.get('priority'));
+        return window.settings_view_model.getColorByPriority(model.get('priority'));
       }
     });
     this.tooltip_visible = ko.observable(false);
@@ -297,7 +299,7 @@ $(document).ready(function() {
           case 'label_priority':
             return this.collection_observable.sortedIndex(function(models, model) {
               return _.sortedIndex(models, model, function(test) {
-                return settings_view_model.priorityToRank(test.get('priority'));
+                return window.settings_view_model.priorityToRank(test.get('priority'));
               });
             });
         }
@@ -313,7 +315,6 @@ $(document).ready(function() {
     }, this));
     return this;
   };
-  ko.applyBindings(new TodoListViewModel(todos), $('#todo-list')[0]);
   FooterViewModel = function(locales) {
     this.instructions_text = kb.observable(kb.locale_manager, {
       key: 'instructions'
@@ -334,7 +335,6 @@ $(document).ready(function() {
     });
     return this;
   };
-  ko.applyBindings(new FooterViewModel(kb.locale_manager.getLocales()), $('#todo-footer')[0]);
   StatsViewModel = function(todos) {
     this.collection_observable = kb.collectionObservable(todos);
     this.remaining_text = ko.dependentObservable(__bind(function() {
@@ -367,26 +367,34 @@ $(document).ready(function() {
     }, this);
     return this;
   };
-  ko.applyBindings(new StatsViewModel(todos), $('#todo-stats')[0]);
+  window.settings_view_model = new SettingsViewModel([new Backbone.ModelRef(priorities, 'high'), new Backbone.ModelRef(priorities, 'medium'), new Backbone.ModelRef(priorities, 'low')]);
+  app_view_model = {
+    header: new HeaderViewModel(),
+    create: new CreateTodoViewModel(),
+    todo_list: new TodoListViewModel(todos),
+    footer: new FooterViewModel(kb.locale_manager.getLocales()),
+    stats: new StatsViewModel(todos)
+  };
+  ko.applyBindings(app_view_model, $('#todoapp')[0]);
   return _.delay((function() {
     priorities.fetch({
       success: function(collection) {
         if (!collection.get('high')) {
           collection.create({
             id: 'high',
-            color: '#c00020'
+            color: '#bf30ff'
           });
         }
         if (!collection.get('medium')) {
           collection.create({
             id: 'medium',
-            color: '#c08040'
+            color: '#98acff'
           });
         }
         if (!collection.get('low')) {
           return collection.create({
             id: 'low',
-            color: '#00ff60'
+            color: '#38ff6a'
           });
         }
       }

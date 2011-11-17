@@ -55,7 +55,6 @@ $(document).ready(->
     @default_priority = @priority_settings[1].priority
     @default_priority_color = @getColorByPriority(@default_priority)
     return this
-  window.settings_view_model = new SettingsViewModel(priorities.models)
 
   # Content
   SortingOptionViewModel = (string_id) ->
@@ -94,20 +93,18 @@ $(document).ready(->
   HeaderViewModel = ->
     @title = "Todos"
     return this
-  $('#todo-header').append($("#header-template").tmpl(new HeaderViewModel()))
 
   CreateTodoViewModel = ->
     @input_placeholder_text = kb.locale_manager.get('placeholder_create')
     @input_tooltip_text = kb.locale_manager.get('tooltip_create')
-    @priority_color = settings_view_model.default_priority_color
+    @priority_color = window.settings_view_model.default_priority_color
     return this
-  $('#todo-create').append($("#create-template").tmpl(new CreateTodoViewModel()))
 
   TodoViewModel = (model) ->
     @text = model.get('text')
     @created_at = model.get('created_at')
     @done_text = "#{kb.locale_manager.get('label_completed')}: #{kb.locale_manager.localizeDate(model.get('done_at'))}" if !!model.get('done_at')
-    @priority_color = settings_view_model.getColorByPriority(model.get('priority'))
+    @priority_color = window.settings_view_model.getColorByPriority(model.get('priority'))
     return this
 
   TodoListViewModel = (todos) ->
@@ -116,22 +113,34 @@ $(document).ready(->
     @sort_visible = (@todos.length>0)
     @sorting_options = [new SortingOptionViewModel('label_text'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_priority')]
     return true
-  $("#todo-list").append($("#list-template").tmpl(new TodoListViewModel(todos.models)))
-  $('#todo-list-sorting').find('#label_created').attr(checked:'checked')
 
   # Stats Footer
   StatsViewModel = (todos) ->
     @total = todos.models.length
     @done = todos.models.reduce(((prev,cur)-> return prev + if cur.get('done_at') then 1 else 0), 0)
     @remaining = todos.models.reduce(((prev,cur)-> return prev + if cur.get('done_at') then 0 else 1), 0)
-  $('#todo-stats').append($("#stats-template").tmpl(new StatsViewModel(todos)))
-
-  FooterViewModel = ->
-    @instructions_text = kb.locale_manager.get('instructions')
     return this
-  $('#todo-footer').append($("#footer-template").tmpl(new FooterViewModel()))
-  $('#todo-languages').append($("#option-template").tmpl(new LanguageOptionViewModel(locale))) for locale in kb.locale_manager.getLocales()
+
+  FooterViewModel = (locales) ->
+    @instructions_text = kb.locale_manager.get('instructions')
+    @language_options = []
+    @language_options.push(new LanguageOptionViewModel(locale)) for locale in locales
+    return this
+
+  window.settings_view_model = new SettingsViewModel(priorities.models)
+  app_view_model =
+    header: new HeaderViewModel()
+    create: new CreateTodoViewModel()
+    todo_list: new TodoListViewModel(todos.models)
+    footer: new FooterViewModel(kb.locale_manager.getLocales())
+    stats: new StatsViewModel(todos)
+  $('#todoapp').append($("#todoapp-template").tmpl(app_view_model))
+  $('#todo-list-sorting').find('#label_created').attr(checked:'checked')
   $('#todo-languages').find("##{kb.locale_manager.getLocale()}").attr(checked:'checked')
+
+  # Destroy when finished with the view models
+  # kb.vmDestroy(window.settings_view_model)
+  # kb.vmDestroy(app_view_model)
 
   ###################################
   # Dynamic Interactions

@@ -40,11 +40,41 @@
 
     <!-- Todo App Interface -->
     <div id="todoapp">
-      <div id="todo-header"></div>
-      <div id="todo-create" data-bind="template: 'create-template'"></div>
-      <div id="todo-list" data-bind="template: 'list-template'"></div>
-      <div id="todo-stats" data-bind="template: 'stats-template'"></div>
-      <div id="todo-footer"></div>
+
+      <!-- Header Section -->
+      <div id="todo-header">
+        <div class="title">
+          <h1 data-bind="text: header.title"></h1>
+        </div>
+      </div>
+
+      <!-- Create Todo Section -->
+      <div id="todo-create">
+        <div class="content">
+          <div id="create-todo">
+            <input id="new-todo" type="text" data-bind="placeholder: create.input_placeholder_text, value: create.input_text, event: {keyup: create.addTodo}"/>
+            <span class="ui-tooltip-top" style="display:none;" data-bind="text: create.input_tooltip_text"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Todos List Section -->
+      <div id="todo-list">
+        <ul class="todo-list" data-bind="template: {name: 'item-template', foreach: todo_list.todos}"></ul>
+      </div>
+
+      <!-- Stats Section -->
+      <div id="todo-stats">
+        <span class="todo-count" data-bind="text: stats.remaining_text"></span>
+        <span class="todo-clear"> <a href="#" data-bind="text: stats.clear_text, click: stats.onDestroyDone"></a></span>
+      </div>
+
+      <!-- Footer Section -->
+      <div id="todo-footer">
+        <ul id="instructions">
+          <li data-bind="text: footer.instructions_text"></li>
+        </ul>
+      </div>
     </div>
 
     <div id="credits">
@@ -63,23 +93,6 @@
     </div>
 
     <!-- Templates -->
-    <script type="text/x-jquery-tmpl" id="header-template">
-      <div class="title"><h1>${title}</h1></div>
-    </script>
-
-    <script type="text/x-jquery-tmpl" id="create-template">
-      <div class="content">
-        <div id="create-todo">
-          <input id="new-todo" placeholder="${input_placeholder_text}" type="text" data-bind="value: input_text, event: {keyup: addTodo}"/>
-          <span class="ui-tooltip-top" style="display:none;">${input_tooltip_text}</span>
-        </div>
-      </div>
-    </script>
-
-    <script type="text/x-jquery-tmpl" id="list-template">
-      <ul class="todo-list" data-bind="template: {name: 'item-template', foreach: todos}"></ul>
-    </script>
-
     <script type="text/x-jquery-tmpl" id="item-template">
       <li>
         <div class="todo" data-bind="css: {done: done, editing: edit_mode}">
@@ -93,17 +106,6 @@
           </div>
         </div>
       </li>
-    </script>
-
-    <script type="text/x-jquery-tmpl" id="stats-template">
-      <span class="todo-count" data-bind="text: remaining_text"></span>
-      <span class="todo-clear"> <a href="#" data-bind="text: clear_text, click: onDestroyDone"></a></span>
-    </script>
-
-    <script type="text/x-jquery-tmpl" id="footer-template">
-      <ul id="instructions">
-        <li>${instructions_text}</li>
-      </ul>
     </script>
   </body>
 

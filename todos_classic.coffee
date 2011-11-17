@@ -11,10 +11,13 @@ $(document).ready(->
   # set the language
   kb.locale_manager.setLocale('en')
 
-  # add a doubleclick handler to KO
+  # add a doubleclick and placeholder handlers to KO
   ko.bindingHandlers.dblclick =
     init: (element, value_accessor, all_bindings_accessor, view_model) ->
       $(element).dblclick(ko.utils.unwrapObservable(value_accessor()))
+  ko.bindingHandlers.placeholder =
+    update: (element, value_accessor, all_bindings_accessor, view_model) ->
+      $(element).attr('placeholder', ko.utils.unwrapObservable(value_accessor()))
 
   ###################################
   # Model: http://en.wikipedia.org/wiki/Model_view_controller
@@ -48,19 +51,17 @@ $(document).ready(->
   HeaderViewModel = ->
     @title = "Todos"
     return this
-  $('#todo-header').append($("#header-template").tmpl(new HeaderViewModel()))
 
   CreateTodoViewModel = ->
     @input_text = ko.observable('')
     @input_placeholder_text = kb.observable(kb.locale_manager, {key: 'placeholder_create'})
     @input_tooltip_text = kb.observable(kb.locale_manager, {key: 'tooltip_create'})
     @addTodo = (event) ->
-      text = @input_text()
+      text = @create.input_text()
       return true if (!text || event.keyCode != 13)
       todos.create({text: text})
-      @input_text('')
+      @create.input_text('')
     return true
-  ko.applyBindings(new CreateTodoViewModel(), $('#todo-create')[0])
 
   TodoViewModel = (model) ->
     @text = kb.observable(model, {key: 'text', write: ((text) -> model.save({text: text}))}, this)
@@ -77,7 +78,6 @@ $(document).ready(->
     @todos = ko.observableArray([])
     @collection_observable = kb.collectionObservable(todos, @todos, { view_model: TodoViewModel })
     return true
-  ko.applyBindings(new TodoListViewModel(todos), $('#todo-list')[0])
 
   # Stats Footer
   StatsViewModel = (todos) ->
@@ -92,10 +92,19 @@ $(document).ready(->
     )
     @onDestroyDone = => model.destroy() for model in todos.allDone()
     return this
-  ko.applyBindings(new StatsViewModel(todos), $('#todo-stats')[0])
 
   FooterViewModel = ->
     @instructions_text = kb.locale_manager.get('instructions')
     return this
-  $('#todo-footer').append($("#footer-template").tmpl(new FooterViewModel()))
+
+  app_view_model =
+    header: new HeaderViewModel()
+    create: new CreateTodoViewModel()
+    todo_list: new TodoListViewModel(todos)
+    footer: new FooterViewModel(kb.locale_manager.getLocales())
+    stats: new StatsViewModel(todos)
+  ko.applyBindings(app_view_model, $('#todoapp')[0])
+
+  # Destroy when finished with the view model
+  # kb.vmDestroy(app_view_model)
 )

@@ -18,10 +18,13 @@ $(document).ready(->
   kb.locale_manager.setLocale('en')
   kb.locale_change_observable = kb.triggeredObservable(kb.locale_manager, 'change') # use to register a localization dependency
 
-  # add a doubleclick handler to KO
+  # add a doubleclick and placeholder handlers to KO
   ko.bindingHandlers.dblclick =
     init: (element, value_accessor, all_bindings_accessor, view_model) ->
       $(element).dblclick(ko.utils.unwrapObservable(value_accessor()))
+  ko.bindingHandlers.placeholder =
+    update: (element, value_accessor, all_bindings_accessor, view_model) ->
+      $(element).attr('placeholder', ko.utils.unwrapObservable(value_accessor()))
 
   # ko1.2.1 compatibility with 1.3
   if _.isUndefined(ko.templateSources)
@@ -76,11 +79,6 @@ $(document).ready(->
         when 'medium' then return 1
         when 'low' then return 2
     return this
-  window.settings_view_model = new SettingsViewModel([
-    new Backbone.ModelRef(priorities, 'high'),
-    new Backbone.ModelRef(priorities, 'medium'),
-    new Backbone.ModelRef(priorities, 'low')
-  ])
 
   # Content
   SortingOptionViewModel = (string_id) ->
@@ -127,17 +125,16 @@ $(document).ready(->
   HeaderViewModel = ->
     @title = "Todos"
     return this
-  ko.applyBindings(new HeaderViewModel(), $('#todo-header')[0])
 
   CreateTodoViewModel = ->
     @input_text = ko.observable('')
     @input_placeholder_text = kb.observable(kb.locale_manager, {key: 'placeholder_create'})
     @input_tooltip_text = kb.observable(kb.locale_manager, {key: 'tooltip_create'})
     @addTodo = (event) ->
-      text = @input_text()
+      text = @create.input_text()
       return true if (!text || event.keyCode != 13)
-      todos.create({text: text, priority: settings_view_model.default_priority()})
-      @input_text('')
+      todos.create({text: text, priority: window.settings_view_model.default_priority()})
+      @create.input_text('')
 
     @priority_color = ko.dependentObservable(-> return window.settings_view_model.default_priority_color())
     @tooltip_visible = ko.observable(false)
@@ -145,10 +142,9 @@ $(document).ready(->
     @onSelectPriority = (event) ->
       event.stopPropagation()
       tooltip_visible(false)
-      settings_view_model.default_priority(ko.utils.unwrapObservable(@priority))
+      window.settings_view_model.default_priority(ko.utils.unwrapObservable(@priority))
     @onToggleTooltip = => @tooltip_visible(!@tooltip_visible())
     return this
-  ko.applyBindings(new CreateTodoViewModel(), $('#todo-create')[0])
 
   # Content
   TodoViewModel = (model) ->
@@ -166,7 +162,7 @@ $(document).ready(->
       return if !!done_at then return "#{kb.locale_manager.get('label_completed')}: #{done_at}" else ''
     )
 
-    @priority_color = kb.observable(model, {key: 'priority', read: -> return settings_view_model.getColorByPriority(model.get('priority'))})
+    @priority_color = kb.observable(model, {key: 'priority', read: -> return window.settings_view_model.getColorByPriority(model.get('priority'))})
     @tooltip_visible = ko.observable(false)
     tooltip_visible = @tooltip_visible # closured for onSelectPriority
     @onSelectPriority = (event) ->
@@ -190,13 +186,12 @@ $(document).ready(->
         switch new_mode
           when 'label_text' then @collection_observable.sortAttribute('text')
           when 'label_created' then @collection_observable.sortedIndex((models, model)-> return _.sortedIndex(models, model, (test) -> test.get('created_at').valueOf()))
-          when 'label_priority' then @collection_observable.sortedIndex((models, model)-> return _.sortedIndex(models, model, (test) -> settings_view_model.priorityToRank(test.get('priority'))))
+          when 'label_priority' then @collection_observable.sortedIndex((models, model)-> return _.sortedIndex(models, model, (test) -> window.settings_view_model.priorityToRank(test.get('priority'))))
       owner: this
     )
     @collection_observable = kb.collectionObservable(todos, @todos, {view_model: TodoViewModel, sort_attribute: 'text'})
     @sort_visible = ko.dependentObservable(=> @collection_observable().length)
     return this
-  ko.applyBindings(new TodoListViewModel(todos), $('#todo-list')[0])
 
   FooterViewModel = (locales) ->
     @instructions_text = kb.observable(kb.locale_manager, {key: 'instructions'})
@@ -208,7 +203,6 @@ $(document).ready(->
       owner: this
     )
     return this
-  ko.applyBindings(new FooterViewModel(kb.locale_manager.getLocales()), $('#todo-footer')[0])
 
   ###################################
   # Knockback-powered enhancements - BEGIN
@@ -229,16 +223,33 @@ $(document).ready(->
     )
     @onDestroyDone = => model.destroy() for model in todos.allDone()
     return this
-  ko.applyBindings(new StatsViewModel(todos), $('#todo-stats')[0])
+
+  # set up and bind the application view model
+  window.settings_view_model = new SettingsViewModel([
+    new Backbone.ModelRef(priorities, 'high'),
+    new Backbone.ModelRef(priorities, 'medium'),
+    new Backbone.ModelRef(priorities, 'low')
+  ])
+  app_view_model =
+    header: new HeaderViewModel()
+    create: new CreateTodoViewModel()
+    todo_list: new TodoListViewModel(todos)
+    footer: new FooterViewModel(kb.locale_manager.getLocales())
+    stats: new StatsViewModel(todos)
+  ko.applyBindings(app_view_model, $('#todoapp')[0])
+
+  # Destroy when finished with the view models
+  # kb.vmDestroy(window.settings_view_model)
+  # kb.vmDestroy(app_view_model)
 
   ###################################
   # Load the prioties late to show the dynamic nature of Knockback with Backbone.ModelRef
   _.delay((->
     priorities.fetch(
       success: (collection) ->
-        collection.create({id:'high', color:'#c00020'}) if not collection.get('high')
-        collection.create({id:'medium', color:'#c08040'}) if not collection.get('medium')
-        collection.create({id:'low', color:'#00ff60'}) if not collection.get('low')
+        collection.create({id:'high', color:'#bf30ff'}) if not collection.get('high')
+        collection.create({id:'medium', color:'#98acff'}) if not collection.get('medium')
+        collection.create({id:'low', color:'#38ff6a'}) if not collection.get('low')
     )
 
     # set up color pickers
