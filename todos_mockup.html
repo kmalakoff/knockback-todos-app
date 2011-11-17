@@ -34,7 +34,6 @@
       <div id="todo-list"></div>
       <div id="todo-stats"></div>
       <div id="todo-footer"></div>
-      <div id="todo-languages" class="selection codestyle"></div>
     </div>
 
     <div id="credits">
@@ -54,11 +53,9 @@
 
     <!-- Templates -->
     <script type="text/x-jquery-tmpl" id="header-template">
-      <div class="create-todo">
-        <div class="title"><h1>${title}</h1></div>
-        <div id="color-settings">
-          {{tmpl(window.settings_view_model.priority_settings) "#priority-setting-template"}}
-        </div>
+      <div class="title"><h1>${title}</h1></div>
+      <div id="color-settings">
+        {{tmpl(window.settings_view_model.priority_settings) "#priority-setting-template"}}
       </div>
     </script>
 
@@ -119,6 +116,7 @@
       <ul id="instructions">
         <li>${instructions_text}</li>
       </ul>
+      <div id="todo-languages" class="selection codestyle"></div>
     </script>
 
     <script type="text/x-jquery-tmpl" id="priority-swatch-picker-template">

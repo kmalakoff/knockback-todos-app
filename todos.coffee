@@ -36,7 +36,10 @@ $(document).ready(->
   ###################################
 
   # Settings
+  class PrioritySetting extends Backbone.Model
+
   class PrioritiesSettingList extends Backbone.Collection
+    model: PrioritySetting
     localStorage: new Store("kb_priorities") # Save all of the todo items under the `"kb_priorities"` namespace.
   priorities = new PrioritiesSettingList()
 
@@ -50,18 +53,6 @@ $(document).ready(->
     @label = kb.locale_manager.localeToLabel(locale)
     @option_group = 'lang'
     return this
-
-  LanguagesViewModel = (locales) ->
-    @language_options = ko.observableArray(_.map(locales, (locale) -> return new LanguageOptionViewModel(locale)))
-    @current_language = ko.observable(kb.locale_manager.getLocale()) # used to create a dependency
-    @selected_value = ko.dependentObservable(
-      read: => return @current_language()
-      write: (new_locale) => kb.locale_manager.setLocale(new_locale); @current_language(new_locale)
-      owner: this
-    )
-    return this
-  languages_view_model = new LanguagesViewModel(kb.locale_manager.getLocales())
-  ko.applyBindings(languages_view_model, $('#todo-languages')[0])
 
   # Settings
   PrioritySettingsViewModel = (model) ->
@@ -125,7 +116,6 @@ $(document).ready(->
     doneCount: -> @models.reduce(((prev,cur)-> return prev + if !!cur.get('done_at') then 1 else 0), 0)
     remainingCount: -> @models.length - @doneCount()
     allDone: -> return @filter((todo) -> return !!todo.get('done_at'))
-
   todos = new TodoList()
   todos.fetch()
 
@@ -134,9 +124,10 @@ $(document).ready(->
   ###################################
 
   # Header
-  header_view_model =
-    title: "Todos"
-  ko.applyBindings(header_view_model, $('#todo-header')[0])
+  HeaderViewModel = ->
+    @title = "Todos"
+    return this
+  ko.applyBindings(new HeaderViewModel(), $('#todo-header')[0])
 
   CreateTodoViewModel = ->
     @input_text = ko.observable('')
@@ -157,15 +148,14 @@ $(document).ready(->
       settings_view_model.default_priority(ko.utils.unwrapObservable(@priority))
     @onToggleTooltip = => @tooltip_visible(!@tooltip_visible())
     return this
-  create_view_model = new CreateTodoViewModel()
-  ko.applyBindings(create_view_model, $('#todo-create')[0])
+  ko.applyBindings(new CreateTodoViewModel(), $('#todo-create')[0])
 
   # Content
   TodoViewModel = (model) ->
     @text = kb.observable(model, {key: 'text', write: ((text) -> model.save({text: text}))}, this)
     @edit_mode = ko.observable(false)
-    @toggleEditMode = => @edit_mode(!@edit_mode()) if not @done()
-    @onEnterEndEdit = (event) => @toggleEditMode() if (event.keyCode == 13)
+    @toggleEditMode = (event) => @edit_mode(!@edit_mode()) if not @done()
+    @onEnterEndEdit = (event) => @edit_mode(false) if (event.keyCode == 13)
 
     @created_at = model.get('created_at')
     @done = kb.observable(model, {key: 'done_at', read: (-> return model.done()), write: ((done) -> model.done(done)) }, this)
@@ -206,12 +196,19 @@ $(document).ready(->
     @collection_observable = kb.collectionObservable(todos, @todos, {view_model: TodoViewModel, sort_attribute: 'text'})
     @sort_visible = ko.dependentObservable(=> @collection_observable().length)
     return this
-  todo_list_view_model = new TodoListViewModel(todos)
-  ko.applyBindings(todo_list_view_model, $('#todo-list')[0])
+  ko.applyBindings(new TodoListViewModel(todos), $('#todo-list')[0])
 
-  footer_view_model =
-    instructions_text: kb.observable(kb.locale_manager, {key: 'instructions'})
-  ko.applyBindings(footer_view_model, $('#todo-footer')[0])
+  FooterViewModel = (locales) ->
+    @instructions_text = kb.observable(kb.locale_manager, {key: 'instructions'})
+    @current_language = ko.observable(kb.locale_manager.getLocale()) # used to create a dependency
+    @language_options = ko.observableArray(_.map(locales, (locale) -> return new LanguageOptionViewModel(locale)))
+    @selected_value = ko.dependentObservable(
+      read: => return @current_language()
+      write: (new_locale) => kb.locale_manager.setLocale(new_locale); @current_language(new_locale)
+      owner: this
+    )
+    return this
+  ko.applyBindings(new FooterViewModel(kb.locale_manager.getLocales()), $('#todo-footer')[0])
 
   ###################################
   # Knockback-powered enhancements - BEGIN
@@ -232,8 +229,7 @@ $(document).ready(->
     )
     @onDestroyDone = => model.destroy() for model in todos.allDone()
     return this
-  stats_view_model = new StatsViewModel(todos)
-  ko.applyBindings(stats_view_model, $('#todo-stats')[0])
+  ko.applyBindings(new StatsViewModel(todos), $('#todo-stats')[0])
 
   ###################################
   # Load the prioties late to show the dynamic nature of Knockback with Backbone.ModelRef

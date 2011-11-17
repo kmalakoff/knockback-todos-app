@@ -21,12 +21,12 @@ $(document).ready(->
   ###################################
 
   # Priority Settings
-  class PrioritiesSetting
+  class PrioritySetting
     constructor: (@attributes) ->
     get: (attribute_name) -> return @attributes[attribute_name]
 
   priorities =
-    models: [new PrioritiesSetting({id:'high',   color:'#c00020'}), new PrioritiesSetting({id:'medium', color:'#c08040'}), new PrioritiesSetting({id:'low',    color:'#00ff60'})]
+    models: [new PrioritySetting({id:'high',   color:'#c00020'}), new PrioritySetting({id:'medium', color:'#c08040'}), new PrioritySetting({id:'low',    color:'#00ff60'})]
 
   ###################################
   # MVVM: http://en.wikipedia.org/wiki/Model_View_ViewModel
@@ -38,9 +38,6 @@ $(document).ready(->
     @label = kb.locale_manager.localeToLabel(locale)
     @option_group = 'lang'
     return this
-
-  $('#todo-languages').append($("#option-template").tmpl(new LanguageOptionViewModel(locale))) for locale in kb.locale_manager.getLocales()
-  $('#todo-languages').find("##{kb.locale_manager.getLocale()}").attr(checked:'checked')
 
   # Priority Settings
   PrioritySettingsViewModel = (model) ->
@@ -94,17 +91,17 @@ $(document).ready(->
   ###################################
 
   # Header
-  header_view_model =
-    title: "Todos"
-  $('#todo-header').append($("#header-template").tmpl(header_view_model))
+  HeaderViewModel = ->
+    @title = "Todos"
+    return this
+  $('#todo-header').append($("#header-template").tmpl(new HeaderViewModel()))
 
   CreateTodoViewModel = ->
     @input_placeholder_text = kb.locale_manager.get('placeholder_create')
     @input_tooltip_text = kb.locale_manager.get('tooltip_create')
     @priority_color = settings_view_model.default_priority_color
     return this
-  create_view_model = new CreateTodoViewModel()
-  $('#todo-create').append($("#create-template").tmpl(create_view_model))
+  $('#todo-create').append($("#create-template").tmpl(new CreateTodoViewModel()))
 
   TodoViewModel = (model) ->
     @text = model.get('text')
@@ -119,8 +116,7 @@ $(document).ready(->
     @sort_visible = (@todos.length>0)
     @sorting_options = [new SortingOptionViewModel('label_text'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_priority')]
     return true
-  todo_list_view_model = new TodoListViewModel(todos.models)
-  $("#todo-list").append($("#list-template").tmpl(todo_list_view_model))
+  $("#todo-list").append($("#list-template").tmpl(new TodoListViewModel(todos.models)))
   $('#todo-list-sorting').find('#label_created').attr(checked:'checked')
 
   # Stats Footer
@@ -128,12 +124,14 @@ $(document).ready(->
     @total = todos.models.length
     @done = todos.models.reduce(((prev,cur)-> return prev + if cur.get('done_at') then 1 else 0), 0)
     @remaining = todos.models.reduce(((prev,cur)-> return prev + if cur.get('done_at') then 0 else 1), 0)
-  stats_view_model = new StatsViewModel (todos)
-  $('#todo-stats').append($("#stats-template").tmpl(stats_view_model))
+  $('#todo-stats').append($("#stats-template").tmpl(new StatsViewModel(todos)))
 
-  footer_view_model =
-    instructions_text: kb.locale_manager.get('instructions')
-  $('#todo-footer').append($("#footer-template").tmpl(footer_view_model))
+  FooterViewModel = ->
+    @instructions_text = kb.locale_manager.get('instructions')
+    return this
+  $('#todo-footer').append($("#footer-template").tmpl(new FooterViewModel()))
+  $('#todo-languages').append($("#option-template").tmpl(new LanguageOptionViewModel(locale))) for locale in kb.locale_manager.getLocales()
+  $('#todo-languages').find("##{kb.locale_manager.getLocale()}").attr(checked:'checked')
 
   ###################################
   # Dynamic Interactions

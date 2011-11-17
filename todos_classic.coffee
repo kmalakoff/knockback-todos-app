@@ -37,7 +37,6 @@ $(document).ready(->
     doneCount: -> @models.reduce(((prev,cur)-> return prev + if !!cur.get('done_at') then 1 else 0), 0)
     remainingCount: -> @models.length - @doneCount()
     allDone: -> return @filter((todo) -> return !!todo.get('done_at'))
-
   todos = new TodoList()
   todos.fetch()
 
@@ -46,9 +45,10 @@ $(document).ready(->
   ###################################
 
   # Header
-  header_view_model =
-    title: "Todos"
-  $('#todo-header').append($("#header-template").tmpl(header_view_model))
+  HeaderViewModel = ->
+    @title = "Todos"
+    return this
+  $('#todo-header').append($("#header-template").tmpl(new HeaderViewModel()))
 
   CreateTodoViewModel = ->
     @input_text = ko.observable('')
@@ -60,14 +60,13 @@ $(document).ready(->
       todos.create({text: text})
       @input_text('')
     return true
-  create_view_model = new CreateTodoViewModel()
-  ko.applyBindings(create_view_model, $('#todo-create')[0])
+  ko.applyBindings(new CreateTodoViewModel(), $('#todo-create')[0])
 
   TodoViewModel = (model) ->
     @text = kb.observable(model, {key: 'text', write: ((text) -> model.save({text: text}))}, this)
     @edit_mode = ko.observable(false)
-    @toggleEditMode = => @edit_mode(!@edit_mode()) if not @done()
-    @onEnterEndEdit = (event) => @toggleEditMode() if (event.keyCode == 13)
+    @toggleEditMode = (event) => @edit_mode(!@edit_mode()) if not @done()
+    @onEnterEndEdit = (event) => @edit_mode(false) if (event.keyCode == 13)
 
     @created_at = model.get('created_at')
     @done = kb.observable(model, {key: 'done_at', read: (-> return model.done()), write: ((done) -> model.done(done)) }, this)
@@ -78,8 +77,7 @@ $(document).ready(->
     @todos = ko.observableArray([])
     @collection_observable = kb.collectionObservable(todos, @todos, { view_model: TodoViewModel })
     return true
-  todo_list_view_model = new TodoListViewModel(todos)
-  ko.applyBindings(todo_list_view_model, $('#todo-list')[0])
+  ko.applyBindings(new TodoListViewModel(todos), $('#todo-list')[0])
 
   # Stats Footer
   StatsViewModel = (todos) ->
@@ -94,10 +92,10 @@ $(document).ready(->
     )
     @onDestroyDone = => model.destroy() for model in todos.allDone()
     return this
-  stats_view_model = new StatsViewModel(todos)
-  ko.applyBindings(stats_view_model, $('#todo-stats')[0])
+  ko.applyBindings(new StatsViewModel(todos), $('#todo-stats')[0])
 
-  footer_view_model =
-    instructions_text: kb.locale_manager.get('instructions')
-  $('#todo-footer').append($("#footer-template").tmpl(footer_view_model))
+  FooterViewModel = ->
+    @instructions_text = kb.locale_manager.get('instructions')
+    return this
+  $('#todo-footer').append($("#footer-template").tmpl(new FooterViewModel()))
 )

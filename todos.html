@@ -46,7 +46,6 @@
       <div id="todo-list" data-bind="template: 'list-template'"></div>
       <div id="todo-stats" data-bind="template: 'stats-template'"></div>
       <div id="todo-footer" data-bind="template: 'footer-template'"></div>
-      <div id="todo-languages" class="selection codestyle" data-bind="template: {name: 'option-template', foreach: language_options, templateOptions: {selected_value: selected_value} }"></div>
     </div>
 
     <div id="credits">
@@ -66,11 +65,8 @@
 
     <!-- Templates -->
     <script type="text/x-jquery-tmpl" id="header-template">
-      <div class="create-todo">
-        <div class="title"><h1 data-bind="text: title"></h1></div>
-
-        <div id="color-settings" data-bind="template: {name: 'priority-setting-template', foreach: window.settings_view_model.priority_settings}"></div>
-      </div>
+      <div class="title"><h1 data-bind="text: title"></h1></div>
+      <div id="color-settings" data-bind="template: {name: 'priority-setting-template', foreach: window.settings_view_model.priority_settings}"></div>
     </script>
 
     <script type="text/x-jquery-tmpl" id="create-template">
@@ -118,6 +114,14 @@
       <ul id="instructions">
         <li data-bind="text: instructions_text"></li>
       </ul>
+      <div id="todo-languages" class="selection codestyle" data-bind="template: {name: 'option-template', foreach: language_options, templateOptions: {selected_value: selected_value} }"></div>
+    </script>
+
+    <script type="text/x-jquery-tmpl" id="priority-setting-template">
+      <div class="priority-color-entry">
+        <div class="priority-text" data-bind="text: priority_text"></div>
+        <input data-bind="attr: {id: priority}, value: priority_color" class='priority-color-swatch colorpicker' data-text="hidden" data-hex="true"/>
+      </div>
     </script>
 
     <script type="text/x-jquery-tmpl" id="priority-swatch-picker-template">
@@ -125,13 +129,6 @@
         <span class="priority-picker-tooltip ui-tooltip-top" data-bind="visible: tooltip_visible">
           <div data-bind="template: {name: 'priority-picker-template', foreach: window.settings_view_model.priority_settings, templateOptions: {onSelectPriority: onSelectPriority} }"></div>
         </span>
-      </div>
-    </script>
-
-    <script type="text/x-jquery-tmpl" id="priority-setting-template">
-      <div class="priority-color-entry">
-        <div class="priority-text" data-bind="text: priority_text"></div>
-        <input data-bind="attr: {id: priority}, value: priority_color" class='priority-color-swatch colorpicker' data-text="hidden" data-hex="true"/>
       </div>
     </script>
 

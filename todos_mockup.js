@@ -7,26 +7,26 @@
 */
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 $(document).ready(function() {
-  var $all_priority_pickers, CreateTodoViewModel, LanguageOptionViewModel, PrioritiesSetting, PrioritySettingsViewModel, SettingsViewModel, SortingOptionViewModel, StatsViewModel, Todo, TodoListViewModel, TodoViewModel, create_view_model, footer_view_model, header_view_model, locale, priorities, stats_view_model, todo_list_view_model, todos, _i, _len, _ref;
+  var $all_priority_pickers, CreateTodoViewModel, FooterViewModel, HeaderViewModel, LanguageOptionViewModel, PrioritySetting, PrioritySettingsViewModel, SettingsViewModel, SortingOptionViewModel, StatsViewModel, Todo, TodoListViewModel, TodoViewModel, locale, priorities, todos, _i, _len, _ref;
   kb.locale_manager.setLocale('en');
-  PrioritiesSetting = (function() {
-    function PrioritiesSetting(attributes) {
+  PrioritySetting = (function() {
+    function PrioritySetting(attributes) {
       this.attributes = attributes;
     }
-    PrioritiesSetting.prototype.get = function(attribute_name) {
+    PrioritySetting.prototype.get = function(attribute_name) {
       return this.attributes[attribute_name];
     };
-    return PrioritiesSetting;
+    return PrioritySetting;
   })();
   priorities = {
     models: [
-      new PrioritiesSetting({
+      new PrioritySetting({
         id: 'high',
         color: '#c00020'
-      }), new PrioritiesSetting({
+      }), new PrioritySetting({
         id: 'medium',
         color: '#c08040'
-      }), new PrioritiesSetting({
+      }), new PrioritySetting({
         id: 'low',
         color: '#00ff60'
       })
@@ -38,14 +38,6 @@ $(document).ready(function() {
     this.option_group = 'lang';
     return this;
   };
-  _ref = kb.locale_manager.getLocales();
-  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-    locale = _ref[_i];
-    $('#todo-languages').append($("#option-template").tmpl(new LanguageOptionViewModel(locale)));
-  }
-  $('#todo-languages').find("#" + (kb.locale_manager.getLocale())).attr({
-    checked: 'checked'
-  });
   PrioritySettingsViewModel = function(model) {
     this.priority = model.get('id');
     this.priority_text = kb.locale_manager.get(this.priority);
@@ -53,17 +45,17 @@ $(document).ready(function() {
     return this;
   };
   SettingsViewModel = function(priority_settings) {
-    var model, _j, _len2;
+    var model, _i, _len;
     this.priority_settings = [];
-    for (_j = 0, _len2 = priority_settings.length; _j < _len2; _j++) {
-      model = priority_settings[_j];
+    for (_i = 0, _len = priority_settings.length; _i < _len; _i++) {
+      model = priority_settings[_i];
       this.priority_settings.push(new PrioritySettingsViewModel(model));
     }
     this.getColorByPriority = __bind(function(priority) {
-      var view_model, _k, _len3, _ref2;
-      _ref2 = this.priority_settings;
-      for (_k = 0, _len3 = _ref2.length; _k < _len3; _k++) {
-        view_model = _ref2[_k];
+      var view_model, _j, _len2, _ref;
+      _ref = this.priority_settings;
+      for (_j = 0, _len2 = _ref.length; _j < _len2; _j++) {
+        view_model = _ref[_j];
         if (view_model.priority === priority) {
           return view_model.priority_color;
         }
@@ -108,18 +100,18 @@ $(document).ready(function() {
       })
     ]
   };
-  header_view_model = {
-    title: "Todos"
+  HeaderViewModel = function() {
+    this.title = "Todos";
+    return this;
   };
-  $('#todo-header').append($("#header-template").tmpl(header_view_model));
+  $('#todo-header').append($("#header-template").tmpl(new HeaderViewModel()));
   CreateTodoViewModel = function() {
     this.input_placeholder_text = kb.locale_manager.get('placeholder_create');
     this.input_tooltip_text = kb.locale_manager.get('tooltip_create');
     this.priority_color = settings_view_model.default_priority_color;
     return this;
   };
-  create_view_model = new CreateTodoViewModel();
-  $('#todo-create').append($("#create-template").tmpl(create_view_model));
+  $('#todo-create').append($("#create-template").tmpl(new CreateTodoViewModel()));
   TodoViewModel = function(model) {
     this.text = model.get('text');
     this.created_at = model.get('created_at');
@@ -130,18 +122,17 @@ $(document).ready(function() {
     return this;
   };
   TodoListViewModel = function(todos) {
-    var model, _j, _len2;
+    var model, _i, _len;
     this.todos = [];
-    for (_j = 0, _len2 = todos.length; _j < _len2; _j++) {
-      model = todos[_j];
+    for (_i = 0, _len = todos.length; _i < _len; _i++) {
+      model = todos[_i];
       this.todos.push(new TodoViewModel(model));
     }
     this.sort_visible = this.todos.length > 0;
     this.sorting_options = [new SortingOptionViewModel('label_text'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_priority')];
     return true;
   };
-  todo_list_view_model = new TodoListViewModel(todos.models);
-  $("#todo-list").append($("#list-template").tmpl(todo_list_view_model));
+  $("#todo-list").append($("#list-template").tmpl(new TodoListViewModel(todos.models)));
   $('#todo-list-sorting').find('#label_created').attr({
     checked: 'checked'
   });
@@ -154,12 +145,20 @@ $(document).ready(function() {
       return prev + (cur.get('done_at') ? 0 : 1);
     }), 0);
   };
-  stats_view_model = new StatsViewModel(todos);
-  $('#todo-stats').append($("#stats-template").tmpl(stats_view_model));
-  footer_view_model = {
-    instructions_text: kb.locale_manager.get('instructions')
+  $('#todo-stats').append($("#stats-template").tmpl(new StatsViewModel(todos)));
+  FooterViewModel = function() {
+    this.instructions_text = kb.locale_manager.get('instructions');
+    return this;
   };
-  $('#todo-footer').append($("#footer-template").tmpl(footer_view_model));
+  $('#todo-footer').append($("#footer-template").tmpl(new FooterViewModel()));
+  _ref = kb.locale_manager.getLocales();
+  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+    locale = _ref[_i];
+    $('#todo-languages').append($("#option-template").tmpl(new LanguageOptionViewModel(locale)));
+  }
+  $('#todo-languages').find("#" + (kb.locale_manager.getLocale())).attr({
+    checked: 'checked'
+  });
   $all_priority_pickers = $('body').find('.priority-picker-tooltip');
   $('.colorpicker').mColorPicker();
   $('.priority-color-swatch').click(function() {

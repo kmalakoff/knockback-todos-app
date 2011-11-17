@@ -14,7 +14,7 @@ var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, par
   return child;
 }, __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 $(document).ready(function() {
-  var CreateTodoViewModel, LanguageOptionViewModel, LanguagesViewModel, PrioritiesSettingList, PrioritySettingsViewModel, SettingsViewModel, SortingOptionViewModel, StatsViewModel, Todo, TodoList, TodoListViewModel, TodoViewModel, create_view_model, footer_view_model, header_view_model, languages_view_model, priorities, stats_view_model, todo_list_view_model, todos, _ko_native_apply_bindings;
+  var CreateTodoViewModel, FooterViewModel, HeaderViewModel, LanguageOptionViewModel, PrioritiesSettingList, PrioritySetting, PrioritySettingsViewModel, SettingsViewModel, SortingOptionViewModel, StatsViewModel, Todo, TodoList, TodoListViewModel, TodoViewModel, priorities, todos, _ko_native_apply_bindings;
   kb.locale_manager.setLocale('en');
   kb.locale_change_observable = kb.triggeredObservable(kb.locale_manager, 'change');
   ko.bindingHandlers.dblclick = {
@@ -29,11 +29,19 @@ $(document).ready(function() {
       return _ko_native_apply_bindings(view_model, element);
     };
   }
+  PrioritySetting = (function() {
+    __extends(PrioritySetting, Backbone.Model);
+    function PrioritySetting() {
+      PrioritySetting.__super__.constructor.apply(this, arguments);
+    }
+    return PrioritySetting;
+  })();
   PrioritiesSettingList = (function() {
     __extends(PrioritiesSettingList, Backbone.Collection);
     function PrioritiesSettingList() {
       PrioritiesSettingList.__super__.constructor.apply(this, arguments);
     }
+    PrioritiesSettingList.prototype.model = PrioritySetting;
     PrioritiesSettingList.prototype.localStorage = new Store("kb_priorities");
     return PrioritiesSettingList;
   })();
@@ -44,25 +52,6 @@ $(document).ready(function() {
     this.option_group = 'lang';
     return this;
   };
-  LanguagesViewModel = function(locales) {
-    this.language_options = ko.observableArray(_.map(locales, function(locale) {
-      return new LanguageOptionViewModel(locale);
-    }));
-    this.current_language = ko.observable(kb.locale_manager.getLocale());
-    this.selected_value = ko.dependentObservable({
-      read: __bind(function() {
-        return this.current_language();
-      }, this),
-      write: __bind(function(new_locale) {
-        kb.locale_manager.setLocale(new_locale);
-        return this.current_language(new_locale);
-      }, this),
-      owner: this
-    });
-    return this;
-  };
-  languages_view_model = new LanguagesViewModel(kb.locale_manager.getLocales());
-  ko.applyBindings(languages_view_model, $('#todo-languages')[0]);
   PrioritySettingsViewModel = function(model) {
     this.priority = model.get('id');
     this.priority_text = kb.observable(kb.locale_manager, {
@@ -177,10 +166,11 @@ $(document).ready(function() {
   })();
   todos = new TodoList();
   todos.fetch();
-  header_view_model = {
-    title: "Todos"
+  HeaderViewModel = function() {
+    this.title = "Todos";
+    return this;
   };
-  ko.applyBindings(header_view_model, $('#todo-header')[0]);
+  ko.applyBindings(new HeaderViewModel(), $('#todo-header')[0]);
   CreateTodoViewModel = function() {
     var tooltip_visible;
     this.input_text = ko.observable('');
@@ -217,8 +207,7 @@ $(document).ready(function() {
     }, this);
     return this;
   };
-  create_view_model = new CreateTodoViewModel();
-  ko.applyBindings(create_view_model, $('#todo-create')[0]);
+  ko.applyBindings(new CreateTodoViewModel(), $('#todo-create')[0]);
   TodoViewModel = function(model) {
     var tooltip_visible;
     this.text = kb.observable(model, {
@@ -230,14 +219,14 @@ $(document).ready(function() {
       })
     }, this);
     this.edit_mode = ko.observable(false);
-    this.toggleEditMode = __bind(function() {
+    this.toggleEditMode = __bind(function(event) {
       if (!this.done()) {
         return this.edit_mode(!this.edit_mode());
       }
     }, this);
     this.onEnterEndEdit = __bind(function(event) {
       if (event.keyCode === 13) {
-        return this.toggleEditMode();
+        return this.edit_mode(false);
       }
     }, this);
     this.created_at = model.get('created_at');
@@ -324,14 +313,28 @@ $(document).ready(function() {
     }, this));
     return this;
   };
-  todo_list_view_model = new TodoListViewModel(todos);
-  ko.applyBindings(todo_list_view_model, $('#todo-list')[0]);
-  footer_view_model = {
-    instructions_text: kb.observable(kb.locale_manager, {
+  ko.applyBindings(new TodoListViewModel(todos), $('#todo-list')[0]);
+  FooterViewModel = function(locales) {
+    this.instructions_text = kb.observable(kb.locale_manager, {
       key: 'instructions'
-    })
+    });
+    this.current_language = ko.observable(kb.locale_manager.getLocale());
+    this.language_options = ko.observableArray(_.map(locales, function(locale) {
+      return new LanguageOptionViewModel(locale);
+    }));
+    this.selected_value = ko.dependentObservable({
+      read: __bind(function() {
+        return this.current_language();
+      }, this),
+      write: __bind(function(new_locale) {
+        kb.locale_manager.setLocale(new_locale);
+        return this.current_language(new_locale);
+      }, this),
+      owner: this
+    });
+    return this;
   };
-  ko.applyBindings(footer_view_model, $('#todo-footer')[0]);
+  ko.applyBindings(new FooterViewModel(kb.locale_manager.getLocales()), $('#todo-footer')[0]);
   StatsViewModel = function(todos) {
     this.collection_observable = kb.collectionObservable(todos);
     this.remaining_text = ko.dependentObservable(__bind(function() {
@@ -364,8 +367,7 @@ $(document).ready(function() {
     }, this);
     return this;
   };
-  stats_view_model = new StatsViewModel(todos);
-  ko.applyBindings(stats_view_model, $('#todo-stats')[0]);
+  ko.applyBindings(new StatsViewModel(todos), $('#todo-stats')[0]);
   return _.delay((function() {
     priorities.fetch({
       success: function(collection) {
