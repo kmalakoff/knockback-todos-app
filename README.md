@@ -198,7 +198,7 @@ This application extends the "Todos - Classic" by adding ORM for PrioritySetting
 * **priority-picker-template:** renders the priority labels and colors, and custom binds the action to be taken when the color swatch is selected (for either setting the default new Todo priority or updating an existing Todo's priority)
 
 
-# Relationships between Models and ViewModels - One-To-Many
+# Relationships between Models and ViewModels - Often One-To-Many
 
 In the Todos applications, there is a one-to-one relationship between Models and ViewModels, but the distinction is important:
 
@@ -228,11 +228,12 @@ TodoViewModel = (model) ->
     model.save({priority: ko.utils.unwrapObservable(@priority)})
 ```
 
-# Relationships between ViewModels and Views
+# Relationships between ViewModels and Views/Templates
 
 You can see in the Todos application that there is a many-to-one relationship between the LanguagesViewModel and TodoListViewModel with the 'option-template' View. Each ViewModel provides a similar signature of option items view data to the template, but the options ViewModels are different: LanguageOptionViewModel and SortingOptionViewModel, respectively.
 
 The language options are mapped from the available locales in the locale manager through a LanguageOptionViewModel:
+
 ```coffeescript
 LanguagesViewModel = (locales) ->
   @current_language = ko.observable(kb.locale_manager.getLocale())
@@ -241,6 +242,7 @@ LanguagesViewModel = (locales) ->
 ```
 
 The sort options are hard coded but identifier and exposed through a SortingOptionViewModel:
+
 ```coffeescript
 TodoListViewModel = (todos) ->
   @sort_mode = ko.observable('label_text')
@@ -251,15 +253,18 @@ TodoListViewModel = (todos) ->
 Finally, each option is rendered through a 'foreach' in a parent template using an 'option-template' template:
 
 Language options:
+
 ```html
 <div id="todo-languages" class="selection codestyle" data-bind="template: {name: 'option-template', foreach: language_options, templateOptions: {selected_value: selected_value} }"></div>
 ```
 
 Sorting options:
+
 ```html
 <div id="todo-list-sorting" class="selection codestyle" data-bind="template: {name: 'option-template', foreach: sorting_options, templateOptions: {selected_value: selected_value} }"></div>
 ```
 The template per option:
+
 ```html
 <script type="text/x-jquery-tmpl" id="option-template">
   <div class="option"><input type="radio" data-bind="attr: {id: id, name: option_group}, value: id, checked: $item.selected_value"><label data-bind="attr: {for: id}, text: label"></label></div>
@@ -861,19 +866,3 @@ TodoViewModel = (model) ->
 ```
 
 **Note:** Knockback's observables are all ko.dependentObservables behind-the-scenes so the same rules apply to them as for any ko.dependentObservable
-
-### Template Syntax
-
-This is really small, but I've encountered it a few times. You have to be careful with curly braces inside your templates.
-
-"} }" is right:
-
-```html
-<div id="todo-list-sorting" class="selection codestyle" data-bind="template: {name: 'option-template', foreach: sorting_options, templateOptions: {selected_value: selected_value} }"></div>
-```
-
-"}}" is wrong (the "}}" is interpreted as template control flow by jquery-tmpl)
-
-```html
-<div id="todo-list-sorting" class="selection codestyle" data-bind="template: {name: 'option-template', foreach: sorting_options, templateOptions: {selected_value: selected_value}}"></div>
-```
