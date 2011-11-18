@@ -399,7 +399,9 @@ $(document).ready(function() {
         }
       }
     });
-    $('.colorpicker').mColorPicker();
+    $('.colorpicker').mColorPicker({
+      imageFolder: 'css/images/'
+    });
     return $('.colorpicker').bind('colorpicked', function() {
       var model;
       model = priorities.get($(this).attr('id'));

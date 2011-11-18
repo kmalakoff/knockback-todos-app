@@ -165,7 +165,9 @@ $(document).ready(function() {
     checked: 'checked'
   });
   $all_priority_pickers = $('body').find('.priority-picker-tooltip');
-  $('.colorpicker').mColorPicker();
+  $('.colorpicker').mColorPicker({
+    imageFolder: 'css/images/'
+  });
   $('.priority-color-swatch').click(function() {
     var $priority_picker;
     $priority_picker = $(this).children('.priority-picker-tooltip');

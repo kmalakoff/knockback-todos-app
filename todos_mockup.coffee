@@ -148,7 +148,7 @@ $(document).ready(->
   ###################################
 
   $all_priority_pickers = $('body').find('.priority-picker-tooltip')
-  $('.colorpicker').mColorPicker()
+  $('.colorpicker').mColorPicker({imageFolder: 'css/images/'})
   $('.priority-color-swatch').click(->
     $priority_picker = $(this).children('.priority-picker-tooltip')
     $all_priority_pickers.not($priority_picker).hide()
