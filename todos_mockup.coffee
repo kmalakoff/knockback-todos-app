@@ -139,8 +139,8 @@ $(document).ready(->
   $('#todo-languages').find("##{kb.locale_manager.getLocale()}").attr(checked:'checked')
 
   # Destroy when finished with the view models
-  # kb.vmDestroy(window.settings_view_model)
-  # kb.vmDestroy(app_view_model)
+  # kb.vmRelease(window.settings_view_model)
+  # kb.vmRelease(app_view_model)
 
   ###################################
   # Dynamic Interactions

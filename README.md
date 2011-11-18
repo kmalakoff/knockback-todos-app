@@ -754,7 +754,7 @@ class HomeView
     ko.applyBindings(@view_model, $('#home_view')[0])
 
   destroy: ->
-    kb.vmDestroy(@view_model)
+    kb.vmRelease(@view_model)
 ```
 
 **Note:** you are seeing correctly. With Knockback, you no longer need to use Backbone.Views!

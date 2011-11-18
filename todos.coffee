@@ -239,8 +239,8 @@ $(document).ready(->
   ko.applyBindings(app_view_model, $('#todoapp')[0])
 
   # Destroy when finished with the view models
-  # kb.vmDestroy(window.settings_view_model)
-  # kb.vmDestroy(app_view_model)
+  # kb.vmRelease(window.settings_view_model)
+  # kb.vmRelease(app_view_model)
 
   ###################################
   # Load the prioties late to show the dynamic nature of Knockback with Backbone.ModelRef

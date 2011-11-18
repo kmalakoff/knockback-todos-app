@@ -106,5 +106,5 @@ $(document).ready(->
   ko.applyBindings(app_view_model, $('#todoapp')[0])
 
   # Destroy when finished with the view model
-  # kb.vmDestroy(app_view_model)
+  # kb.vmRelease(app_view_model)
 )
