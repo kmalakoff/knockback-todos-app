@@ -16,9 +16,8 @@ class LocaleManager
     culture_map = @translations_by_locale[@locale_identifier] if @locale_identifier
     return '' if not culture_map
     string = if culture_map.hasOwnProperty(string_id) then culture_map[string_id] else ''
-    return string if arguments == 1
-    string = string.replace("{#{index}}", arg) for arg, index in Array.prototype.slice.call(arguments, 1)
-    return string
+    return string if arguments.length == 1
+    return Knockback.toFormattedString.apply(null, [string].concat(Array.prototype.slice.call(arguments, 1)))
 
   getLocale: -> return @locale_identifier
   setLocale: (locale_identifier) ->

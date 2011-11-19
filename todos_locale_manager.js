@@ -22,7 +22,7 @@ LocaleManager = (function() {
     }
   }
   LocaleManager.prototype.get = function(string_id, parameters) {
-    var arg, culture_map, index, string, _len, _ref;
+    var culture_map, string;
     if (!string_id) {
       return '';
     }
@@ -33,15 +33,10 @@ LocaleManager = (function() {
       return '';
     }
     string = culture_map.hasOwnProperty(string_id) ? culture_map[string_id] : '';
-    if (arguments === 1) {
+    if (arguments.length === 1) {
       return string;
     }
-    _ref = Array.prototype.slice.call(arguments, 1);
-    for (index = 0, _len = _ref.length; index < _len; index++) {
-      arg = _ref[index];
-      string = string.replace("{" + index + "}", arg);
-    }
-    return string;
+    return Knockback.toFormattedString.apply(null, [string].concat(Array.prototype.slice.call(arguments, 1)));
   };
   LocaleManager.prototype.getLocale = function() {
     return this.locale_identifier;
