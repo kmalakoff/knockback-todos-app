@@ -12,6 +12,7 @@ class LocaleManager
     @setLocale(locale_identifier) if locale_identifier
 
   get: (string_id, parameters) ->
+    return '' if not string_id
     culture_map = @translations_by_locale[@locale_identifier] if @locale_identifier
     return '' if not culture_map
     string = if culture_map.hasOwnProperty(string_id) then culture_map[string_id] else ''

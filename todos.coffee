@@ -210,17 +210,11 @@ $(document).ready(->
 
   # Stats Footer
   StatsViewModel = (todos) ->
-    @collection_observable = kb.collectionObservable(todos)
-    @remaining_text = ko.dependentObservable(=>
-      kb.locale_change_observable() # use to register a localization dependency
-      count = @collection_observable.collection().remainingCount(); return '' if not count
-      return kb.locale_manager.get((if count == 1 then 'remaining_template_s' else 'remaining_template_pl'), count)
-    )
-    @clear_text = ko.dependentObservable(=>
-      kb.locale_change_observable() # use to register a localization dependency
-      count = @collection_observable.collection().doneCount(); return '' if not count
-      return kb.locale_manager.get((if count == 1 then 'clear_template_s' else 'clear_template_pl'), count)
-    )
+    @co = kb.collectionObservable(todos)
+    @remaining_text_key = ko.dependentObservable(=> return if (@co.collection().remainingCount()==0) then null else (if (todos.remainingCount() == 1) then 'remaining_template_s' else 'remaining_template_pl'))
+    @remaining_text = kb.observable(kb.locale_manager, {key: @remaining_text_key, args: => @co.collection().remainingCount()})
+    @clear_text_key = ko.dependentObservable(=> return if (@co.collection().doneCount()==0) then null else (if (todos.doneCount() == 1) then 'remaining_template_s' else 'remaining_template_pl'))
+    @clear_text = kb.observable(kb.locale_manager, {key: @clear_text_key, args: => @co.collection().doneCount()})
     @onDestroyDone = => model.destroy() for model in todos.allDone()
     return this
 

@@ -336,25 +336,41 @@ $(document).ready(function() {
     return this;
   };
   StatsViewModel = function(todos) {
-    this.collection_observable = kb.collectionObservable(todos);
-    this.remaining_text = ko.dependentObservable(__bind(function() {
-      var count;
-      kb.locale_change_observable();
-      count = this.collection_observable.collection().remainingCount();
-      if (!count) {
-        return '';
+    this.co = kb.collectionObservable(todos);
+    this.remaining_text_key = ko.dependentObservable(__bind(function() {
+      if (this.co.collection().remainingCount() === 0) {
+        return null;
+      } else {
+        if (todos.remainingCount() === 1) {
+          return 'remaining_template_s';
+        } else {
+          return 'remaining_template_pl';
+        }
       }
-      return kb.locale_manager.get((count === 1 ? 'remaining_template_s' : 'remaining_template_pl'), count);
     }, this));
-    this.clear_text = ko.dependentObservable(__bind(function() {
-      var count;
-      kb.locale_change_observable();
-      count = this.collection_observable.collection().doneCount();
-      if (!count) {
-        return '';
+    this.remaining_text = kb.observable(kb.locale_manager, {
+      key: this.remaining_text_key,
+      args: __bind(function() {
+        return this.co.collection().remainingCount();
+      }, this)
+    });
+    this.clear_text_key = ko.dependentObservable(__bind(function() {
+      if (this.co.collection().doneCount() === 0) {
+        return null;
+      } else {
+        if (todos.doneCount() === 1) {
+          return 'remaining_template_s';
+        } else {
+          return 'remaining_template_pl';
+        }
       }
-      return kb.locale_manager.get((count === 1 ? 'clear_template_s' : 'clear_template_pl'), count);
     }, this));
+    this.clear_text = kb.observable(kb.locale_manager, {
+      key: this.clear_text_key,
+      args: __bind(function() {
+        return this.co.collection().doneCount();
+      }, this)
+    });
     this.onDestroyDone = __bind(function() {
       var model, _i, _len, _ref, _results;
       _ref = todos.allDone();

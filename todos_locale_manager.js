@@ -23,6 +23,9 @@ LocaleManager = (function() {
   }
   LocaleManager.prototype.get = function(string_id, parameters) {
     var arg, culture_map, index, string, _len, _ref;
+    if (!string_id) {
+      return '';
+    }
     if (this.locale_identifier) {
       culture_map = this.translations_by_locale[this.locale_identifier];
     }
