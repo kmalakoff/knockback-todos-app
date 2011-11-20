@@ -148,7 +148,6 @@ In a real-world app, you may merge some of these ViewModels and templates or to 
 
 **ViewModels**
 
-* **HeaderViewModel:** just provides the title "Todos"
 * **CreateTodoViewModel:** provides properties to configure the new todo input element (placeholder text, etc) and provides a hook to the input element in the template so the ViewModel can create a new Todo Model when Enter is pressed
 * **TodoViewModel:** provides properties for rendering a Todo Model (text, done state, etc), and provides the hooks to the template elements so it can both perform actions on the Model (eg. change its done state and text) and to change the css classes on the elements in the View to toggle between edit/view modes for the Todo
 * **TodoListViewModel:** provides all of the TodoViewModels to render each Todo
@@ -157,7 +156,6 @@ In a real-world app, you may merge some of these ViewModels and templates or to 
 
 **Views (jQuery-Tmpl templates)**
 
-* **Header Section:** binds a div with the title text from the HeaderViewModel
 * **Create Section:** binds the input element for adding a new Todo and binds the key events to the CreateTodoViewModel for the Enter key
 * **List Section:** binds an unordered list element with a foreach template to render each of the Todos
 * **item-template:** binds all the elements to render a Todo (in both view and edit modes) and binds the TodoViewModel handlers like double click to enter edit mode, changing the Todo model's done state when the checkbox state changes, etc
@@ -165,8 +163,6 @@ In a real-world app, you may merge some of these ViewModels and templates or to 
 * **Footer Section:** binds the localized instructions text from FooterViewModel
 
 **Note:** In order to provide localized text, all text was refactored out into templates which is why there is so many templates where there were few before.
-**Note:** the Header Section is not really needed in this application, but in the "Todos - Knockback Complete" application, additional functionality will be added to it.
-
 
 # MVVM in "Todos - Knockback Complete"/"Todos - Mockup"
 This application extends the "Todos - Classic" by adding ORM for PrioritySettings/PrioritiesSettingList to configure display colors based on Todo priority, adding the priority localized labels and colors to the relevant views ('Header Section' for global settings editing, 'Create Section' for new Todos' priority, and 'item-template' to display and edit the Todo's priority), adding list sorting options into the 'List Section', and  localization options to the 'Footer Section'.
@@ -189,7 +185,7 @@ This application extends the "Todos - Classic" by adding ORM for PrioritySetting
 
 **Views (jQuery-Tmpl templates)**
 
-* **Header Section:** bindings upgraded to render the priority labels and colors using the 'priority-setting-template' template
+* **Header Section:** bindings added to render the priority labels and colors using the 'priority-setting-template' template
 * **Create Section:** bindings upgraded to render the priority colors and bind the tooltip visibility template/handlers
 * **List Section:** bindings upgraded to render the sorting options and handlers
 * **item-template:** bindings upgraded to render the priority colors and bind the tooltip visibility template/handlers

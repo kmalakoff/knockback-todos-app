@@ -89,11 +89,6 @@ $(document).ready(->
   # MVVM: http://en.wikipedia.org/wiki/Model_View_ViewModel
   ###################################
 
-  # Header
-  HeaderViewModel = ->
-    @title = "Todos"
-    @
-
   CreateTodoViewModel = ->
     @input_placeholder_text = kb.locale_manager.get('placeholder_create')
     @input_tooltip_text = kb.locale_manager.get('tooltip_create')
@@ -129,7 +124,6 @@ $(document).ready(->
 
   window.settings_view_model = new SettingsViewModel(priorities.models)
   app_view_model =
-    header: new HeaderViewModel()
     create: new CreateTodoViewModel()
     todo_list: new TodoListViewModel(todos.models)
     footer: new FooterViewModel(kb.locale_manager.getLocales())

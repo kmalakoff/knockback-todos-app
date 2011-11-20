@@ -56,7 +56,7 @@ $(document).ready(function() {
       });
       return this.create.input_text('');
     };
-    return true;
+    return this;
   };
   TodoViewModel = function(model) {
     this.text = kb.observable(model, {

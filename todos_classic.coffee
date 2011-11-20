@@ -38,7 +38,7 @@ $(document).ready(->
       return true if (!text || event.keyCode != 13)
       todos.create({text: text})
       @create.input_text('')
-    return true
+    @
 
   TodoViewModel = (model) ->
     @text = kb.observable(model, {key: 'text', write: ((text) -> model.save({text: text}))}, this)

@@ -121,11 +121,6 @@ $(document).ready(->
   # MVVM: http://en.wikipedia.org/wiki/Model_View_ViewModel
   ###################################
 
-  # Header
-  HeaderViewModel = ->
-    @title = "Todos"
-    @
-
   CreateTodoViewModel = ->
     @input_text = ko.observable('')
     @input_placeholder_text = kb.observable(kb.locale_manager, {key: 'placeholder_create'})
@@ -225,7 +220,6 @@ $(document).ready(->
     new Backbone.ModelRef(priorities, 'low')
   ])
   app_view_model =
-    header: new HeaderViewModel()
     create: new CreateTodoViewModel()
     todo_list: new TodoListViewModel(todos)
     footer: new FooterViewModel(kb.locale_manager.getLocales())

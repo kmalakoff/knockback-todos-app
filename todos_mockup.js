@@ -7,7 +7,7 @@
 */
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 $(document).ready(function() {
-  var $all_priority_pickers, CreateTodoViewModel, FooterViewModel, HeaderViewModel, LanguageOptionViewModel, PrioritySetting, PrioritySettingsViewModel, SettingsViewModel, SortingOptionViewModel, StatsViewModel, Todo, TodoListViewModel, TodoViewModel, app_view_model, priorities, todos;
+  var $all_priority_pickers, CreateTodoViewModel, FooterViewModel, LanguageOptionViewModel, PrioritySetting, PrioritySettingsViewModel, SettingsViewModel, SortingOptionViewModel, StatsViewModel, Todo, TodoListViewModel, TodoViewModel, app_view_model, priorities, todos;
   kb.locale_manager.setLocale('en');
   PrioritySetting = (function() {
     function PrioritySetting(attributes) {
@@ -99,10 +99,6 @@ $(document).ready(function() {
       })
     ]
   };
-  HeaderViewModel = function() {
-    this.title = "Todos";
-    return this;
-  };
   CreateTodoViewModel = function() {
     this.input_placeholder_text = kb.locale_manager.get('placeholder_create');
     this.input_tooltip_text = kb.locale_manager.get('tooltip_create');
@@ -151,7 +147,6 @@ $(document).ready(function() {
   };
   window.settings_view_model = new SettingsViewModel(priorities.models);
   app_view_model = {
-    header: new HeaderViewModel(),
     create: new CreateTodoViewModel(),
     todo_list: new TodoListViewModel(todos.models),
     footer: new FooterViewModel(kb.locale_manager.getLocales()),
