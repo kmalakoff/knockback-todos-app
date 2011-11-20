@@ -37,14 +37,14 @@ $(document).ready(->
     @id = locale
     @label = kb.locale_manager.localeToLabel(locale)
     @option_group = 'lang'
-    return this
+    @
 
   # Priority Settings
   PrioritySettingsViewModel = (model) ->
     @priority = model.get('id')
     @priority_text = kb.locale_manager.get(@priority)
     @priority_color = model.get('color')
-    return this
+    @
 
   SettingsViewModel = (priority_settings) ->
     @priority_settings = []
@@ -54,14 +54,14 @@ $(document).ready(->
       return ''
     @default_priority = @priority_settings[1].priority
     @default_priority_color = @getColorByPriority(@default_priority)
-    return this
+    @
 
   # Content
   SortingOptionViewModel = (string_id) ->
     @id = string_id
     @label =  kb.locale_manager.get(string_id)
     @option_group = 'list_sort'
-    return this
+    @
 
   ###################################
   # Knockback-powered enhancements - END
@@ -92,40 +92,40 @@ $(document).ready(->
   # Header
   HeaderViewModel = ->
     @title = "Todos"
-    return this
+    @
 
   CreateTodoViewModel = ->
     @input_placeholder_text = kb.locale_manager.get('placeholder_create')
     @input_tooltip_text = kb.locale_manager.get('tooltip_create')
     @priority_color = window.settings_view_model.default_priority_color
-    return this
+    @
 
   TodoViewModel = (model) ->
     @text = model.get('text')
     @created_at = model.get('created_at')
     @done_text = "#{kb.locale_manager.get('label_completed')}: #{kb.locale_manager.localizeDate(model.get('done_at'))}" if !!model.get('done_at')
     @priority_color = window.settings_view_model.getColorByPriority(model.get('priority'))
-    return this
+    @
 
   TodoListViewModel = (todos) ->
     @todos = []
     @todos.push(new TodoViewModel(model)) for model in todos
     @sort_visible = (@todos.length>0)
     @sorting_options = [new SortingOptionViewModel('label_text'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_priority')]
-    return true
+    @
 
   # Stats Footer
   StatsViewModel = (todos) ->
     @total = todos.models.length
     @done = todos.models.reduce(((prev,cur)-> return prev + if cur.get('done_at') then 1 else 0), 0)
     @remaining = todos.models.reduce(((prev,cur)-> return prev + if cur.get('done_at') then 0 else 1), 0)
-    return this
+    @
 
   FooterViewModel = (locales) ->
     @instructions_text = kb.locale_manager.get('instructions')
     @language_options = []
     @language_options.push(new LanguageOptionViewModel(locale)) for locale in locales
-    return this
+    @
 
   window.settings_view_model = new SettingsViewModel(priorities.models)
   app_view_model =

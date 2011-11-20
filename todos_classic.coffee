@@ -48,12 +48,12 @@ $(document).ready(->
 
     @done = kb.observable(model, {key: 'done', write: ((done) -> model.save({done: done})) }, this)
     @destroyTodo = => model.destroy()
-    return this
+    @
 
   TodoListViewModel = (todos) ->
     @todos = ko.observableArray([])
     @collection_observable = kb.collectionObservable(todos, @todos, { view_model: TodoViewModel })
-    return true
+    @
 
   # Stats Footer
   StatsViewModel = (todos) ->
@@ -67,7 +67,7 @@ $(document).ready(->
       return "Clear #{count} completed #{if count == 1 then 'item' else 'items'}."
     )
     @onDestroyDone = => model.destroy() for model in todos.allDone()
-    return this
+    @
 
   app_view_model =
     create: new CreateTodoViewModel()

@@ -292,7 +292,7 @@ class Todo extends Backbone.Model
 TodoListViewModel = (todos) ->
   @todos = ko.observableArray([])
   ...
-  return this     # "return this" or else Coffeescript will return the last statement
+  @           # must return this or Coffeescript will return the last statement which is not what we want!
 todo_list_view_model = new TodoListViewModel(todos)
 ```
 I prefer this light-class way to implement my view models because "this" is available within the scope of dependent observables which require a view model parameter (in this case: "this") if they are writable. For consistency in the Todo app, I only use these patterns of view models, but simple object work great for simple scenarios.
@@ -510,7 +510,7 @@ SortingOptionViewModel = (string_id) ->
   @id = string_id
   @label = kb.observable(kb.locale_manager, {key: string_id})
   @option_group = 'list_sort'
-  return this
+  @           # must return this or Coffeescript will return the last statement which is not what we want!
 ```
 
 * **id**: used in the callback to update the selection
@@ -576,7 +576,7 @@ PrioritySettingsViewModel = (model) ->
   @priority = model.get('id')
   @priority_text = kb.observable(kb.locale_manager, {key: @priority})
   @priority_color = kb.observable(model, {key: 'color'})
-  return this
+  @           # must return this or Coffeescript will return the last statement which is not what we want!
 ```
 
 The tricky part is to set up the dependencies (see below section "Knockout Dependencies") for the settings display, the tooltip, and the model priority swatch. To do this, I wrote a small helper method "createColorsDependency" to manually create dependencies on all of the view model properties (which are themselves dependent on the model's 'color' attribute through the PrioritySettingsViewModel):
@@ -646,7 +646,7 @@ SettingsViewModel = (priority_settings) ->
       when 'high' then return 0
       when 'medium' then return 1
       when 'low' then return 2
-  return this
+  @           # must return this or Coffeescript will return the last statement which is not what we want!
 ```
 
 **Note:** I made the "priorityToRank" helper part of the settings view model rather than the priority model itself because it is view-related, not data related (as I mentioned in the "Frameworks Introduction" for Knockout, Knockout does not make this important distinction and would serialize the view ranking into JSON sent to the server despite it being a view-only value).
