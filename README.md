@@ -15,6 +15,8 @@
 
 Knockback-Todos: the obligatory todo app for Knockback.js.
 
+### Try the live demo: http://kmalakoff.github.com/knockback-todos/
+
 You can get Knockback.js:
 
 * [Development version][1]
