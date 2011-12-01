@@ -17,7 +17,7 @@ if (!this._ || !this._.VERSION) {
 }
 this.Knockback || (this.Knockback = {});
 this.kb || (this.kb = this.Knockback);
-Knockback.VERSION = '0.11.4';
+Knockback.VERSION = '0.11.5';
 Knockback.locale_manager;
 Knockback.wrappedObservable = function(instance) {
   if (!instance._kb_observable) {
@@ -40,7 +40,7 @@ Knockback.vmSetToDefault = function(view_model) {
   return _results;
 };
 Knockback.vmRelease = function(view_model) {
-  if (view_model instanceof kb.ViewModel) {
+  if (view_model instanceof kb.ViewModel_RCBase) {
     view_model.release();
     return;
   }
@@ -54,7 +54,7 @@ Knockback.vmReleaseObservables = function(view_model, keys) {
     if (!value) {
       continue;
     }
-    if (!(ko.isObservable(value) || (value instanceof kb.Observables) || (value instanceof kb.ViewModel))) {
+    if (!(ko.isObservable(value) || (value instanceof kb.Observables) || (value instanceof kb.ViewModel_RCBase))) {
       continue;
     }
     if (keys && !_.contains(keys, key)) {
@@ -66,7 +66,7 @@ Knockback.vmReleaseObservables = function(view_model, keys) {
   return _results;
 };
 Knockback.vmReleaseObservable = function(observable) {
-  if (!(ko.isObservable(observable) || (observable instanceof kb.Observables) || (observable instanceof kb.ViewModel))) {
+  if (!(ko.isObservable(observable) || (observable instanceof kb.Observables) || (observable instanceof kb.ViewModel_RCBase))) {
     return;
   }
   if (observable.destroy) {
@@ -667,6 +667,11 @@ Knockback.Observable = (function() {
     if (!this.options) {
       throw new Error('Observable: options is missing');
     }
+    if (_.isString(this.options) || ko.isObservable(this.options)) {
+      this.options = {
+        key: this.options
+      };
+    }
     if (!this.options.key) {
       throw new Error('Observable: options.key is missing');
     }
@@ -858,8 +863,8 @@ Knockback.observable = function(model, options, view_model) {
   throw new Error('Knockback: Dependency alert! knockback_core.js must be included before this file');
 }
 Knockback.Observables = (function() {
-  function Observables(model, mappings_info, view_model) {
-    var mapping_info, view_model_property_name, _ref;
+  function Observables(model, mappings_info, view_model, options_or_writeable) {
+    var is_string, mapping_info, view_model_property_name, write, _ref, _ref2;
     this.model = model;
     this.mappings_info = mappings_info;
     this.view_model = view_model;
@@ -869,10 +874,28 @@ Knockback.Observables = (function() {
     if (!this.mappings_info) {
       throw new Error('Observables: mappings_info is missing');
     }
-    _ref = this.mappings_info;
-    for (view_model_property_name in _ref) {
-      mapping_info = _ref[view_model_property_name];
-      this.view_model[view_model_property_name] = kb.observable(this.model, mapping_info, this.view_model);
+    if (!!options_or_writeable && ((_.isBoolean(options_or_writeable) && options_or_writeable) || !!options_or_writeable.write)) {
+      write = _.isBoolean(options_or_writeable) ? options_or_writeable : !!options_or_writeable.write;
+      _ref = this.mappings_info;
+      for (view_model_property_name in _ref) {
+        mapping_info = _ref[view_model_property_name];
+        is_string = _.isString(mapping_info);
+        if (is_string || !mapping_info.hasOwnProperty(write)) {
+          mapping_info = is_string ? {
+            key: mapping_info,
+            write: write
+          } : _.extend({
+            write: write
+          }, mapping_info);
+        }
+        this.view_model[view_model_property_name] = kb.observable(this.model, mapping_info, this.view_model);
+      }
+    } else {
+      _ref2 = this.mappings_info;
+      for (view_model_property_name in _ref2) {
+        mapping_info = _ref2[view_model_property_name];
+        this.view_model[view_model_property_name] = kb.observable(this.model, mapping_info, this.view_model);
+      }
     }
   }
   Observables.prototype.destroy = function() {
@@ -901,8 +924,8 @@ Knockback.Observables = (function() {
   };
   return Observables;
 })();
-Knockback.observables = function(model, mappings_info, view_model) {
-  return new Knockback.Observables(model, mappings_info, view_model);
+Knockback.observables = function(model, mappings_info, view_model, options) {
+  return new Knockback.Observables(model, mappings_info, view_model, options);
 };
 /*
   knockback_triggered_observable.js
@@ -993,7 +1016,14 @@ Knockback.triggeredObservable = function(model, event_name) {
     https://github.com/kmalakoff/knockback/blob/master/LICENSE
 */
 var AttributeConnector;
-var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
+  for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
+  function ctor() { this.constructor = child; }
+  ctor.prototype = parent.prototype;
+  child.prototype = new ctor;
+  child.__super__ = parent.prototype;
+  return child;
+};
 if (!this.Knockback) {
   throw new Error('Knockback: Dependency alert! knockback_core.js must be included before this file');
 }
@@ -1041,13 +1071,42 @@ AttributeConnector = (function() {
   };
   return AttributeConnector;
 })();
+Knockback.ViewModel_RCBase = (function() {
+  function ViewModel_RCBase() {
+    this.ref_count = 1;
+  }
+  ViewModel_RCBase.prototype._destroy = function() {
+    return kb.vmReleaseObservables(view_model);
+  };
+  ViewModel_RCBase.prototype.retain = function() {
+    if (this.ref_count <= 0) {
+      throw new Error("ViewModel: ref_count is corrupt: " + this.ref_count);
+    }
+    this.ref_count++;
+    return this;
+  };
+  ViewModel_RCBase.prototype.release = function() {
+    if (this.ref_count <= 0) {
+      throw new Error("ViewModel: ref_count is corrupt: " + this.ref_count);
+    }
+    this.ref_count--;
+    if (!this.ref_count) {
+      this._destroy();
+    }
+    return this;
+  };
+  ViewModel_RCBase.prototype.refCount = function() {
+    return this.ref_count;
+  };
+  return ViewModel_RCBase;
+})();
 Knockback.ViewModel = (function() {
+  __extends(ViewModel, kb.ViewModel_RCBase);
   function ViewModel(model, options, _kb_view_model) {
     var key, missing, _i, _len;
     this.model = model;
     this.options = options != null ? options : {};
     this._kb_view_model = _kb_view_model;
-    this.ref_count = 1;
     if (!this.model) {
       throw new Error('ViewModel: model is missing');
     }
@@ -1091,26 +1150,6 @@ Knockback.ViewModel = (function() {
     if (this._kb_observables) {
       return this._kb_observables = null;
     }
-  };
-  ViewModel.prototype.retain = function() {
-    if (this.ref_count <= 0) {
-      throw new Error("ViewModel: ref_count is corrupt: " + this.ref_count);
-    }
-    this.ref_count++;
-    return this;
-  };
-  ViewModel.prototype.release = function() {
-    if (this.ref_count <= 0) {
-      throw new Error("ViewModel: ref_count is corrupt: " + this.ref_count);
-    }
-    this.ref_count--;
-    if (this.ref_count === 0) {
-      this._destroy(this);
-    }
-    return this;
-  };
-  ViewModel.prototype.refCount = function() {
-    return this.ref_count;
   };
   ViewModel.prototype._onModelLoaded = function(model) {
     var key, _results;
