@@ -16,6 +16,7 @@
 Knockback-Todos: the obligatory todo app for Knockback.js.
 
 ### Try the live demo: http://kmalakoff.github.com/knockback-todos/
+### Or checkout the website: http://kmalakoff.github.com/knockback/
 
 You can get Knockback.js:
 
@@ -216,14 +217,14 @@ The CreateTodoViewModel sets the default priority for new Todos when you select 
 
 ```coffeescript
 CreateTodoViewModel = ->
-  @onSelectPriority = (event) ->
+  @onSelectPriority = (view_model, event) ->
     settings_view_model.default_priority(ko.utils.unwrapObservable(@priority))
 ```
 The TodoViewModel sets the priority for its Todos Model when you select the priority:
 
 ```coffeescript
 TodoViewModel = (model) ->
-  @onSelectPriority = (event) ->
+  @onSelectPriority = (view_model, event) ->
     model.save({priority: ko.utils.unwrapObservable(@priority)})
 ```
 

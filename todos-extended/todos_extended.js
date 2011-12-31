@@ -179,7 +179,7 @@ $(document).ready(function() {
     this.input_tooltip_text = kb.observable(kb.locale_manager, {
       key: 'tooltip_create'
     });
-    this.addTodo = function(event) {
+    this.addTodo = function(view_model, event) {
       var text;
       text = this.create.input_text();
       if (!text || event.keyCode !== 13) {
@@ -196,7 +196,7 @@ $(document).ready(function() {
     });
     this.tooltip_visible = ko.observable(false);
     tooltip_visible = this.tooltip_visible;
-    this.onSelectPriority = function(event) {
+    this.onSelectPriority = function(view_model, event) {
       event.stopPropagation();
       tooltip_visible(false);
       return window.settings_view_model.default_priority(ko.utils.unwrapObservable(this.priority));
@@ -217,12 +217,12 @@ $(document).ready(function() {
       })
     }, this);
     this.edit_mode = ko.observable(false);
-    this.toggleEditMode = __bind(function(event) {
+    this.toggleEditMode = __bind(function() {
       if (!this.done()) {
         return this.edit_mode(!this.edit_mode());
       }
     }, this);
-    this.onEnterEndEdit = __bind(function(event) {
+    this.onEnterEndEdit = __bind(function(view_model, event) {
       if (event.keyCode === 13) {
         return this.edit_mode(false);
       }
@@ -258,7 +258,7 @@ $(document).ready(function() {
     });
     this.tooltip_visible = ko.observable(false);
     tooltip_visible = this.tooltip_visible;
-    this.onSelectPriority = function(event) {
+    this.onSelectPriority = function(view_model, event) {
       event.stopPropagation();
       tooltip_visible(false);
       return model.save({
@@ -411,7 +411,7 @@ $(document).ready(function() {
       }
     });
     $('.colorpicker').mColorPicker({
-      imageFolder: 'css/images/'
+      imageFolder: '../css/images/'
     });
     return $('.colorpicker').bind('colorpicked', function() {
       var model;

@@ -45,7 +45,7 @@ $(document).ready(function() {
   todos.fetch();
   CreateTodoViewModel = function() {
     this.input_text = ko.observable('');
-    this.addTodo = function(event) {
+    this.addTodo = function(view_model, event) {
       var text;
       text = this.create.input_text();
       if (!text || event.keyCode !== 13) {

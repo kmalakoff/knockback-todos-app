@@ -125,7 +125,7 @@ $(document).ready(->
     @input_text = ko.observable('')
     @input_placeholder_text = kb.observable(kb.locale_manager, {key: 'placeholder_create'})
     @input_tooltip_text = kb.observable(kb.locale_manager, {key: 'tooltip_create'})
-    @addTodo = (event) ->
+    @addTodo = (view_model, event) ->
       text = @create.input_text()
       return true if (!text || event.keyCode != 13)
       todos.create({text: text, priority: window.settings_view_model.default_priority()})
@@ -134,7 +134,7 @@ $(document).ready(->
     @priority_color = ko.dependentObservable(-> return window.settings_view_model.default_priority_color())
     @tooltip_visible = ko.observable(false)
     tooltip_visible = @tooltip_visible # closured for onSelectPriority
-    @onSelectPriority = (event) ->
+    @onSelectPriority = (view_model, event) ->
       event.stopPropagation()
       tooltip_visible(false)
       window.settings_view_model.default_priority(ko.utils.unwrapObservable(@priority))
@@ -145,8 +145,8 @@ $(document).ready(->
   TodoViewModel = (model) ->
     @text = kb.observable(model, {key: 'text', write: ((text) -> model.save({text: text}))}, this)
     @edit_mode = ko.observable(false)
-    @toggleEditMode = (event) => @edit_mode(!@edit_mode()) if not @done()
-    @onEnterEndEdit = (event) => @edit_mode(false) if (event.keyCode == 13)
+    @toggleEditMode = => @edit_mode(!@edit_mode()) if not @done()
+    @onEnterEndEdit = (view_model, event) => @edit_mode(false) if (event.keyCode == 13)
 
     @created_at = model.get('created_at')
     @done = kb.observable(model, {key: 'done_at', read: (-> return model.done()), write: ((done) -> model.done(done)) }, this)
@@ -160,7 +160,7 @@ $(document).ready(->
     @priority_color = kb.observable(model, {key: 'priority', read: -> return window.settings_view_model.getColorByPriority(model.get('priority'))})
     @tooltip_visible = ko.observable(false)
     tooltip_visible = @tooltip_visible # closured for onSelectPriority
-    @onSelectPriority = (event) ->
+    @onSelectPriority = (view_model, event) ->
       event.stopPropagation()
       tooltip_visible(false)
       model.save({priority: ko.utils.unwrapObservable(@priority)})
@@ -241,7 +241,7 @@ $(document).ready(->
     )
 
     # set up color pickers
-    $('.colorpicker').mColorPicker({imageFolder: 'css/images/'})
+    $('.colorpicker').mColorPicker({imageFolder: '../css/images/'})
     $('.colorpicker').bind('colorpicked', ->
       model = priorities.get($(this).attr('id'))
       model.save({color: $(this).val()}) if model

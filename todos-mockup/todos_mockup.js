@@ -161,7 +161,7 @@ $(document).ready(function() {
   });
   $all_priority_pickers = $('body').find('.priority-picker-tooltip');
   $('.colorpicker').mColorPicker({
-    imageFolder: 'css/images/'
+    imageFolder: '../css/images/'
   });
   $('.priority-color-swatch').click(function() {
     var $priority_picker;
