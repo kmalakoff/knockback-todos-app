@@ -113,7 +113,8 @@ $(document).ready(->
     localStorage: new Store("kb_todos") # Save all of the todo items under the `"kb_todos"` namespace.
     doneCount: -> @models.reduce(((prev,cur)-> return prev + if !!cur.get('done_at') then 1 else 0), 0)
     remainingCount: -> @models.length - @doneCount()
-    allDone: -> return @filter((todo) -> return !!todo.get('done_at'))
+    doneTasks: -> return @filter((todo) -> return !!todo.get('done_at'))
+    allDone: (done) -> @each((todo) -> todo.done(done))
   todos = new TodoList()
   todos.fetch()
 
@@ -145,8 +146,8 @@ $(document).ready(->
   TodoViewModel = (model) ->
     @text = kb.observable(model, {key: 'text', write: ((text) -> model.save({text: text}))}, this)
     @edit_mode = ko.observable(false)
-    @toggleEditMode = => @edit_mode(!@edit_mode()) if not @done()
-    @onEnterEndEdit = (view_model, event) => @edit_mode(false) if (event.keyCode == 13)
+    @onCheckBeginEdit = => (@edit_mode(true); $('.todo-input').focus()) if not @edit_mode() and not @done()
+    @onCheckEndEdit = (view_model, event) => @edit_mode(false) if (event.keyCode == 13) or (event.type == 'blur')
 
     @created_at = model.get('created_at')
     @done = kb.observable(model, {key: 'done_at', read: (-> return model.done()), write: ((done) -> model.done(done)) }, this)
@@ -182,10 +183,14 @@ $(document).ready(->
           when 'label_text' then @collection_observable.sortAttribute('text')
           when 'label_created' then @collection_observable.sortedIndex((models, model)-> return _.sortedIndex(models, model, (test) -> test.get('created_at').valueOf()))
           when 'label_priority' then @collection_observable.sortedIndex((models, model)-> return _.sortedIndex(models, model, (test) -> window.settings_view_model.priorityToRank(test.get('priority'))))
-      owner: this
     )
     @collection_observable = kb.collectionObservable(todos, @todos, {view_model: TodoViewModel, sort_attribute: 'text'})
-    @sort_visible = ko.dependentObservable(=> @collection_observable().length)
+    @tasks_exist = ko.dependentObservable(=> @collection_observable().length)
+    @complete_all_text = kb.observable(kb.locale_manager, {key: 'complete_all'})
+    @completeAll = ko.computed(
+      read: => return not @collection_observable.collection().remainingCount() # create a dependency
+      write: (done) => @collection_observable.collection().allDone(done)
+    )
     @
 
   FooterViewModel = (locales) ->
@@ -195,7 +200,6 @@ $(document).ready(->
     @selected_value = ko.dependentObservable(
       read: => return @current_language()
       write: (new_locale) => kb.locale_manager.setLocale(new_locale); @current_language(new_locale)
-      owner: this
     )
     @
 
@@ -210,7 +214,8 @@ $(document).ready(->
     @remaining_text = kb.observable(kb.locale_manager, {key: @remaining_text_key, args: => @co.collection().remainingCount()})
     @clear_text_key = ko.dependentObservable(=> return if (@co.collection().doneCount()==0) then null else (if (todos.doneCount() == 1) then 'remaining_template_s' else 'remaining_template_pl'))
     @clear_text = kb.observable(kb.locale_manager, {key: @clear_text_key, args: => @co.collection().doneCount()})
-    @onDestroyDone = => model.destroy() for model in todos.allDone()
+    @clearable = ko.computed(=> return @clear_text()!='')
+    @onDestroyDone = => model.destroy() for model in todos.doneTasks()
     @
 
   # set up and bind the application view model

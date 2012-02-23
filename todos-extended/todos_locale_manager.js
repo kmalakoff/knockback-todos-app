@@ -99,7 +99,8 @@ kb.locale_manager = new LocaleManager(null, {
     remaining_template_s: '{0} item remaining',
     remaining_template_pl: '{0} items remaining',
     clear_template_s: 'Clear {0} completed item',
-    clear_template_pl: 'Clear {0} completed items'
+    clear_template_pl: 'Clear {0} completed items',
+    complete_all: 'Mark all as complete'
   },
   'fr-FR': {
     placeholder_create: 'Que faire?',
@@ -115,7 +116,8 @@ kb.locale_manager = new LocaleManager(null, {
     remaining_template_s: '{0} point restant',
     remaining_template_pl: '{0} éléments restants',
     clear_template_s: 'Retirer {0} point terminée',
-    clear_template_pl: 'Retirer les {0} éléments terminés'
+    clear_template_pl: 'Retirer les {0} éléments terminés',
+    complete_all: 'Marquer tous comme complète'
   },
   'it-IT': {
     placeholder_create: 'Cosa fare?',
@@ -131,7 +133,8 @@ kb.locale_manager = new LocaleManager(null, {
     remaining_template_s: '{0} elemento restante',
     remaining_template_pl: '{0} elementi rimanenti',
     clear_template_s: 'Rimuovere {0} elemento completato',
-    clear_template_pl: 'Rimuovere {0} elementi completato'
+    clear_template_pl: 'Rimuovere {0} elementi completato',
+    complete_all: 'Segna tutti come completo'
   }
 });
 if (!!window.Backbone) {

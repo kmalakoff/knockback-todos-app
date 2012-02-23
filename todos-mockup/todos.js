@@ -121,7 +121,7 @@ $(document).ready(function() {
       model = todos[_i];
       this.todos.push(new TodoViewModel(model));
     }
-    this.sort_visible = this.todos.length > 0;
+    this.tasks_exist = this.todos.length > 0;
     this.sorting_options = [new SortingOptionViewModel('label_text'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_priority')];
     return this;
   };

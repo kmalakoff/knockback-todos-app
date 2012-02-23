@@ -532,17 +532,16 @@ TodoListViewModel = (todos) ->
         when 'label_text' then ...
         when 'label_created' then ...
         when 'label_priority' then ...
-    owner: this
   )
   @collection_observable = kb.collectionObservable(todos, @todos, {view_model: TodoViewModel, sort_attribute: 'text'})
-  @sort_visible = ko.dependentObservable(=> @collection_observable().length)
+  @tasks_exist = ko.dependentObservable(=> @collection_observable().length)
 ```
 
 * **sort_mode**: stores the current mode
 * **sort_options**: provides the per option information to the template
 * **selected_value**: provides the selection to the template and updates the application state when it changes
 * **collection_observable**: start the sorting on the text attribute
-* **sort_visible**: tells the template whether to hide/show the list sorting interface
+* **tasks_exist**: tells the template whether to hide/show the list sorting interface
 
 The sorting html added to the list template:
 

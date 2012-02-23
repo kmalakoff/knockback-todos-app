@@ -105,7 +105,7 @@ $(document).ready(->
   TodoListViewModel = (todos) ->
     @todos = []
     @todos.push(new TodoViewModel(model)) for model in todos
-    @sort_visible = (@todos.length>0)
+    @tasks_exist = (@todos.length>0)
     @sorting_options = [new SortingOptionViewModel('label_text'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_priority')]
     @
 

@@ -161,9 +161,14 @@ $(document).ready(function() {
     TodoList.prototype.remainingCount = function() {
       return this.models.length - this.doneCount();
     };
-    TodoList.prototype.allDone = function() {
+    TodoList.prototype.doneTasks = function() {
       return this.filter(function(todo) {
         return !!todo.get('done_at');
+      });
+    };
+    TodoList.prototype.allDone = function(done) {
+      return this.each(function(todo) {
+        return todo.done(done);
       });
     };
     return TodoList;
@@ -217,13 +222,14 @@ $(document).ready(function() {
       })
     }, this);
     this.edit_mode = ko.observable(false);
-    this.toggleEditMode = __bind(function() {
-      if (!this.done()) {
-        return this.edit_mode(!this.edit_mode());
+    this.onCheckBeginEdit = __bind(function() {
+      if (!this.edit_mode() && !this.done()) {
+        this.edit_mode(true);
+        return $('.todo-input').focus();
       }
     }, this);
-    this.onEnterEndEdit = __bind(function(view_model, event) {
-      if (event.keyCode === 13) {
+    this.onCheckEndEdit = __bind(function(view_model, event) {
+      if ((event.keyCode === 13) || (event.type === 'blur')) {
         return this.edit_mode(false);
       }
     }, this);
@@ -299,16 +305,26 @@ $(document).ready(function() {
               });
             });
         }
-      }, this),
-      owner: this
+      }, this)
     });
     this.collection_observable = kb.collectionObservable(todos, this.todos, {
       view_model: TodoViewModel,
       sort_attribute: 'text'
     });
-    this.sort_visible = ko.dependentObservable(__bind(function() {
+    this.tasks_exist = ko.dependentObservable(__bind(function() {
       return this.collection_observable().length;
     }, this));
+    this.complete_all_text = kb.observable(kb.locale_manager, {
+      key: 'complete_all'
+    });
+    this.completeAll = ko.computed({
+      read: __bind(function() {
+        return !this.collection_observable.collection().remainingCount();
+      }, this),
+      write: __bind(function(done) {
+        return this.collection_observable.collection().allDone(done);
+      }, this)
+    });
     return this;
   };
   FooterViewModel = function(locales) {
@@ -326,8 +342,7 @@ $(document).ready(function() {
       write: __bind(function(new_locale) {
         kb.locale_manager.setLocale(new_locale);
         return this.current_language(new_locale);
-      }, this),
-      owner: this
+      }, this)
     });
     return this;
   };
@@ -367,9 +382,12 @@ $(document).ready(function() {
         return this.co.collection().doneCount();
       }, this)
     });
+    this.clearable = ko.computed(__bind(function() {
+      return this.clear_text() !== '';
+    }, this));
     this.onDestroyDone = __bind(function() {
       var model, _i, _len, _ref, _results;
-      _ref = todos.allDone();
+      _ref = todos.doneTasks();
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         model = _ref[_i];
