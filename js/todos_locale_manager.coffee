@@ -63,6 +63,7 @@ kb.locale_manager = new LocaleManager(null, {
     remaining_template_pl:'{0} items remaining'
     clear_template_s:     'Clear {0} completed item'
     clear_template_pl:    'Clear {0} completed items'
+    complete_all:         'Mark all as complete'
   'fr-FR':
     placeholder_create:   'Que faire?'
     tooltip_create:       'Appuyez sur Enter pour enregistrer cette tâche'
@@ -78,6 +79,7 @@ kb.locale_manager = new LocaleManager(null, {
     remaining_template_pl:'{0} éléments restants'
     clear_template_s:     'Retirer {0} point terminée'
     clear_template_pl:    'Retirer les {0} éléments terminés'
+    complete_all:         'Marquer tous comme complète'
   'it-IT':
     placeholder_create:   'Cosa fare?'
     tooltip_create:       'Premere Enter per salvare questo compito'
@@ -93,6 +95,7 @@ kb.locale_manager = new LocaleManager(null, {
     remaining_template_pl:'{0} elementi rimanenti'
     clear_template_s:     'Rimuovere {0} elemento completato'
     clear_template_pl:    'Rimuovere {0} elementi completato'
+    complete_all:         'Segna tutti come completo'
 })
 
 #######################################
