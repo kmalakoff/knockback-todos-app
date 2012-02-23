@@ -374,7 +374,10 @@ trim = function( value ) {
 };
 
 truncate = function( value ) {
-	return isNaN( value ) ? NaN : value | 0;
+	if ( isNaN( value ) ) {
+		return NaN;
+	}
+	return Math[ value < 0 ? "ceil" : "floor" ]( value );
 };
 
 zeroPad = function( str, count, left ) {
@@ -1409,7 +1412,7 @@ Globalize.findClosestCulture = function( name ) {
 };
 
 Globalize.format = function( value, format, cultureSelector ) {
-	culture = this.findClosestCulture( cultureSelector );
+	var culture = this.findClosestCulture( cultureSelector );
 	if ( value instanceof Date ) {
 		value = formatDate( value, format, culture );
 	}
@@ -1567,7 +1570,7 @@ Globalize.culture = function( cultureSelector ) {
 		this.cultureSelector = cultureSelector;
 	}
 	// getter
-	return this.findClosestCulture( cultureSelector ) || this.culture[ "default" ];
+	return this.findClosestCulture( cultureSelector ) || this.cultures[ "default" ];
 };
 
 }( this ));
