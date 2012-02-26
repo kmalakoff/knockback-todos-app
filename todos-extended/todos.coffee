@@ -127,7 +127,7 @@ $(document).ready(->
     @input_placeholder_text = kb.observable(kb.locale_manager, {key: 'placeholder_create'})
     @input_tooltip_text = kb.observable(kb.locale_manager, {key: 'tooltip_create'})
     @addTodo = (view_model, event) ->
-      text = @create.input_text()
+      text = $.trim(@create.input_text())
       return true if (!text || event.keyCode != 13)
       todos.create({text: text, priority: window.settings_view_model.default_priority()})
       @create.input_text('')

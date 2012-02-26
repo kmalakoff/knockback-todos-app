@@ -35,7 +35,7 @@ $(document).ready(->
   CreateTodoViewModel = ->
     @input_text = ko.observable('')
     @addTodo = (view_model, event) ->
-      text = @create.input_text()
+      text = $.trim(@create.input_text())
       return true if (!text || event.keyCode != 13)
       todos.create({text: text})
       @create.input_text('')
