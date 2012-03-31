@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Knockback.js - TodoMVC (Extended)</title>
+  <link rel="stylesheet" href="../../assets/base.css">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <div id="todoapp">
+
+    <header>
+      <div id="todo-languages" class="selection codestyle" data-bind="foreach: window.settings_view_model.language_options">
+        <div class="option"><input type="radio" data-bind="attr: {id: id, name: option_group}, value: id, checked: window.settings_view_model.selected_language"><label data-bind="attr: {for: id}, text: label"></label></div>
+      </div>
+      <h1>Todos</h1>
+      <div id="color-settings" data-bind="template: {name: 'priority-setting-template', foreach: window.settings_view_model.priority_settings}"></div>
+      <div id="create-todo">
+        <input id="new-todo" type="text" data-bind="value: create.input_text, placeholder: create.input_placeholder_text, valueUpdate: 'afterkeydown',event: {keyup: create.addTodo}">
+        <span class="ui-tooltip-top" style="display:none;" data-bind="text: create.input_tooltip_text"></span>
+        <div class="priority-color-swatch-wrapper" data-bind="template: {name: 'priority-swatch-picker-template', data: create}"></div>
+      <div>
+    </header>
+
+    <section id="main" data-bind="block: todo_list.tasks_exist">
+      <input id="toggle-all" type="checkbox" data-bind="checked: todo_list.completeAll">
+      <label for="toggle-all" data-bind="text: todo_list.complete_all_text"></label>
+
+      <!-- List Sorting -->
+      <div class="todo-list-sorting-wrapper-outer" data-bind="visible: todo_list.tasks_exist">
+        <div class="todo-list-sorting-wrapper-inner">
+          <div id="todo-list-sorting" class="selection codestyle" data-bind="foreach: todo_list.sorting_options">
+            <div class="option"><input type="radio" data-bind="attr: {id: id, name: option_group}, value: id, checked: window.app_view_model.todo_list.selected_sorting"><label data-bind="attr: {for: id}, text: label"></label></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tasks -->
+      <ul id="todo-list" data-bind="foreach: todo_list.todos">
+
+        <!-- Task Template -->
+        <li data-bind="css: {done: done, editing: edit_mode}">
+          <div class="view">
+            <input class="toggle" type="checkbox" data-bind="checked: done">
+            <div class="priority-color-swatch-wrapper" data-bind="template: {name: 'priority-swatch-picker-template', data: $data}"></div>
+            <label data-bind="text: text, event: {dblclick: onCheckBeginEdit}"></label>
+            <div class="todo-done-text" data-bind="text: done_text"></div>
+            <a class="destroy" data-bind="click: destroyTodo"></a>
+          </div>
+          <input class="edit" type="text" data-bind="value: text, valueUpdate: 'afterkeydown', event: {blur: onCheckEndEdit, keyup: onCheckEndEdit}">
+        </li>
+
+      </ul>
+
+    </section>
+
+    <footer data-bind="block: todo_list.tasks_exist">
+      <a id="clear-completed" data-bind="block: stats.clearable, text: stats.clear_text, click: stats.onDestroyDone">Clear completed</a>
+      <div id="todo-count" data-bind="text: stats.remaining_text"></div>
+    </footer>
+
+  </div>
+
+  <div id="instructions">
+    Double-click to edit a todo.
+  </div>
+
+  <div id="credits">
+    Created by <a href="https://github.com/kmalakoff">Kevin Malakoff</a>. <br/><br/>
+    Please try out the <a href="http://kmalakoff.github.com/knockback-todos/">enhanced version</a> <br/>
+    with localization, priority colors, and lazy loading <br/>
+    to see just how dynamic <a href="https://github.com/kmalakoff/knockback">Knockback.js</a> can be!
+  </div>
+
+  <!-- Templates -->
+  <script type="text/x-jquery-tmpl" id="priority-setting-template">
+    <div class="priority-color-entry">
+      <div class="priority-text" data-bind="text: priority_text"></div>
+      <input data-bind="attr: {id: priority}, value: priority_color" class='priority-color-swatch colorpicker' data-text="hidden" data-hex="true"/>
+    </div>
+  </script>
+
+  <script type="text/x-jquery-tmpl" id="priority-swatch-picker-template">
+    <div class="priority-color-swatch todo create" data-bind="style: {background: priority_color}, click: onToggleTooltip">
+      <span class="priority-picker-tooltip ui-tooltip-top" data-bind="visible: tooltip_visible">
+        <div data-bind="template: {name: 'priority-picker-template', foreach: window.settings_view_model.priority_settings}"></div>
+      </span>
+    </div>
+  </script>
+
+  <script type="text/x-jquery-tmpl" id="priority-picker-template">
+    <div class="priority-color-entry">
+      <div class="priority-text" data-bind="text: priority_text"></div>
+      <div class='priority-color-swatch' data-bind="style: {background: priority_color}, click: $parent.onSelectPriority"></div>
+    </div>
+  </script>
+
+  <!-- Demo Dependencies -->
+  <script src="js/libs/json2.js"></script>
+  <script src="js/libs/jquery-1.7.1.min.js"></script>
+
+  <!-- Knockback Dependencies -->
+  <script src="js/libs/underscore.js"></script>
+  <script src="js/libs/backbone.js"></script>
+  <script src="js/libs/knockout-2.0.0.js"></script>
+  <script src="js/libs/knockback.js"></script>
+
+  <!-- More Demo Dependencies -->
+  <script src="js/libs/backbone-localstorage.js"></script>
+  <script src="js/libs/backbone-modelref.js"></script>
+  <script src="js/libs/globalize/globalize.js"></script>
+  <script src="js/libs/globalize/globalize.culture.fr-FR.js"></script>
+  <script src="js/libs/globalize/globalize.culture.it-IT.js"></script>
+  <script src="js/libs/mColorPicker.min.js"></script>
+  <script type="text/javascript">
+    $.fn.mColorPicker.init.showLogo = false;
+    $.fn.mColorPicker.init.replace = false;
+  </script>
+
+  <!-- The Demo -->
+  <script src="js/app_locale_manager.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

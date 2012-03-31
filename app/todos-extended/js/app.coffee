@@ -18,13 +18,16 @@ $(document).ready(->
   kb.locale_manager.setLocale('en')
   kb.locale_change_observable = kb.triggeredObservable(kb.locale_manager, 'change') # use to register a localization dependency
 
-  # add a doubleclick and placeholder handlers to KO
+  # add custom handlers to KO
   ko.bindingHandlers.dblclick =
     init: (element, value_accessor, all_bindings_accessor, view_model) ->
       $(element).dblclick(ko.utils.unwrapObservable(value_accessor()))
   ko.bindingHandlers.placeholder =
     update: (element, value_accessor, all_bindings_accessor, view_model) ->
       $(element).attr('placeholder', ko.utils.unwrapObservable(value_accessor()))
+  ko.bindingHandlers.block =
+    update: (element, value_accessor) ->
+      element.style.display = if ko.utils.unwrapObservable(value_accessor()) then 'block' else 'none'
 
   # ko1.2.1 compatibility with 1.3
   if _.isUndefined(ko.templateSources)
@@ -64,8 +67,9 @@ $(document).ready(->
     @priority_color = kb.observable(model, {key: 'color'})
     @
 
-  SettingsViewModel = (priority_settings) ->
-    @priority_settings = ko.observableArray(_.map(priority_settings, (model)-> return new PrioritySettingsViewModel(model)))
+  SettingsViewModel = (priority_settings, locales) ->
+    # priorities settings
+    @priority_settings = ko.observableArray(_.map(priority_settings, (model) -> return new PrioritySettingsViewModel(model)))
     @getColorByPriority = (priority) ->
       @createColorsDependency()
       (return view_model.priority_color() if view_model.priority == priority) for view_model in @priority_settings()
@@ -78,6 +82,14 @@ $(document).ready(->
         when 'high' then return 0
         when 'medium' then return 1
         when 'low' then return 2
+
+    # language settings
+    @current_language = ko.observable(kb.locale_manager.getLocale()) # used to create a dependency
+    @language_options = ko.observableArray(_.map(locales, (locale) -> return new LanguageOptionViewModel(locale)))
+    @selected_language = ko.dependentObservable(
+      read: => return @current_language()
+      write: (new_locale) => kb.locale_manager.setLocale(new_locale); @current_language(new_locale)
+    )
     @
 
   # Content
@@ -174,7 +186,7 @@ $(document).ready(->
     @todos = ko.observableArray([])
     @sort_mode = ko.observable('label_text')  # used to create a dependency
     @sorting_options = [new SortingOptionViewModel('label_text'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_priority')]
-    @selected_value = ko.dependentObservable(
+    @selected_sorting = ko.dependentObservable(
       read: => return @sort_mode()
       write: (new_mode) =>
         @sort_mode(new_mode)
@@ -193,14 +205,8 @@ $(document).ready(->
     )
     @
 
-  FooterViewModel = (locales) ->
+  FooterViewModel = ->
     @instructions_text = kb.observable(kb.locale_manager, {key: 'instructions'})
-    @current_language = ko.observable(kb.locale_manager.getLocale()) # used to create a dependency
-    @language_options = ko.observableArray(_.map(locales, (locale) -> return new LanguageOptionViewModel(locale)))
-    @selected_value = ko.dependentObservable(
-      read: => return @current_language()
-      write: (new_locale) => kb.locale_manager.setLocale(new_locale); @current_language(new_locale)
-    )
     @
 
   ###################################
@@ -223,17 +229,18 @@ $(document).ready(->
     new Backbone.ModelRef(priorities, 'high'),
     new Backbone.ModelRef(priorities, 'medium'),
     new Backbone.ModelRef(priorities, 'low')
-  ])
-  app_view_model =
+  ], kb.locale_manager.getLocales())
+
+  window.app_view_model =
     create: new CreateTodoViewModel()
     todo_list: new TodoListViewModel(todos)
-    footer: new FooterViewModel(kb.locale_manager.getLocales())
+    footer: new FooterViewModel()
     stats: new StatsViewModel(todos)
   ko.applyBindings(app_view_model, $('#todoapp')[0])
 
   # Destroy when finished with the view models
   # kb.vmRelease(window.settings_view_model)
-  # kb.vmRelease(app_view_model)
+  # kb.vmRelease(window.app_view_model)
 
   ###################################
   # Load the prioties late to show the dynamic nature of Knockback with Backbone.ModelRef
@@ -246,7 +253,7 @@ $(document).ready(->
     )
 
     # set up color pickers
-    $('.colorpicker').mColorPicker({imageFolder: '../css/images/'})
+    $('.colorpicker').mColorPicker({imageFolder: 'css/images/'})
     $('.colorpicker').bind('colorpicked', ->
       model = priorities.get($(this).attr('id'))
       model.save({color: $(this).val()}) if model

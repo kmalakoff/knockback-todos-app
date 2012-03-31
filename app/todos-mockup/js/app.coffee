@@ -46,7 +46,8 @@ $(document).ready(->
     @priority_color = model.get('color')
     @
 
-  SettingsViewModel = (priority_settings) ->
+  SettingsViewModel = (priority_settings, locales) ->
+    # priorities settings
     @priority_settings = []
     @priority_settings.push(new PrioritySettingsViewModel(model)) for model in priority_settings
     @getColorByPriority = (priority) =>
@@ -54,6 +55,10 @@ $(document).ready(->
       return ''
     @default_priority = @priority_settings[1].priority
     @default_priority_color = @getColorByPriority(@default_priority)
+
+    # language settings
+    @language_options = []
+    @language_options.push(new LanguageOptionViewModel(locale)) for locale in locales
     @
 
   # Content
@@ -116,17 +121,15 @@ $(document).ready(->
     @remaining = todos.models.reduce(((prev,cur)-> return prev + if cur.get('done_at') then 0 else 1), 0)
     @
 
-  FooterViewModel = (locales) ->
+  FooterViewModel = ->
     @instructions_text = kb.locale_manager.get('instructions')
-    @language_options = []
-    @language_options.push(new LanguageOptionViewModel(locale)) for locale in locales
     @
 
-  window.settings_view_model = new SettingsViewModel(priorities.models)
-  app_view_model =
+  window.settings_view_model = new SettingsViewModel(priorities.models, kb.locale_manager.getLocales())
+  window.app_view_model =
     create: new CreateTodoViewModel()
     todo_list: new TodoListViewModel(todos.models)
-    footer: new FooterViewModel(kb.locale_manager.getLocales())
+    footer: new FooterViewModel()
     stats: new StatsViewModel(todos)
   $('#todoapp').append($("#todoapp-template").tmpl(app_view_model))
   $('#todo-list-sorting').find('#label_created').attr(checked:'checked')
@@ -134,7 +137,7 @@ $(document).ready(->
 
   # Destroy when finished with the view models
   # kb.vmRelease(window.settings_view_model)
-  # kb.vmRelease(app_view_model)
+  # kb.vmRelease(window.app_view_model)
 
   ###################################
   # Dynamic Interactions
@@ -142,7 +145,7 @@ $(document).ready(->
   ###################################
 
   $all_priority_pickers = $('body').find('.priority-picker-tooltip')
-  $('.colorpicker').mColorPicker({imageFolder: '../css/images/'})
+  $('.colorpicker').mColorPicker({imageFolder: 'css/images/'})
   $('.priority-color-swatch').click(->
     $priority_picker = $(this).children('.priority-picker-tooltip')
     $all_priority_pickers.not($priority_picker).hide()

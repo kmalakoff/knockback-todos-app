@@ -20,6 +20,11 @@ $(document).ready(function() {
       return $(element).dblclick(ko.utils.unwrapObservable(value_accessor()));
     }
   };
+  ko.bindingHandlers.block = {
+    update: function(element, value_accessor) {
+      return element.style.display = ko.utils.unwrapObservable(value_accessor()) ? 'block' : 'none';
+    }
+  };
   TodoList = (function() {
     __extends(TodoList, Backbone.Collection);
     function TodoList() {
