@@ -12,7 +12,7 @@
     function PrioritiesCollection() {
       PrioritiesCollection.__super__.constructor.apply(this, arguments);
     }
-    PrioritiesCollection.prototype.localStorage = new Store("priorities-knockback-extended");
+    PrioritiesCollection.prototype.localStorage = new Store('priorities-knockback-extended');
     return PrioritiesCollection;
   })();
 }).call(this);
