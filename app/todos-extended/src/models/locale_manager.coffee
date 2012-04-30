@@ -24,7 +24,7 @@ class LocaleManager
     @locale_identifier = locale_identifier
     Globalize.culture = Globalize.findClosestCulture(locale_identifier)
     return if !window.Backbone
-    @trigger('change', this)
+    @trigger('change', @)
     culture_map = @translations_by_locale[@locale_identifier]
     return if not culture_map
     @trigger("change:#{key}", value) for key, value of culture_map
@@ -41,12 +41,13 @@ class LocaleManager
 #######################################
 # Mix in Backbone.Events so callers can subscribe
 #######################################
-LocaleManager.prototype extends Backbone.Events if !!window.Backbone
+LocaleManager.prototype extends Backbone.Events
 
 #######################################
 # Set up strings
 #######################################
-kb ||(kb={})
+throw new Error("Please include Knockback before the Locale Manager") unless kb
+
 kb.locale_manager = new LocaleManager(null, {
   'en':
     placeholder_create:   'What needs to be done?'
@@ -59,11 +60,14 @@ kb.locale_manager = new LocaleManager(null, {
     high:                 'high'
     medium:               'medium'
     low:                  'low'
-    remaining_template_s: '{0} item remaining'
-    remaining_template_pl:'{0} items remaining'
+    remaining_template_s: 'item remaining'
+    remaining_template_pl:'items remaining'
     clear_template_s:     'Clear {0} completed item'
     clear_template_pl:    'Clear {0} completed items'
     complete_all:         'Mark all as complete'
+    todo_filter_all:      'All'
+    todo_filter_active:   'Active'
+    todo_filter_completed:'Completed'
   'fr-FR':
     placeholder_create:   'Que faire?'
     tooltip_create:       'Appuyez sur Enter pour enregistrer cette tâche'
@@ -75,11 +79,14 @@ kb.locale_manager = new LocaleManager(null, {
     high:                 'haute'
     medium:               'moyen'
     low:                  'bas'
-    remaining_template_s: '{0} point restant'
-    remaining_template_pl:'{0} éléments restants'
+    remaining_template_s: 'point restant'
+    remaining_template_pl:'éléments restants'
     clear_template_s:     'Retirer {0} point terminée'
     clear_template_pl:    'Retirer les {0} éléments terminés'
     complete_all:         'Marquer tous comme complète'
+    todo_filter_all:      'Tous'
+    todo_filter_active:   'Actif'
+    todo_filter_completed:'Terminé'
   'it-IT':
     placeholder_create:   'Cosa fare?'
     tooltip_create:       'Premere Enter per salvare questo compito'
@@ -91,21 +98,23 @@ kb.locale_manager = new LocaleManager(null, {
     high:                 'alto'
     medium:               'medio'
     low:                  'basso'
-    remaining_template_s: '{0} elemento restante'
-    remaining_template_pl:'{0} elementi rimanenti'
+    remaining_template_s: 'elemento restante'
+    remaining_template_pl:'elementi rimanenti'
     clear_template_s:     'Rimuovere {0} elemento completato'
     clear_template_pl:    'Rimuovere {0} elementi completato'
     complete_all:         'Segna tutti come completo'
+    todo_filter_all:      'Tutti'
+    todo_filter_active:   'Attivo'
+    todo_filter_completed:'Finito'
 })
 
 #######################################
 # Date localizer
 #######################################
-if !!window.Backbone
-  class LongDateLocalizer extends kb.LocalizedObservable
-    constructor: -> return super
-    read: (value) ->
-      return Globalize.format(value, Globalize.cultures[kb.locale_manager.getLocale()].calendars.standard.patterns.f, kb.locale_manager.getLocale())
-    write: (localized_string, value, observable) ->
-      new_value = Globalize.parseDate(localized_string, Globalize.cultures[kb.locale_manager.getLocale()].calendars.standard.patterns.d, kb.locale_manager.getLocale())
-      value.setTime(new_value.valueOf())
+class window.LongDateLocalizer extends kb.LocalizedObservable
+  constructor: -> return super
+  read: (value) ->
+    return Globalize.format(value, Globalize.cultures[kb.locale_manager.getLocale()].calendars.standard.patterns.f, kb.locale_manager.getLocale())
+  write: (localized_string, value, observable) ->
+    new_value = Globalize.parseDate(localized_string, Globalize.cultures[kb.locale_manager.getLocale()].calendars.standard.patterns.d, kb.locale_manager.getLocale())
+    value.setTime(new_value.valueOf())
