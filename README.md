@@ -146,44 +146,44 @@ In a real-world app, you may merge some of these ViewModels and templates or to 
 
 **Models (Backbone.Model + Backbone.Collection)**
 
-* **Todo:** provides the data and operations for a Todo like setting its done state and saving changes on the server/local-storage
-* **TodoList:** fetches models from the server and provides summary information on the Todo data like how many are done, remaining, etc
+* **Todo:** provides the data and operations for a Todo like setting its complete state and saving changes on the server/local-storage
+* **TodoList:** fetches models from the server and provides summary information on the Todo data like how many are completed, remaining, etc
 
 **ViewModels**
 
-* **CreateTodoViewModel:** provides properties to configure the new todo input element (placeholder text, etc) and provides a hook to the input element in the template so the ViewModel can create a new Todo Model when Enter is pressed
-* **TodoViewModel:** provides properties for rendering a Todo Model (text, done state, etc), and provides the hooks to the template elements so it can both perform actions on the Model (eg. change its done state and text) and to change the css classes on the elements in the View to toggle between edit/view modes for the Todo
-* **TodoListViewModel:** provides all of the TodoViewModels to render each Todo
-* **StatsViewModel:** provides and updates the summary stats attributes including localized text whenever the Todo list or one of its Todo models changes
+* **HeaderViewModel:** provides properties to configure the new todo input element (placeholder text, etc) and provides a hook to the input element in the template so the ViewModel can create a new Todo Model when Enter is pressed
+* **TodoViewModel:** provides properties for rendering a Todo Model (text, completed state, etc), and provides the hooks to the template elements so it can both perform actions on the Model (eg. change its completed state and text) and to change the css classes on the elements in the View to toggle between edit/view modes for the Todo
+* **TodosViewModel:** provides all of the TodoViewModels to render each Todo
+* **FooterViewModel:** provides and updates the summary stats attributes including localized text whenever the Todo list or one of its Todo models changes
 * **FooterViewModel:** provides the localized instructions text
 
 **Views (jQuery-Tmpl templates)**
 
-* **Create Section:** binds the input element for adding a new Todo and binds the key events to the CreateTodoViewModel for the Enter key
+* **Create Section:** binds the input element for adding a new Todo and binds the key events to the HeaderViewModel for the Enter key
 * **List Section:** binds an unordered list element with a foreach template to render each of the Todos
-* **item-template:** binds all the elements to render a Todo (in both view and edit modes) and binds the TodoViewModel handlers like double click to enter edit mode, changing the Todo model's done state when the checkbox state changes, etc
-* **Stats Section:** binds elements to display the summary stats using the StatsViewModel properties
+* **item-template:** binds all the elements to render a Todo (in both view and edit modes) and binds the TodoViewModel handlers like double click to enter edit mode, changing the Todo model's completed state when the checkbox state changes, etc
+* **Stats Section:** binds elements to display the summary stats using the FooterViewModel properties
 * **Footer Section:** binds the localized instructions text from FooterViewModel
 
 **Note:** In order to provide localized text, all text was refactored out into templates which is why there is so many templates where there were few before.
 
 # MVVM in "Todos - Knockback Complete"/"Todos - Mockup"
-This application extends the "Todos - Classic" by adding ORM for PrioritySettings/PrioritiesSettingList to configure display colors based on Todo priority, adding the priority localized labels and colors to the relevant views ('Header Section' for global settings editing, 'Create Section' for new Todos' priority, and 'item-template' to display and edit the Todo's priority), adding list sorting options into the 'List Section', and  localization options to the 'Footer Section'.
+This application extends the "Todos - Classic" by adding ORM for Priorities/PrioritiesSettingList to configure display colors based on Todo priority, adding the priority localized labels and colors to the relevant views ('Header Section' for global settings editing, 'Create Section' for new Todos' priority, and 'item-template' to display and edit the Todo's priority), adding list sorting options into the 'List Section', and  localization options to the 'Footer Section'.
 
 **Models (Backbone.Model + Backbone.Collection)**
 
-* **PrioritySetting:** provides the data for the priority and color information that is saved on the server/local-storage. It could be a generic Backbone.Model but for clarity and consistency with the mock up, it is given a class.
+* **Priority:** provides the data for the priority and color information that is saved on the server/local-storage. It could be a generic Backbone.Model but for clarity and consistency with the mock up, it is given a class.
 * **PrioritiesSettingList:** a very basic collection for fetching all of the priority settings
 
 **ViewModels**
 
-* **PrioritySettingsViewModel:** provides localized text (that shouldn't be saved to the server) and color properties to the 'priority-setting-template' template
-* **SettingsViewModel:** provides both the PrioritySettingsViewModel globally to the application, but also the current default priority and color to the 'Create Section', and a priority ranking to the TodoListViewModel for sorting.
-* **LanguageOptionViewModel:** this is a ViewModel without a formal model since it programmatically converts the available locales in the locale manager ('en', 'fr-FR', 'it-IT') into display strings ('EN', 'FR', 'IT')
-* **SortingOptionViewModel:** this provides a localized label to the sorting radio buttons in the 'List Section'
-* **CreateTodoViewModel:** upgraded to expose properties for rendering the current default Todo priority and a hook to show/hide the tooltip for selecting the default priority
+* **PrioritiesViewModel:** provides localized text (that shouldn't be saved to the server) and color properties to the 'priority-setting-template' template
+* **AppSettingsViewModel:** provides both the PrioritiesViewModel globally to the application, but also the current default priority and color to the 'Create Section', and a priority ranking to the TodosViewModel for sorting.
+* **SettingLanguageOptionViewModel:** this is a ViewModel without a formal model since it programmatically converts the available locales in the locale manager ('en', 'fr-FR', 'it-IT') into display strings ('EN', 'FR', 'IT')
+* **SettingListSortingOptionViewModel:** this provides a localized label to the sorting radio buttons in the 'List Section'
+* **HeaderViewModel:** upgraded to expose properties for rendering the current default Todo priority and a hook to show/hide the tooltip for selecting the default priority
 * **TodoViewModel:** upgraded to expose properties for rendering its Todo priority and a hook to show/hide the tooltip for selecting the Todo priority
-* **TodoListViewModel:** upgraded to expose sorting labels to the radio buttons and to change the sorting function of the kb.collectionObservable when the handler is triggered in the 'List Section'
+* **TodosViewModel:** upgraded to expose sorting labels to the radio buttons and to change the sorting function of the kb.collectionObservable when the handler is triggered in the 'List Section'
 * **FooterViewModel:** upgraded to expose the language selection options and currently selected item to the 'option-template' template
 
 **Views (jQuery-Tmpl templates)**
@@ -193,8 +193,8 @@ This application extends the "Todos - Classic" by adding ORM for PrioritySetting
 * **List Section:** bindings upgraded to render the sorting options and handlers
 * **item-template:** bindings upgraded to render the priority colors and bind the tooltip visibility template/handlers
 * **Footer Section:** bindings upgraded to render the language options and to to bind option selection logic.
-* **priority-setting-template:** renders the priority labels and colors from SettingsViewModel with a color picker (instead of tool tip)
-* **priority-swatch-picker-template:** renders just the color swatch for a supplied priority (either from CreateTodoViewModel or TodoViewModel) and binds the handler for a tooltip (instead of a color picker)
+* **priority-setting-template:** renders the priority labels and colors from AppSettingsViewModel with a color picker (instead of tool tip)
+* **priority-swatch-picker-template:** renders just the color swatch for a supplied priority (either from HeaderViewModel or TodoViewModel) and binds the handler for a tooltip (instead of a color picker)
 * **priority-picker-template:** renders the priority labels and colors, and custom binds the action to be taken when the color swatch is selected (for either setting the default new Todo priority or updating an existing Todo's priority)
 
 
@@ -211,14 +211,14 @@ Besides providing a clean separation between data and display, this separation b
 2. Cell View - the ViewModel could again expose a subset of only the most relevant summary attributes, routing information to a detailed summary view, etc.
 3. Editing View - the ViewModel could expose almost all of the Model's attributes, localized labels for each, data and functions for the editing controls and functionality, routing information to specialized editing views, etc.
 
-Important to understand that in a larger application the relationship between Models and ViewModels tends to be one-to-many. In this application, there is a one-to-many relationship from the PrioritySetting model through the the CreateTodoViewModel and TodoViewModel ViewModels because each one uses the PrioritySetting for rendering their priority colors and providing priority settings data to their tooltip, but the actions on selecting a priority in the tool tip differ.
+Important to understand that in a larger application the relationship between Models and ViewModels tends to be one-to-many. In this application, there is a one-to-many relationship from the Priority model through the the HeaderViewModel and TodoViewModel ViewModels because each one uses the Priority for rendering their priority colors and providing priority settings data to their tooltip, but the actions on selecting a priority in the tool tip differ.
 
-The CreateTodoViewModel sets the default priority for new Todos when you select the priority:
+The HeaderViewModel sets the default priority for new Todos when you select the priority:
 
 ```coffeescript
-CreateTodoViewModel = ->
+HeaderViewModel = ->
   @onSelectPriority = (view_model, event) ->
-    settings_view_model.default_priority(ko.utils.unwrapObservable(@priority))
+    app_settings_view_model.default_priority(ko.utils.unwrapObservable(@priority))
 ```
 The TodoViewModel sets the priority for its Todos Model when you select the priority:
 
@@ -230,24 +230,24 @@ TodoViewModel = (model) ->
 
 # Relationships between ViewModels and Views/Templates
 
-You can see in the Todos application that there is a many-to-one relationship between the LanguagesViewModel and TodoListViewModel with the 'option-template' View. Each ViewModel provides a similar signature of option items view data to the template, but the options ViewModels are different: LanguageOptionViewModel and SortingOptionViewModel, respectively.
+You can see in the Todos application that there is a many-to-one relationship between the LanguagesViewModel and TodosViewModel with the 'option-template' View. Each ViewModel provides a similar signature of option items view data to the template, but the options ViewModels are different: SettingLanguageOptionViewModel and SettingListSortingOptionViewModel, respectively.
 
-The language options are mapped from the available locales in the locale manager through a LanguageOptionViewModel:
+The language options are mapped from the available locales in the locale manager through a SettingLanguageOptionViewModel:
 
 ```coffeescript
 LanguagesViewModel = (locales) ->
   @current_language = ko.observable(kb.locale_manager.getLocale())
-  @language_options = ko.observableArray(_.map(locales, (locale) -> return new LanguageOptionViewModel(locale)))
-  @selected_value = ko.dependentObservable(...)
+  @language_options = ko.observableArray(_.map(locales, (locale) -> return new SettingLanguageOptionViewModel(locale)))
+  @selected_value = ko.computed(...)
 ```
 
-The sort options are hard coded but identifier and exposed through a SortingOptionViewModel:
+The sort options are hard coded but identifier and exposed through a SettingListSortingOptionViewModel:
 
 ```coffeescript
-TodoListViewModel = (todos) ->
+TodosViewModel = (todos) ->
   @sort_mode = ko.observable('label_text')
-  @sorting_options = [new SortingOptionViewModel('label_text'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_priority')]
-  @selected_value = ko.dependentObservable(...)
+  @list_sorting_options = [new SettingListSortingOptionViewModel('label_text'), new SettingListSortingOptionViewModel('label_created'), new SettingListSortingOptionViewModel('label_priority')]
+  @selected_value = ko.computed(...)
 ```
 
 Finally, each option is rendered through a 'foreach' in a parent template using an 'option-template' template:
@@ -261,7 +261,7 @@ Language options:
 Sorting options:
 
 ```html
-<div id="todo-list-sorting" class="selection codestyle" data-bind="template: {name: 'option-template', foreach: sorting_options, templateOptions: {selected_value: selected_value} }"></div>
+<div id="todo-list-sorting" class="selection codestyle" data-bind="template: {name: 'option-template', foreach: list_sorting_options, templateOptions: {selected_value: selected_value} }"></div>
 ```
 The template per option:
 
@@ -280,19 +280,19 @@ Often the relationships between ViewModels and templates are one-to-one, but in 
 class Todo extends Backbone.Model
   defaults: -> return {created_at: new Date()}
   ...
-  done: (done) ->
-    return !!@get('done_at') if arguments.length == 0
-    @save({done_at: if done then new Date() else null})
+  complete: (complete) ->
+    return !!@get('completed') if arguments.length == 0
+    @save({completed: if completed then new Date() else null})
 ```
 
 **ViewModel Pattern:** use a light-class when properties become dependent and writable:
 
 ```coffeescript
-TodoListViewModel = (todos) ->
+TodosViewModel = (todos) ->
   @todos = ko.observableArray([])
   ...
   @           # must return this or Coffeescript will return the last statement which is not what we want!
-todo_list_view_model = new TodoListViewModel(todos)
+todos_view_model = new TodosViewModel(todos)
 ```
 I prefer this light-class way to implement my view models because "this" is available within the scope of dependent observables which require a view model parameter (in this case: "this") if they are writable. For consistency in the Todo app, I only use these patterns of view models, but simple object work great for simple scenarios.
 
@@ -310,8 +310,8 @@ Some highlights:
 ```html
 <div class="create-todo">
   <div class="title"><h1>${title}</h1></div>
-  <div id="color-settings">
-    {{tmpl(window.settings_view_model.priority_settings) "#priority-setting-template"}}
+  <div id="priority-color-settings">
+    {{tmpl(window.app_settings_view_model.priorities) "#priority-setting-template"}}
   </div>
 </div>
 
@@ -353,7 +353,7 @@ There's not much to say except that we're using backbone-localstorage.js to prov
 
 ```coffeescript
 class TodoList extends Backbone.Collection
-  localStorage: new Store("kb_todos") # Save all of the todo items under the `"kb_todos"` namespace.
+  localStorage: new Store("todos-knockback") # Save all of the todos under the `"todos-knockback"` namespace.
 ```
 
 ### Knockout Integration
@@ -363,7 +363,7 @@ Knockout requires a little more explanation.
 To render templates from Javascript, you need to pass a view model and the element:
 
 ```coffeescript
-ko.applyBindings(todo_list_view_model, $('#todo-list')[0])
+ko.applyBindings(todos_view_model, $('#todo-list')[0])
 ```
 
 To render nested templates from the html, you need to use something like the following...
@@ -371,7 +371,7 @@ To render nested templates from the html, you need to use something like the fol
 For a template with externally supplied view models (using ko.applyBindings):
 
 ```html
-<ul class="todo-list" data-bind="template: {name: 'item-template', foreach: todo_list.todos}"></ul>
+<ul class="todo-list" data-bind="template: {name: 'item-template', foreach: todos.todos}"></ul>
 ```
 
 **Note:** for compatibility between Knockout 1.2.1 and 1.3.0beta (template data passed down the template chain using the 1.3.0beta syntax), I've slightly modified ko.applyBindings:
@@ -400,25 +400,25 @@ A kb.Observable is used to observe a model attribute and update itself or notify
 Some examples:
 
 ```coffeescript
-CreateTodoViewModel = ->
+HeaderViewModel = ->
   ...
   @input_placeholder_text = kb.observable(kb.locale_manager, {key: 'placeholder_create'})
 
 TodoViewModel = (model) ->
-  @text = kb.observable(model, {key: 'text', write: ((text) -> model.save({text: text}))}, this)
+  @text = kb.observable(model, {key: 'text', write: ((text) -> model.save({text: text}))}, @)
   ...
-  @done = kb.observable(model, {key: 'done_at', read: (-> return model.done()), write: ((done) -> model.done(done)) }, this)
+  @completed = kb.observable(model, {key: 'completed', read: (-> return model.completed()), write: ((completed) -> model.completed(completed)) }, @)
 ```
 
 * input_placeholder_text: it provides a read-only attribute from the locale_manager's 'placeholder_create' attribute
 * text: it uses the default read implementation and adds saving when the text is written
-* done: it is dependent on the **'done_at'** date attribute and converts it between a date and a boolean using the model done setter/getter
+* completed: it is dependent on the **'completed'** date attribute and converts it between a date and a boolean using the model completed setter/getter
 
 ### Collection Synchronization
 
 A kb.CollectionObservable has three main types of functionality:
 
-1. Notifying ko.dependentObservables (all the Knockback Observables are these) when the collection or models in the collection are modified.
+1. Notifying ko.computeds (all the Knockback Observables are these) when the collection or models in the collection are modified.
 2. Optionally manages the lifecycle of view models for each model in the collection.
 3. Optionally sorts (or synchronizes sorted order with the underlying collection) for all of the view models.
 
@@ -427,7 +427,7 @@ In this step, we only use the first two types.
 In the list view model, we need to render the view models per todo so we use type 2, lifecycle management.
 
 ```coffeescript
-TodoListViewModel = (todos) ->
+TodosViewModel = (todos) ->
   @todos = ko.observableArray([])
   ...
   @collection_observable = kb.collectionObservable(todos, @todos, { view_model: TodoViewModel })
@@ -437,9 +437,9 @@ In the stats view model (displaying remaining and allowing clearing), we need to
 
 ```coffeescript
 # Stats Footer
-StatsViewModel = (todos) ->
+FooterViewModel = (todos) ->
   @collection_observable = kb.collectionObservable(todos)
-  @remaining_text = ko.dependentObservable(=>
+  @remaining_text = ko.computed(=>
     count = @collection_observable.collection().remainingCount(); return '' if not count
     ...
   )
@@ -454,15 +454,15 @@ Todos - Knockback Complete
 
 By using a date localizer and a dependent observable, a custom localized message can be added to each todo.
 
-In the view model, localize the date/time in "done_at" and in "done_text", combine the date/time string with a localized label 'label_completed'.
+In the view model, localize the date/time in "completed" and in "completed_text", combine the date/time string with a localized label 'label_completed'.
 
 ```coffeescript
 TodoViewModel = (model) ->
   ...
-  @done_at = kb.observable(model, {key: 'done_at', localizer: LongDateLocalizer})
-  @done_text = ko.dependentObservable(=>
-    done_at = @done_at() # ensure there is a dependency
-    return if !!done_at then return "#{kb.locale_manager.get('label_completed')}: #{done_at}" else ''
+  @completed = kb.observable(model, {key: 'completed', localizer: LongDateLocalizer})
+  @completed_text = ko.computed(=>
+    completed = @completed() # ensure there is a dependency
+    return if !!completed then return "#{kb.locale_manager.get('label_completed')}: #{completed}" else ''
   )
 ```
 **Note:** see the "Knockout Dependencies" section for an explanation of the "# ensure there is a dependency" comment.
@@ -473,7 +473,7 @@ Add the text to the item template:
 <script type="text/x-jquery-tmpl" id="item-template">
   <li>
         ...
-        <div class="todo-done-text" data-bind="text: done_text"></div>
+        <div class="todo-completed-text" data-bind="text: completed_text"></div>
         ...
   </li>
 </script>
@@ -497,7 +497,7 @@ or dynamically like:
 ```coffeescript
 collection_observable.sortAttribute('text')
 collection_observable.sortedIndex((models, model)-> return _.sortedIndex(models, model, (test) -> test.get('created_at').valueOf()))
-collection_observable.sortedIndex((models, model)-> return _.sortedIndex(models, model, (test) -> settings_view_model.priorityToRank(test.get('priority'))))
+collection_observable.sortedIndex((models, model)-> return _.sortedIndex(models, model, (test) -> app_settings_view_model.priorityToRank(test.get('priority'))))
 ```
 
 * for 'created_at', we convert it to a sortable integer, and for 'priority', we convert it to a sortable number.
@@ -505,7 +505,7 @@ collection_observable.sortedIndex((models, model)-> return _.sortedIndex(models,
 We provide a standardized option view model that can be used with the "option-template" template:
 
 ```coffeescript
-SortingOptionViewModel = (string_id) ->
+SettingListSortingOptionViewModel = (string_id) ->
   @id = string_id
   @label = kb.observable(kb.locale_manager, {key: string_id})
   @option_group = 'list_sort'
@@ -519,11 +519,11 @@ SortingOptionViewModel = (string_id) ->
 We upgrade the list view model for sorting:
 
 ```coffeescript
-TodoListViewModel = (todos) ->
+TodosViewModel = (todos) ->
   ...
   @sort_mode = ko.observable('label_text')  # used to create a dependency
-  @sorting_options = [new SortingOptionViewModel('label_text'), new SortingOptionViewModel('label_created'), new SortingOptionViewModel('label_priority')]
-  @selected_value = ko.dependentObservable(
+  @list_sorting_options = [new SettingListSortingOptionViewModel('label_text'), new SettingListSortingOptionViewModel('label_created'), new SettingListSortingOptionViewModel('label_priority')]
+  @selected_value = ko.computed(
     read: => return @sort_mode()
     write: (new_mode) =>
       @sort_mode(new_mode)
@@ -534,7 +534,7 @@ TodoListViewModel = (todos) ->
         when 'label_priority' then ...
   )
   @collection_observable = kb.collectionObservable(todos, @todos, {view_model: TodoViewModel, sort_attribute: 'text'})
-  @tasks_exist = ko.dependentObservable(=> @collection_observable().length)
+  @tasks_exist = ko.computed(=> @collection_observable().length)
 ```
 
 * **sort_mode**: stores the current mode
@@ -546,7 +546,7 @@ TodoListViewModel = (todos) ->
 The sorting html added to the list template:
 
 ```html
-<div id="todo-list-sorting" class="selection codestyle" data-bind="template: {name: 'option-template', foreach: sorting_options, templateOptions: {selected_value: selected_value} }"></div>
+<div id="todo-list-sorting" class="selection codestyle" data-bind="template: {name: 'option-template', foreach: list_sorting_options, templateOptions: {selected_value: selected_value} }"></div>
 ```
 
 which renders the following group of radio buttons:
@@ -563,36 +563,36 @@ Priority settings are stored in a non-specialized Backbone model with the id bei
 
 ```coffeescript
 class PrioritiesSettingList extends Backbone.Collection
-  localStorage: new Store("kb_priorities") # Save all of the todo items under the `"kb_priorities"` namespace.
+  localStorage: new Store("kb_priorities") # Save all of the todos under the `"kb_priorities"` namespace.
 priorities = new PrioritiesSettingList()
 ```
 
 To display the localized name of the priority and to render its color, the model is mapped onto a view model as follows:
 
 ```coffeescript
-PrioritySettingsViewModel = (model) ->
+PrioritiesViewModel = (model) ->
   @priority = model.get('id')
   @priority_text = kb.observable(kb.locale_manager, {key: @priority})
   @priority_color = kb.observable(model, {key: 'color'})
   @           # must return this or Coffeescript will return the last statement which is not what we want!
 ```
 
-The tricky part is to set up the dependencies (see below section "Knockout Dependencies") for the settings display, the tooltip, and the model priority swatch. To do this, I wrote a small helper method "createColorsDependency" to manually create dependencies on all of the view model properties (which are themselves dependent on the model's 'color' attribute through the PrioritySettingsViewModel):
+The tricky part is to set up the dependencies (see below section "Knockout Dependencies") for the settings display, the tooltip, and the model priority swatch. To do this, I wrote a small helper method "createColorsDependency" to manually create dependencies on all of the view model properties (which are themselves dependent on the model's 'color' attribute through the PrioritiesViewModel):
 
 ```coffeescript
-SettingsViewModel = (priority_settings) ->
-  @priority_settings = ko.observableArray(_.map(priority_settings, (model)-> return new PrioritySettingsViewModel(model)))
+AppSettingsViewModel = (priorities) ->
+  @priorities = ko.observableArray(_.map(priorities, (model)-> return new PrioritiesViewModel(model)))
   @getColorByPriority = (priority) ->
     @createColorsDependency()
-    (return view_model.priority_color() if view_model.priority == priority) for view_model in @priority_settings()
+    (return view_model.priority_color() if view_model.priority == priority) for view_model in @priorities()
     return ''
-  @createColorsDependency = => view_model.priority_color() for view_model in @priority_settings()
+  @createColorsDependency = => view_model.priority_color() for view_model in @priorities()
 ```
 
 The priority color settings are rendered as follows:
 
 ```html
-<div id="color-settings" data-bind="template: {name: 'priority-setting-template', foreach: window.settings_view_model.priority_settings}"></div>
+<div id="priority-color-settings" data-bind="template: {name: 'priority-setting-template', foreach: window.app_settings_view_model.priorities}"></div>
 ```
 using this template:
 
@@ -617,7 +617,7 @@ using this template for the color swatch:
 <script type="text/x-jquery-tmpl" id="priority-swatch-picker-template">
   <div class="priority-color-swatch todo create" data-bind="style: {background: priority_color}, click: onToggleTooltip">
     <span class="priority-picker-tooltip ui-tooltip-top" data-bind="visible: tooltip_visible">
-      <div data-bind="template: {name: 'priority-picker-template', foreach: window.settings_view_model.priority_settings, templateOptions: {onSelectPriority: onSelectPriority} }"></div>
+      <div data-bind="template: {name: 'priority-picker-template', foreach: window.app_settings_view_model.priorities, templateOptions: {onSelectPriority: onSelectPriority} }"></div>
     </span>
   </div>
 </script>
@@ -637,7 +637,7 @@ and this template for each available color in the tool tip:
 Finally, for the sorting, I wrote a small helper to turn the priority identifier into a number that could be used by Underscore's sortedIndex:
 
 ```coffeescript
-SettingsViewModel = (priority_settings) ->
+AppSettingsViewModel = (priorities) ->
   ...
   @priorityToRank = (priority) ->
     switch priority
@@ -659,7 +659,7 @@ Knockback does not provide a locale manager (although there is a sample with thi
 2. Trigger Backbone.Events 'change' and 'change:#{string_id}' like:
 
 ```coffeescript
-@trigger('change', this)
+@trigger('change', @)
 @trigger("change:#{key}", value) for key, value of @translations_by_locale[@locale_identifier]
 ```
 
@@ -687,7 +687,7 @@ As for the "Todos - Knockout Complete" demo...
 You can simply watch an attribute on the locale manager as follows:
 
 ```coffeescript
-CreateTodoViewModel = ->
+HeaderViewModel = ->
   ...
   @input_placeholder_text = kb.observable(kb.locale_manager, {key: 'placeholder_create'})
 ```
@@ -697,7 +697,7 @@ Or model attributes can be localized automatically when your locale manager trig
 ```coffeescript
 TodoViewModel = (model) ->
   ...
-  @done_at = kb.observable(model, {key: 'done_at', localizer: LongDateLocalizer})
+  @completed = kb.observable(model, {key: 'completed', localizer: LongDateLocalizer})
 ```
 
 ### Lazy Loading
@@ -707,10 +707,10 @@ By using Knockback with [Backbone.ModelRef][18], you can start rendering your vi
 As demonstration, you can see that the colors arrive a little after the rendering. It is achieved by passing model references instead of models to the settings view model:
 
 ```coffeescript
-SettingsViewModel = (priority_settings) ->
-  @priority_settings = ko.observableArray(_.map(priority_settings, (model)-> return new PrioritySettingsViewModel(model)))
+AppSettingsViewModel = (priorities) ->
+  @priorities = ko.observableArray(_.map(priorities, (model)-> return new PrioritiesViewModel(model)))
   ...
-window.settings_view_model = new SettingsViewModel([
+window.app_settings_view_model = new AppSettingsViewModel([
   new Backbone.ModelRef(priorities, 'high'),
   new Backbone.ModelRef(priorities, 'medium'),
   new Backbone.ModelRef(priorities, 'low')
@@ -801,31 +801,31 @@ Path.listen()
 
 ### Knockout Dependencies
 
-The big gotcha with Knockout is its implicit dependencies for ko.dependentObservables. Sometimes you need to include an unnecessary call to a dependent observable within you read function just to register dependencies.
+The big gotcha with Knockout is its implicit dependencies for ko.computeds. Sometimes you need to include an unnecessary call to a dependent observable within you read function just to register dependencies.
 
 In this case, the displayed text "remaining_text" needs to be updated with the locale_changes, but because the string id is dynamic and it inserts the count number, a manual locale dependency is used.
 
 ```coffeescript
-StatsViewModel = (todos) ->
+FooterViewModel = (todos) ->
   kb.locale_change_observable = kb.triggeredObservable(kb.locale_manager, 'change') # use to register a localization dependency
   ...
-  @remaining_text = ko.dependentObservable(=>
+  @remaining_text = ko.computed(=>
     kb.locale_change_observable() # use to register a localization dependency
     count = @collection_observable.collection().remainingCount(); return '' if not count
     return kb.locale_manager.get((if count == 1 then 'remaining_template_s' else 'remaining_template_pl'), count)
   )
 ```
 
-In this case, "done_at" changes when the the "done_at" attribute changes or locale changes (through LongDateLocalizer). So "done_text" will be relocalized correctly.
+In this case, "completed" changes when the the "completed" attribute changes or locale changes (through LongDateLocalizer). So "completed_text" will be relocalized correctly.
 
 ```coffeescript
 TodoViewModel = (model) ->
   ...
-  @done_at = kb.observable(model, {key: 'done_at', localizer: LongDateLocalizer})
-  @done_text = ko.dependentObservable(=>
-    done_at = @done_at() # ensure there is a dependency
-    return if !!done_at then return "#{kb.locale_manager.get('label_completed')}: #{done_at}" else ''
+  @completed = kb.observable(model, {key: 'completed', localizer: LongDateLocalizer})
+  @completed_text = ko.computed(=>
+    completed = @completed() # ensure there is a dependency
+    return if !!completed then return "#{kb.locale_manager.get('label_completed')}: #{completed}" else ''
   )
 ```
 
-**Note:** Knockback's observables are all ko.dependentObservables behind-the-scenes so the same rules apply to them as for any ko.dependentObservable
+**Note:** Knockback's observables are all ko.computeds behind-the-scenes so the same rules apply to them as for any ko.computed
