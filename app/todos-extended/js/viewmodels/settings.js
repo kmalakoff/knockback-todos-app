@@ -26,10 +26,10 @@
     return this;
   };
   window.SettingsViewModel = function(priorities, locales) {
-    this.current_language = ko.observable(kb.locale_manager.getLocale());
     this.language_options = _.map(locales, function(locale) {
       return new SettingLanguageOptionViewModel(locale);
     });
+    this.current_language = ko.observable(kb.locale_manager.getLocale());
     this.selected_language = ko.computed({
       read: __bind(function() {
         return this.current_language();

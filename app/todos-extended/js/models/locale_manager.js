@@ -81,7 +81,7 @@
     };
     return LocaleManager;
   })();
-  __extends(LocaleManager.prototype, Backbone.Events);
+  _.extend(LocaleManager.prototype, Backbone.Events);
   if (!kb) {
     throw new Error("Please include Knockback before the Locale Manager");
   }
