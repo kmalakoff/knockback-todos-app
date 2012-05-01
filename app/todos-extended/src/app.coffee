@@ -49,7 +49,7 @@ $ ->
 		)
 
 		# set up color pickers
-		$('.colorpicker').mColorPicker({imageFolder: 'css/images/'})
+		$('.colorpicker').mColorPicker({imageFolder: $.fn.mColorPicker.init.imageFolder})
 		$('.colorpicker').bind('colorpicked', ->
 			model = priorities.get($(this).attr('id'))
 			model.save({color: $(this).val()}) if model

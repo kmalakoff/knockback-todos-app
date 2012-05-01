@@ -31,7 +31,9 @@
             title: $.trim(title)
           });
         } else {
-          model.destroy();
+          _.defer(function() {
+            return model.destroy();
+          });
         }
         return this.editing(false);
       }, this))

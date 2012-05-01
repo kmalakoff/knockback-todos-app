@@ -70,7 +70,7 @@
         }
       });
       $('.colorpicker').mColorPicker({
-        imageFolder: 'css/images/'
+        imageFolder: $.fn.mColorPicker.init.imageFolder
       });
       return $('.colorpicker').bind('colorpicked', function() {
         var model;
