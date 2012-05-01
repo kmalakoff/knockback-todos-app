@@ -41,7 +41,7 @@ class LocaleManager
 #######################################
 # Mix in Backbone.Events so callers can subscribe
 #######################################
-LocaleManager.prototype extends Backbone.Events
+_.extend(LocaleManager.prototype, Backbone.Events)
 
 #######################################
 # Set up strings

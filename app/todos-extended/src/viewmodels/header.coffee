@@ -7,7 +7,7 @@ window.HeaderViewModel = (todos) ->
 		return true if not $.trim(@title()) or (event.keyCode != ENTER_KEY)
 
 		# Create task and reset UI
-		todos.create({title: $.trim(@title()), priority: app_settings_view_model.default_priority()})
+		todos.create({title: $.trim(@title()), priority: app.viewmodels.settings.default_priority()})
 		@title('')
 
 	# EXTENSIONS: Localization
@@ -15,12 +15,12 @@ window.HeaderViewModel = (todos) ->
 	@input_tooltip_text = kb.observable(kb.locale_manager, {key: 'tooltip_create'})
 
 	# EXTENSIONS: Priorities
-	@priority_color = ko.computed(-> return app_settings_view_model.default_priority_color())
+	@priority_color = ko.computed(-> return app.viewmodels.settings.default_priority_color())
 	@tooltip_visible = ko.observable(false)
 	tooltip_visible = @tooltip_visible # closured for onSelectPriority
 	@onSelectPriority = (view_model, event) ->
 		event.stopPropagation()
 		tooltip_visible(false)
-		app_settings_view_model.default_priority(ko.utils.unwrapObservable(@priority))
+		app.viewmodels.settings.default_priority(ko.utils.unwrapObservable(@priority))
 	@onToggleTooltip = => @tooltip_visible(!@tooltip_visible())
 	@

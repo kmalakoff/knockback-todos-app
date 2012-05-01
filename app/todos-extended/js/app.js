@@ -33,12 +33,16 @@
         return $(element).attr('placeholder', ko.utils.unwrapObservable(value_accessor()));
       }
     };
+    window.app = {
+      viewmodels: {}
+    };
     priorities = new PrioritiesCollection();
-    window.app_settings_view_model = new AppSettingsViewModel([new Backbone.ModelRef(priorities, 'high'), new Backbone.ModelRef(priorities, 'medium'), new Backbone.ModelRef(priorities, 'low')], kb.locale_manager.getLocales());
-    ko.applyBindings(app_settings_view_model, $('#todoapp-settings')[0]);
+    app.viewmodels.settings = new SettingsViewModel([new Backbone.ModelRef(priorities, 'high'), new Backbone.ModelRef(priorities, 'medium'), new Backbone.ModelRef(priorities, 'low')], kb.locale_manager.getLocales());
     todos = new TodosCollection();
-    window.app_view_model = new AppViewModel(todos);
-    ko.applyBindings(app_view_model, $('#todoapp')[0]);
+    app.viewmodels.header = new HeaderViewModel(todos);
+    app.viewmodels.todos = new TodosViewModel(todos);
+    app.viewmodels.footer = new FooterViewModel(todos);
+    ko.applyBindings(app.viewmodels, $('#todoapp')[0]);
     new AppRouter();
     Backbone.history.start();
     todos.fetch();
@@ -66,7 +70,7 @@
         }
       });
       $('.colorpicker').mColorPicker({
-        imageFolder: 'app/todos-extended/css/images/'
+        imageFolder: $.fn.mColorPicker.init.imageFolder
       });
       return $('.colorpicker').bind('colorpicked', function() {
         var model;

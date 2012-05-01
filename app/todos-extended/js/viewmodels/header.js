@@ -11,7 +11,7 @@
       }
       todos.create({
         title: $.trim(this.title()),
-        priority: app_settings_view_model.default_priority()
+        priority: app.viewmodels.settings.default_priority()
       });
       return this.title('');
     }, this);
@@ -22,14 +22,14 @@
       key: 'tooltip_create'
     });
     this.priority_color = ko.computed(function() {
-      return app_settings_view_model.default_priority_color();
+      return app.viewmodels.settings.default_priority_color();
     });
     this.tooltip_visible = ko.observable(false);
     tooltip_visible = this.tooltip_visible;
     this.onSelectPriority = function(view_model, event) {
       event.stopPropagation();
       tooltip_visible(false);
-      return app_settings_view_model.default_priority(ko.utils.unwrapObservable(this.priority));
+      return app.viewmodels.settings.default_priority(ko.utils.unwrapObservable(this.priority));
     };
     this.onToggleTooltip = __bind(function() {
       return this.tooltip_visible(!this.tooltip_visible());

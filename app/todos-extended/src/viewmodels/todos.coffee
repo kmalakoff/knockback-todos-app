@@ -3,7 +3,7 @@ TodoViewModel = (model) ->
 	@editing = ko.observable(false)
 	@completed = kb.observable(model, {key: 'completed', read: (-> return model.completed()), write: ((completed) -> model.completed(completed)) }, @)
 	@visible = ko.computed(=>
-		switch app_settings_view_model.list_filter_mode()
+		switch app.viewmodels.settings.list_filter_mode()
 			when 'active' then return not @completed()
 			when 'completed' then return @completed()
 			else return true
@@ -12,7 +12,7 @@ TodoViewModel = (model) ->
 	@title = kb.observable(model, {
 		key: 'title'
 		write: ((title) =>
-			if $.trim(title) then model.save(title: $.trim(title)) else model.save(completed: true)
+			if $.trim(title) then model.save(title: $.trim(title)) else _.defer(->model.destroy())
 			@editing(false)
 		)
 	}, @)
@@ -31,7 +31,7 @@ TodoViewModel = (model) ->
 	)
 
 	# EXTENSIONS: Priorities
-	@priority_color = kb.observable(model, {key: 'priority', read: -> return app_settings_view_model.getColorByPriority(model.get('priority'))})
+	@priority_color = kb.observable(model, {key: 'priority', read: -> return app.viewmodels.settings.getColorByPriority(model.get('priority'))})
 	@tooltip_visible = ko.observable(false)
 	tooltip_visible = @tooltip_visible # closured for onSelectPriority
 	@onSelectPriority = (view_model, event) ->
@@ -45,12 +45,12 @@ window.TodosViewModel = (todos) ->
 	@todos = ko.observableArray([])
 	@collection_observable = kb.collectionObservable(todos, @todos, {view_model: TodoViewModel, sort_attribute: 'title'})
 	@sort_mode = ko.computed(=>
-		new_mode = app_settings_view_model.selected_list_sorting()
+		new_mode = app.viewmodels.settings.selected_list_sorting()
 		_.defer(=>
 			switch new_mode
 				when 'label_text' then @collection_observable.sortAttribute('title')
 				when 'label_created' then @collection_observable.sortedIndex((models, model)-> return _.sortedIndex(models, model, (test) -> test.get('created_at').valueOf()))
-				when 'label_priority' then @collection_observable.sortedIndex((models, model)-> return _.sortedIndex(models, model, (test) => app_settings_view_model.priorityToRank(test.get('priority'))))
+				when 'label_priority' then @collection_observable.sortedIndex((models, model)-> return _.sortedIndex(models, model, (test) => app.viewmodels.settings.priorityToRank(test.get('priority'))))
 		)
 	)
 
