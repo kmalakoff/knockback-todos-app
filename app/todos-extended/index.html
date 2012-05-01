@@ -8,25 +8,24 @@
 	<link rel="stylesheet" href="css/app.css">
 </head>
 <body>
-	<section id="todoapp-settings">
-		<!-- Language Options -->
-		<div id="todo-languages" class="selection codestyle" data-bind="foreach: language_options">
-			<div class="option"><input type="radio" data-bind="attr: {id: id, name: option_group}, value: id, checked: app_settings_view_model.selected_language"><label data-bind="attr: {for: id}, text: label"></label></div>
-		</div>
-		<!-- Priority Options -->
-		<div id="priority-color-settings" data-bind="foreach: priorities">
-			<div class="priority-color-entry">
-				<div class="priority-text" data-bind="text: priority_text"></div>
-				<input data-bind="attr: {id: priority}, value: priority_color" class='priority-color-swatch colorpicker' data-text="hidden" data-hex="true"/>
-			</div>
-		</div>
-		<!-- List Sorting -->
-		<div id="todo-list-sorting" class="selection codestyle" data-bind="foreach: list_sorting_options">
-			<div class="option"><input type="radio" data-bind="attr: {id: id, name: option_group}, value: id, checked: app_settings_view_model.selected_list_sorting"><label data-bind="attr: {for: id}, text: label"></label></div>
-		</div>
-	</section>
-
 	<section id="todoapp">
+		<section id="settings">
+			<!-- Language Options -->
+			<div id="todo-languages" class="selection codestyle" data-bind="foreach: settings.language_options">
+				<div class="option"><input type="radio" data-bind="attr: {id: id, name: option_group}, value: id, checked: $parents[0].settings.selected_language"><label data-bind="attr: {for: id}, text: label"></label></div>
+			</div>
+			<!-- Priority Options -->
+			<div id="priority-color-settings" data-bind="foreach: settings.priorities">
+				<div class="priority-color-entry">
+					<div class="priority-text" data-bind="text: priority_text"></div>
+					<input data-bind="attr: {id: priority}, value: priority_color" class='priority-color-swatch colorpicker' data-text="hidden" data-hex="true"/>
+				</div>
+			</div>
+			<!-- List Sorting -->
+			<div id="todo-list-sorting" class="selection codestyle" data-bind="foreach: settings.list_sorting_options">
+				<div class="option"><input type="radio" data-bind="attr: {id: id, name: option_group}, value: id, checked: $parents[0].settings.selected_list_sorting"><label data-bind="attr: {for: id}, text: label"></label></div>
+			</div>
+		</section>
 		<header id="header">
 			<h1>todos</h1>
 			<input id="new-todo" type="text" data-bind="value: header.title, valueUpdate: 'afterkeydown', event: {keyup: header.onAddTodo}, placeholder: header.input_placeholder_text" autofocus>
@@ -39,9 +38,9 @@
 
 			<ul id="todo-list" data-bind="foreach: todos.todos">
 				<li data-bind="css: {completed: completed, editing: editing}, visible: visible">
-					<div class="view">
+					<div class="view" data-bind="event: {dblclick: onCheckEditBegin}">
 						<input class="toggle" type="checkbox" data-bind="checked: completed" checked>
-						<label data-bind="text: title, event: {dblclick: onCheckEditBegin}"></label>
+						<label data-bind="text: title"></label>
 						<button class="destroy" data-bind="click: onDestroyTodo"></button>
 						<div class="priority-color-swatch-wrapper" data-bind="template: {name: 'priority-swatch-picker-template', data: $data}"></div>
 						<div class="todo-completed-text" data-bind="text: completed_text"></div>
@@ -57,13 +56,13 @@
 			</span>
 			<ul id="filters">
 				<li>
-					<a href="#/" data-bind="text: app_settings_view_model.label_filter_all, css: {selected: app_settings_view_model.list_filter_mode()==''}"></a>
+					<a href="#/" data-bind="text: settings.label_filter_all, css: {selected: settings.list_filter_mode()==''}"></a>
 				</li>
 				<li>
-					<a href="#/active" data-bind="text: app_settings_view_model.label_filter_active, css: {selected: app_settings_view_model.list_filter_mode()=='active'}"></a>
+					<a href="#/active" data-bind="text: settings.label_filter_active, css: {selected: settings.list_filter_mode()=='active'}"></a>
 				</li>
 				<li>
-					<a href="#/completed" data-bind="text: app_settings_view_model.label_filter_completed, css: {selected: app_settings_view_model.list_filter_mode()=='completed'}"></a>
+					<a href="#/completed" data-bind="text: settings.label_filter_completed, css: {selected: settings.list_filter_mode()=='completed'}"></a>
 				</li>
 			</ul>
 			<button id="clear-completed" data-bind="text: footer.clear_text, block: footer.clear_text, click: footer.onDestroyCompleted"></button>
@@ -80,7 +79,7 @@
 	<script type="text/x-jquery-tmpl" id="priority-swatch-picker-template">
 		<div class="priority-color-swatch todo header" data-bind="style: {background: priority_color}, click: onToggleTooltip">
 			<span class="priority-picker-tooltip ui-tooltip-top" data-bind="visible: tooltip_visible">
-				<div data-bind="template: {name: 'priority-picker-template', foreach: app_settings_view_model.priorities}"></div>
+				<div data-bind="template: {name: 'priority-picker-template', foreach: $root.settings.priorities}"></div>
 			</span>
 		</div>
 	</script>
@@ -119,11 +118,10 @@
 	<script src="js/models/todo.js"></script>
 	<script src="js/models/todos_collection.js"></script>
 	<script src="js/models/priorities_collection.js"></script>
-	<script src="js/viewmodels/app_settings.js"></script>
+	<script src="js/viewmodels/settings.js"></script>
 	<script src="js/viewmodels/header.js"></script>
 	<script src="js/viewmodels/todos.js"></script>
 	<script src="js/viewmodels/footer.js"></script>
-	<script src="js/viewmodels/app.js"></script>
 	<script src="js/routers/app.js"></script>
 
 	<!-- The Demo -->

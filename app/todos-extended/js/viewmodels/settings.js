@@ -25,7 +25,7 @@
     this.option_group = 'list_sort';
     return this;
   };
-  window.AppSettingsViewModel = function(priorities, locales) {
+  window.SettingsViewModel = function(priorities, locales) {
     this.current_language = ko.observable(kb.locale_manager.getLocale());
     this.language_options = _.map(locales, function(locale) {
       return new SettingLanguageOptionViewModel(locale);

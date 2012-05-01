@@ -18,19 +18,19 @@ $ ->
 	ko.bindingHandlers.placeholder =
 		update: (element, value_accessor, all_bindings_accessor, view_model) -> $(element).attr('placeholder', ko.utils.unwrapObservable(value_accessor()))
 
-	# # EXTENSIONS: Create and bind app settings view model
+	# Create and bind the app viewmodels
+	window.app = {viewmodels: {}}
 	priorities = new PrioritiesCollection()
-	window.app_settings_view_model = new AppSettingsViewModel([
+	app.viewmodels.settings = new SettingsViewModel([
 		new Backbone.ModelRef(priorities, 'high'),
 		new Backbone.ModelRef(priorities, 'medium'),
 		new Backbone.ModelRef(priorities, 'low')
 	], kb.locale_manager.getLocales())
-	ko.applyBindings(app_settings_view_model, $('#todoapp-settings')[0])
-
-	# Create and bind the app view model
 	todos = new TodosCollection()
-	window.app_view_model = new AppViewModel(todos)
-	ko.applyBindings(app_view_model, $('#todoapp')[0])
+	app.viewmodels.header = new HeaderViewModel(todos)
+	app.viewmodels.todos = new TodosViewModel(todos)
+	app.viewmodels.footer = new FooterViewModel(todos)
+	ko.applyBindings(app.viewmodels, $('#todoapp')[0])
 
 	# Start the app routing
 	new AppRouter()
@@ -56,4 +56,4 @@ $ ->
 		)
 	), 1000)
 
-	# kb.vmRelease(app_view_model)		# Destroy when finished with the view model
+	# kb.vmRelease(app.viewmodels)		# Destroy when finished with the view model

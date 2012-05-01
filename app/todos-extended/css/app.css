@@ -1,11 +1,11 @@
 /* base.css overrides */
 
-/* Create Task Priority Selector
+/* Create Settings Section
 ********************************************/
-#todoapp-settings {
+#todoapp #settings {
 	position: absolute;
-	bottom: 10px;
-	left: 10px;
+	bottom: -180px;
+	right: 0px;
 	width: 180px;
 	border-top-left-radius: 2px;
 	border-top-right-radius: 2px;
@@ -30,7 +30,7 @@
 	line-height: 1.6em;
 }
 
-#todoapp-settings .priority-text {
+#todoapp #settings .priority-text {
 	width: 155px;
 }
 

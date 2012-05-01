@@ -19,7 +19,7 @@ SettingListSortingOptionViewModel = (string_id) ->
 	@option_group = 'list_sort'
 	@
 
-window.AppSettingsViewModel = (priorities, locales) ->
+window.SettingsViewModel = (priorities, locales) ->
 	# EXTENSIONS: Language settings
 	@current_language = ko.observable(kb.locale_manager.getLocale()) # used to create a dependency
 	@language_options = _.map(locales, (locale) -> return new SettingLanguageOptionViewModel(locale))

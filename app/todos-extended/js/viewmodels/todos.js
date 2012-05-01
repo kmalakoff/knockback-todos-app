@@ -14,7 +14,7 @@
       })
     }, this);
     this.visible = ko.computed(__bind(function() {
-      switch (app_settings_view_model.list_filter_mode()) {
+      switch (app.viewmodels.settings.list_filter_mode()) {
         case 'active':
           return !this.completed();
         case 'completed':
@@ -31,9 +31,7 @@
             title: $.trim(title)
           });
         } else {
-          model.save({
-            completed: true
-          });
+          model.destroy();
         }
         return this.editing(false);
       }, this))
@@ -70,7 +68,7 @@
     this.priority_color = kb.observable(model, {
       key: 'priority',
       read: function() {
-        return app_settings_view_model.getColorByPriority(model.get('priority'));
+        return app.viewmodels.settings.getColorByPriority(model.get('priority'));
       }
     });
     this.tooltip_visible = ko.observable(false);
@@ -95,7 +93,7 @@
     });
     this.sort_mode = ko.computed(__bind(function() {
       var new_mode;
-      new_mode = app_settings_view_model.selected_list_sorting();
+      new_mode = app.viewmodels.settings.selected_list_sorting();
       return _.defer(__bind(function() {
         switch (new_mode) {
           case 'label_text':
@@ -109,7 +107,7 @@
           case 'label_priority':
             return this.collection_observable.sortedIndex(function(models, model) {
               return _.sortedIndex(models, model, __bind(function(test) {
-                return app_settings_view_model.priorityToRank(test.get('priority'));
+                return app.viewmodels.settings.priorityToRank(test.get('priority'));
               }, this));
             });
         }

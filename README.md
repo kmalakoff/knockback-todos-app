@@ -23,11 +23,10 @@ You can get Knockback.js:
 * [Development version][1]
 * [Production version][2]
 
-[1]: https://github.com/kmalakoff/knockback/raw/master/knockback.js
-[2]: https://github.com/kmalakoff/knockback/raw/master/knockback.min.js
-
 Here are the dependent libraries [Knockout.js][3], [Backbone.js][4], [Underscore.js][5], and [Backbone.ModelRef.js (optional)][6].
 
+[1]: https://github.com/kmalakoff/knockback/raw/master/knockback.js
+[2]: https://github.com/kmalakoff/knockback/raw/master/knockback.min.js
 [3]: http://knockoutjs.com/
 [4]: http://documentcloud.github.com/backbone/
 [5]: http://documentcloud.github.com/underscore/
@@ -36,38 +35,26 @@ Here are the dependent libraries [Knockout.js][3], [Backbone.js][4], [Underscore
 Frameworks Introduction
 ----------
 
-Both Knockout and Backbone have their strengths and weaknesses, but together they are amazing! A non-exhaustive summary of the differences:
+Backbone is an MVC-like framework and Knockout is MVVM. For a little theoretical background:
 
-### Backbone
+1. [MVC][http://en.wikipedia.org/wiki/Model_view_controller] and [Backbone's take on MVC][http://documentcloud.github.com/backbone/#FAQ-mvc]
+2. [MVVM][http://en.wikipedia.org/wiki/Model_View_ViewModel]
+3. [ORM][http://en.wikipedia.org/wiki/Object-relational_mapping] as related to Backbone models and collections
 
-* (+) ORM: Backbone's Model and Collection provide a great, extensible [ORM][7] layer for loading, saving, and manipulating model data.
-* (+) ORM: provides notifications like jQuery (bind/unbind, trigger) for model and collection changes.
-* (+) Routing: provides a routing solution (Backbone.Router) to handle the flow between views in a single page app.
-* (-) Controllers/Views/Templates: provides minimal helpers (like events bindings) to make views dynamic, but requires significant boilerplate and customization for complex dynamic logic. Views end up being a type of [controller][8] in [MVC][9] and templates often need conditional logic embedded in them.
+Some resources on Backbone:
 
-### Knockout
+* [Backbone website][15]
 
-* (+) Controllers/Views/Templates: follows the [MVVM][10] pattern to more cleanly separate model, controller, and view logic.
-* (+) Controllers/Views/Templates: provides a mechanism to dynamically update templates incrementally.
-* (+) Controllers/Views/Templates: reduces/eliminates the need for embedded conditional logic in your templates making a cleaner separation between presentation logic and presentation attributes.
-* (+) Controllers/Views/Templates: simplifies jQuery logic by providing built-in or custom handlers bound in data-bind attributes.
-* (-) ORM: Knockout provides some JSON serialization functionality, but it is quite limited compared to Backbone. In addition, it view model-focussed instead of model-focussed meaning it mixes model manipulation with display logic manipulation and when you start having multiple view models per model, manual client-side synchronization is required.
-* (-) Routing: you need to find your own routing solution and choose a way to manage views in a single page app
+Some resources on Knockout:
 
-### Knockback
+* [Knockout website][16] - amazing interactive examples
+* [Video][17] - a good overview
 
-* (+) ORM and Controllers/Views/Templates: bridges the ORM of Backbone with the MVVM of Knockout so you can have the best of both worlds.
-* (+) ORM and Controllers/Views/Templates: helps separate your MVC model logic from your MVVM controller/view/template logic.
-* (+) ORM and Controllers/Views/Templates: automates collection model synchronization with your rendering.
-* (+) Routing: by using Backbone.Router, can manage pages in an application. See "Routing and View Lifecycle Management" section for an example.
-* (+) Localization: provides a convention using a locale manager and Backbone events to easily localize your views, to dynamically change locales, and to customize the presentation of your date/times, compound/dependent attributes, etc.
+Both Knockout and Backbone have their strengths and weaknesses, but together they are amazing!
+
+Please take a look at the [Knockout website][7] for an analysis of each framework and how by bridging the two framework, Knockout addresses their weaknesses and adds some powerful new features.
 
 There is much more that can be compared and debated..."Google the Internets" if you want more!
-
-[7]: http://en.wikipedia.org/wiki/Object-relational_mapping
-[8]: http://documentcloud.github.com/backbone/#FAQ-mvc
-[9]: http://en.wikipedia.org/wiki/Model_view_controller
-[10]: http://en.wikipedia.org/wiki/Model_View_ViewModel
 
 
 Todo App Introduction
@@ -81,7 +68,7 @@ If you look at the Backbone Todo app [demo][12] and [annotated code][13], you wi
 
 * the ORM solution with a local storage adapter makes persistence easy
 * there is a clean separation of logic: the models and collections provide data manipulation functionality that is used by the views
-* the views require low-level jQuery manipulation. It is totally manageable in a small app but can be complex to scale up in a more complex application.
+* the views require low-level jQuery manipulation. It is manageable in a small app but can be complex to scale up and maintain in a more complex application.
 
 ### Knockout
 
@@ -96,41 +83,23 @@ With the Knockback Todo project, I wanted to show more than a minimal demo to pu
 
 So I split up the Todo application into steps that reflect a real-world development process and that make the concepts more easily digestible.
 
-* **Todos Mockup**: "beginning with the end in mind", I took the Backbone Todo demo, replaced the Underscore.js templates with jquery-tmpl (to be prepared for Knockout's bundled template engine), refactored out all strings into templates (localization shouldn't be an afterthought!), and then mocked out the extended functionality.
+* **Todos - Classic**: the classic Todo app following the [TodoMVC][11] guidelines.
 
-* **Todos - Classic**: I stripped out the extended functionality from todos_mockup, and wrote the ORM in Backbone and minimally ported the Controllers/Views/Templates to Knockout.
-
-* **Todos - Knockback Complete**: the classic todo app with extensions for a completed date/time message, list view sorting, priorities with customizable colors, and localization (EN/FR/IT). It shows off the additional power and flexibility of Knockback including lazy model loading through Backbone.ModelRef, and is a complete port to Knockout (rather than partial in "Todos - Classic").
+* **Todos - Knockback Complete**: the classic todo app with extensions for a completed date/time message, list view sorting, priorities with customizable colors, and localization (EN/FR/IT). It shows off the additional power and flexibility of Knockback including lazy model loading through Backbone.ModelRef.
 
 
+[7]: http://kmalakoff.github.com/knockback/
 [11]: http://addyosmani.github.com/todomvc/
 [12]: http://documentcloud.github.com/backbone/examples/todos/index.html
 [13]: http://documentcloud.github.com/backbone/docs/todos.html
 [14]: https://github.com/ashish01/knockoutjs-todos
-
-
-Fundamentals
-------------
-
-### Backbone
-
-A Google search will bring up many tutorials and tips including:
-
-* [Backbone website][15]
-
 [15]: http://documentcloud.github.com/backbone/
-
-### Knockout
-
-There are some great resources on Knockout:
-
-* [Knockout website][16] - amazing interactive examples
-* [Video][17] - a good overview
-
 [16]: http://knockoutjs.com/examples/helloWorld.html
 [17]: http://channel9.msdn.com/Events/MIX/MIX11/FRM08
 
-### Todos Architecture
+
+Todos Architecture
+------------
 
 With the MVVM pattern, instead of Model, View, Controller you use Model, View, ViewModel. As an simple approximation using MVC terminology:
 
@@ -140,63 +109,34 @@ With the MVVM pattern, instead of Model, View, Controller you use Model, View, V
 
 # MVVM in "Todos - Classic"
 
-The Classic application is an upgraded port of the Backbone Todos application so it has the same ORM with Todo (Backbone.Model) and TodoList (Backbone.Collection), but the two views are replaced by various ViewModels and templates for each section of the screen (the header, footer, create a new Todo section, the Todos list, and the stats section).
-
-In a real-world app, you may merge some of these ViewModels and templates or to separate them into reusable views (see "Routing and View Lifecycle Management" section for an example) depending on your needs. I kept them separate to compartmentalize their functionality to simplify the descriptions of their functionality. With Knockout 1.3's $data, $parent, $parents, and $root syntax, nesting the ViewModels into a single ApplicationViewModel and a single template also becomes more easy to do, if you want.
+The Classic application is an upgraded port of the Backbone Todos application so it has the same ORM with Todo (Backbone.Model) and TodosCollection (Backbone.Collection), but the two views are replaced by various ViewModels and templates for each section of the screen (SettingsViewModel, HeaderViewModel, TodosViewModel, FooterViewModel).
 
 **Models (Backbone.Model + Backbone.Collection)**
 
 * **Todo:** provides the data and operations for a Todo like setting its complete state and saving changes on the server/local-storage
-* **TodoList:** fetches models from the server and provides summary information on the Todo data like how many are completed, remaining, etc
+* **TodosCollection:** fetches models from the server and provides summary information on the Todo data like how many are completed, remaining, etc
 
 **ViewModels**
 
+* **SettingsViewModel:** provides properties to select the active filtering for Todos
 * **HeaderViewModel:** provides properties to configure the new todo input element (placeholder text, etc) and provides a hook to the input element in the template so the ViewModel can create a new Todo Model when Enter is pressed
-* **TodoViewModel:** provides properties for rendering a Todo Model (text, completed state, etc), and provides the hooks to the template elements so it can both perform actions on the Model (eg. change its completed state and text) and to change the css classes on the elements in the View to toggle between edit/view modes for the Todo
-* **TodosViewModel:** provides all of the TodoViewModels to render each Todo
+* **TodosViewModel:** provides all of the ViewModels to render each Todo
 * **FooterViewModel:** provides and updates the summary stats attributes including localized text whenever the Todo list or one of its Todo models changes
-* **FooterViewModel:** provides the localized instructions text
 
-**Views (jQuery-Tmpl templates)**
-
-* **Create Section:** binds the input element for adding a new Todo and binds the key events to the HeaderViewModel for the Enter key
-* **List Section:** binds an unordered list element with a foreach template to render each of the Todos
-* **item-template:** binds all the elements to render a Todo (in both view and edit modes) and binds the TodoViewModel handlers like double click to enter edit mode, changing the Todo model's completed state when the checkbox state changes, etc
-* **Stats Section:** binds elements to display the summary stats using the FooterViewModel properties
-* **Footer Section:** binds the localized instructions text from FooterViewModel
-
-**Note:** In order to provide localized text, all text was refactored out into templates which is why there is so many templates where there were few before.
-
-# MVVM in "Todos - Knockback Complete"/"Todos - Mockup"
-This application extends the "Todos - Classic" by adding ORM for Priorities/PrioritiesSettingList to configure display colors based on Todo priority, adding the priority localized labels and colors to the relevant views ('Header Section' for global settings editing, 'Create Section' for new Todos' priority, and 'item-template' to display and edit the Todo's priority), adding list sorting options into the 'List Section', and  localization options to the 'Footer Section'.
+# MVVM in "Todos - Extended"
+This application extends the "Todos - Classic" by adding settings including todo priorities (display colors and orders), language selection and localized text, adding todos sorting options (by name, created date, and priority).
 
 **Models (Backbone.Model + Backbone.Collection)**
 
 * **Priority:** provides the data for the priority and color information that is saved on the server/local-storage. It could be a generic Backbone.Model but for clarity and consistency with the mock up, it is given a class.
-* **PrioritiesSettingList:** a very basic collection for fetching all of the priority settings
+* **PrioritiesCollection:** a very basic collection for fetching all of the priority settings
 
 **ViewModels**
 
 * **PrioritiesViewModel:** provides localized text (that shouldn't be saved to the server) and color properties to the 'priority-setting-template' template
-* **AppSettingsViewModel:** provides both the PrioritiesViewModel globally to the application, but also the current default priority and color to the 'Create Section', and a priority ranking to the TodosViewModel for sorting.
-* **SettingLanguageOptionViewModel:** this is a ViewModel without a formal model since it programmatically converts the available locales in the locale manager ('en', 'fr-FR', 'it-IT') into display strings ('EN', 'FR', 'IT')
-* **SettingListSortingOptionViewModel:** this provides a localized label to the sorting radio buttons in the 'List Section'
+* **SettingsViewModel:** provides the priority settings globally to the application, the current default priority and color for new tasks, a priority ranking to the TodosViewModel for sorting, the selected and available locales from the locale manager ('en', 'fr-FR', 'it-IT') into display strings ('EN', 'FR', 'IT'), todos sorting radio buttons.
 * **HeaderViewModel:** upgraded to expose properties for rendering the current default Todo priority and a hook to show/hide the tooltip for selecting the default priority
 * **TodoViewModel:** upgraded to expose properties for rendering its Todo priority and a hook to show/hide the tooltip for selecting the Todo priority
-* **TodosViewModel:** upgraded to expose sorting labels to the radio buttons and to change the sorting function of the kb.collectionObservable when the handler is triggered in the 'List Section'
-* **FooterViewModel:** upgraded to expose the language selection options and currently selected item to the 'option-template' template
-
-**Views (jQuery-Tmpl templates)**
-
-* **Header Section:** bindings added to render the priority labels and colors using the 'priority-setting-template' template
-* **Create Section:** bindings upgraded to render the priority colors and bind the tooltip visibility template/handlers
-* **List Section:** bindings upgraded to render the sorting options and handlers
-* **item-template:** bindings upgraded to render the priority colors and bind the tooltip visibility template/handlers
-* **Footer Section:** bindings upgraded to render the language options and to to bind option selection logic.
-* **priority-setting-template:** renders the priority labels and colors from AppSettingsViewModel with a color picker (instead of tool tip)
-* **priority-swatch-picker-template:** renders just the color swatch for a supplied priority (either from HeaderViewModel or TodoViewModel) and binds the handler for a tooltip (instead of a color picker)
-* **priority-picker-template:** renders the priority labels and colors, and custom binds the action to be taken when the color swatch is selected (for either setting the default new Todo priority or updating an existing Todo's priority)
-
 
 # Relationships between Models and ViewModels - Often One-To-Many
 
@@ -218,7 +158,7 @@ The HeaderViewModel sets the default priority for new Todos when you select the 
 ```coffeescript
 HeaderViewModel = ->
   @onSelectPriority = (view_model, event) ->
-    app_settings_view_model.default_priority(ko.utils.unwrapObservable(@priority))
+    app.viewmodels.settings.default_priority(ko.utils.unwrapObservable(@priority))
 ```
 The TodoViewModel sets the priority for its Todos Model when you select the priority:
 
@@ -311,7 +251,7 @@ Some highlights:
 <div class="create-todo">
   <div class="title"><h1>${title}</h1></div>
   <div id="priority-color-settings">
-    {{tmpl(window.app_settings_view_model.priorities) "#priority-setting-template"}}
+    {{tmpl(window.app.viewmodels.settings.priorities) "#priority-setting-template"}}
   </div>
 </div>
 
@@ -333,13 +273,7 @@ Some highlights:
 * The code is separated into sections based on Knockback enhancements or classic using comment clocks to help you find them.
 
 ```coffeescript
-###################################
-# Knockback-powered enhancements - BEGIN
-###################################
-
-###################################
-# Knockback-powered enhancements - END
-###################################
+# EXTENSIONS:
 ```
 
 Todos - Classic
@@ -352,8 +286,8 @@ Backbone Models and Collections are very easy to pickup and start using!
 There's not much to say except that we're using backbone-localstorage.js to provide client-side persistence by adding the following property to our collections:
 
 ```coffeescript
-class TodoList extends Backbone.Collection
-  localStorage: new Store("todos-knockback") # Save all of the todos under the `"todos-knockback"` namespace.
+class TodosCollection extends Backbone.Collection
+  localStorage: new Store('todos-knockback') # Save all of the todos under the `todos-knockback` namespace.
 ```
 
 ### Knockout Integration
@@ -363,29 +297,8 @@ Knockout requires a little more explanation.
 To render templates from Javascript, you need to pass a view model and the element:
 
 ```coffeescript
-ko.applyBindings(todos_view_model, $('#todo-list')[0])
+ko.applyBindings(app.viewmodels, $('#todoapp')[0])
 ```
-
-To render nested templates from the html, you need to use something like the following...
-
-For a template with externally supplied view models (using ko.applyBindings):
-
-```html
-<ul class="todo-list" data-bind="template: {name: 'item-template', foreach: todos.todos}"></ul>
-```
-
-**Note:** for compatibility between Knockout 1.2.1 and 1.3.0beta (template data passed down the template chain using the 1.3.0beta syntax), I've slightly modified ko.applyBindings:
-
-```coffeescript
-# ko1.2.1 compatibility with 1.3
-if _.isUndefined(ko.templateSources)
-  _ko_native_apply_bindings = ko.applyBindings
-  ko.applyBindings = (view_model, element) ->
-    view_model['$data'] = view_model
-    _ko_native_apply_bindings(view_model, element)
-```
-```html
-<div data-bind="template: {name: 'priority-swatch-picker-template', data: $data}"></div>
 ```
 
 ### Model Synchronization
@@ -497,7 +410,7 @@ or dynamically like:
 ```coffeescript
 collection_observable.sortAttribute('text')
 collection_observable.sortedIndex((models, model)-> return _.sortedIndex(models, model, (test) -> test.get('created_at').valueOf()))
-collection_observable.sortedIndex((models, model)-> return _.sortedIndex(models, model, (test) -> app_settings_view_model.priorityToRank(test.get('priority'))))
+collection_observable.sortedIndex((models, model)-> return _.sortedIndex(models, model, (test) -> app.viewmodels.settings.priorityToRank(test.get('priority'))))
 ```
 
 * for 'created_at', we convert it to a sortable integer, and for 'priority', we convert it to a sortable number.
@@ -562,9 +475,9 @@ which renders the following group of radio buttons:
 Priority settings are stored in a non-specialized Backbone model with the id being the priority identifier and assuming the color is stored in an attribute named color, and loaded into a collection:
 
 ```coffeescript
-class PrioritiesSettingList extends Backbone.Collection
+class PrioritiesCollection extends Backbone.Collection
   localStorage: new Store("kb_priorities") # Save all of the todos under the `"kb_priorities"` namespace.
-priorities = new PrioritiesSettingList()
+priorities = new PrioritiesCollection()
 ```
 
 To display the localized name of the priority and to render its color, the model is mapped onto a view model as follows:
@@ -580,7 +493,7 @@ PrioritiesViewModel = (model) ->
 The tricky part is to set up the dependencies (see below section "Knockout Dependencies") for the settings display, the tooltip, and the model priority swatch. To do this, I wrote a small helper method "createColorsDependency" to manually create dependencies on all of the view model properties (which are themselves dependent on the model's 'color' attribute through the PrioritiesViewModel):
 
 ```coffeescript
-AppSettingsViewModel = (priorities) ->
+SettingsViewModel = (priorities) ->
   @priorities = ko.observableArray(_.map(priorities, (model)-> return new PrioritiesViewModel(model)))
   @getColorByPriority = (priority) ->
     @createColorsDependency()
@@ -592,7 +505,7 @@ AppSettingsViewModel = (priorities) ->
 The priority color settings are rendered as follows:
 
 ```html
-<div id="priority-color-settings" data-bind="template: {name: 'priority-setting-template', foreach: window.app_settings_view_model.priorities}"></div>
+<div id="priority-color-settings" data-bind="template: {name: 'priority-setting-template', foreach: window.app.viewmodels.settings.priorities}"></div>
 ```
 using this template:
 
@@ -617,7 +530,7 @@ using this template for the color swatch:
 <script type="text/x-jquery-tmpl" id="priority-swatch-picker-template">
   <div class="priority-color-swatch todo create" data-bind="style: {background: priority_color}, click: onToggleTooltip">
     <span class="priority-picker-tooltip ui-tooltip-top" data-bind="visible: tooltip_visible">
-      <div data-bind="template: {name: 'priority-picker-template', foreach: window.app_settings_view_model.priorities, templateOptions: {onSelectPriority: onSelectPriority} }"></div>
+      <div data-bind="template: {name: 'priority-picker-template', foreach: window.app.viewmodels.settings.priorities, templateOptions: {onSelectPriority: onSelectPriority} }"></div>
     </span>
   </div>
 </script>
@@ -637,7 +550,7 @@ and this template for each available color in the tool tip:
 Finally, for the sorting, I wrote a small helper to turn the priority identifier into a number that could be used by Underscore's sortedIndex:
 
 ```coffeescript
-AppSettingsViewModel = (priorities) ->
+SettingsViewModel = (priorities) ->
   ...
   @priorityToRank = (priority) ->
     switch priority
@@ -707,10 +620,10 @@ By using Knockback with [Backbone.ModelRef][18], you can start rendering your vi
 As demonstration, you can see that the colors arrive a little after the rendering. It is achieved by passing model references instead of models to the settings view model:
 
 ```coffeescript
-AppSettingsViewModel = (priorities) ->
+SettingsViewModel = (priorities) ->
   @priorities = ko.observableArray(_.map(priorities, (model)-> return new PrioritiesViewModel(model)))
   ...
-window.app_settings_view_model = new AppSettingsViewModel([
+window.app.viewmodels.settings = new SettingsViewModel([
   new Backbone.ModelRef(priorities, 'high'),
   new Backbone.ModelRef(priorities, 'medium'),
   new Backbone.ModelRef(priorities, 'low')
