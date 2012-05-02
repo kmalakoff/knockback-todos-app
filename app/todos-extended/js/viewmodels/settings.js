@@ -79,8 +79,8 @@
       }
     };
     this.list_filter_mode = ko.observable('');
-    this.list_sorting_options = [new SettingListSortingOptionViewModel('label_text'), new SettingListSortingOptionViewModel('label_created'), new SettingListSortingOptionViewModel('label_priority')];
-    this.selected_list_sorting = ko.observable('label_text');
+    this.list_sorting_options = [new SettingListSortingOptionViewModel('label_title'), new SettingListSortingOptionViewModel('label_created'), new SettingListSortingOptionViewModel('label_priority')];
+    this.selected_list_sorting = ko.observable('label_title');
     this.label_filter_all = kb.observable(kb.locale_manager, 'todo_filter_all');
     this.label_filter_active = kb.observable(kb.locale_manager, 'todo_filter_active');
     this.label_filter_completed = kb.observable(kb.locale_manager, 'todo_filter_completed');
