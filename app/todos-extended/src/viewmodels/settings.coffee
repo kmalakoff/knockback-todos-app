@@ -45,8 +45,8 @@ window.SettingsViewModel = (priorities, locales) ->
 
 	@list_filter_mode = ko.observable('')
 	# EXTENSIONS: List sorting
-	@list_sorting_options = [new SettingListSortingOptionViewModel('label_text'), new SettingListSortingOptionViewModel('label_created'), new SettingListSortingOptionViewModel('label_priority')]
-	@selected_list_sorting = ko.observable('label_text')
+	@list_sorting_options = [new SettingListSortingOptionViewModel('label_title'), new SettingListSortingOptionViewModel('label_created'), new SettingListSortingOptionViewModel('label_priority')]
+	@selected_list_sorting = ko.observable('label_title')
 
 	# EXTENSIONS: Localization
 	@label_filter_all = kb.observable(kb.locale_manager, 'todo_filter_all')

@@ -48,7 +48,7 @@ window.TodosViewModel = (todos) ->
 		new_mode = app.viewmodels.settings.selected_list_sorting()
 		_.defer(=>
 			switch new_mode
-				when 'label_text' then @collection_observable.sortAttribute('title')
+				when 'label_title' then @collection_observable.sortAttribute('title')
 				when 'label_created' then @collection_observable.sortedIndex((models, model)-> return _.sortedIndex(models, model, (test) -> test.get('created_at').valueOf()))
 				when 'label_priority' then @collection_observable.sortedIndex((models, model)-> return _.sortedIndex(models, model, (test) => app.viewmodels.settings.priorityToRank(test.get('priority'))))
 		)

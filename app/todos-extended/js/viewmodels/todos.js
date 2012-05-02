@@ -98,7 +98,7 @@
       new_mode = app.viewmodels.settings.selected_list_sorting();
       return _.defer(__bind(function() {
         switch (new_mode) {
-          case 'label_text':
+          case 'label_title':
             return this.collection_observable.sortAttribute('title');
           case 'label_created':
             return this.collection_observable.sortedIndex(function(models, model) {
