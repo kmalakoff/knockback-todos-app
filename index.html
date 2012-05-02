@@ -50,10 +50,7 @@
 			</ul>
 		</section>
 		<footer id="footer" data-bind="block: todos.tasks_exist">
-			<span id="todo-count">
-				<strong data-bind="text: footer.remaining_count"></strong>
-				<span data-bind="text: footer.remaining_text"></span>
-			</span>
+			<span id="todo-count" data-bind="html: footer.remaining_text"></span>
 			<ul id="filters">
 				<li>
 					<a href="#/" data-bind="text: settings.label_filter_all, css: {selected: settings.list_filter_mode()==''}"></a>
@@ -107,6 +104,7 @@
 	<script src="app/todos-extended/js/lib/globalize/globalize.js"></script>
 	<script src="app/todos-extended/js/lib/globalize/globalize.culture.fr-FR.js"></script>
 	<script src="app/todos-extended/js/lib/globalize/globalize.culture.it-IT.js"></script>
+	<script src="app/todos-extended/js/lib/globalize/globalize.culture.ja-JP.js"></script>
 	<script src="app/todos-extended/js/lib/mColorPicker.min.js"></script>
 	<script type="text/javascript">
 		$.fn.mColorPicker.init.showLogo = false;
