@@ -1,11 +1,11 @@
-# Knockback.js TodoMVC app
+# Knockback.js (Extended) • [TodoMVC](http://todomvc.com)
 
 ## Getting started
 
 You need [CoffeScript](http://coffeescript.org) to compile if you make changes to the files in the `src` folder.
 
 
-### Compile
+## Compile
 
 Open Terminal in this folder.
 

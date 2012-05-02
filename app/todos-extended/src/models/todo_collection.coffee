@@ -1,4 +1,4 @@
-class window.TodosCollection extends Backbone.Collection
+class window.TodoCollection extends Backbone.Collection
 	localStorage: new Store('todos-knockback-extended') # Save all of the todos under the `"todos-knockback-extended"` namespace.
 	model: Todo
 
@@ -10,4 +10,3 @@ class window.TodosCollection extends Backbone.Collection
 	destroyCompleted: ->
 		completed_tasks = @filter((todo) -> return todo.completed())
 		model.destroy() for model in completed_tasks
-
