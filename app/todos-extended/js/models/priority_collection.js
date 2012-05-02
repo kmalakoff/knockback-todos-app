@@ -7,12 +7,12 @@
     child.__super__ = parent.prototype;
     return child;
   };
-  window.PrioritiesCollection = (function() {
-    __extends(PrioritiesCollection, Backbone.Collection);
-    function PrioritiesCollection() {
-      PrioritiesCollection.__super__.constructor.apply(this, arguments);
+  window.PriorityCollection = (function() {
+    __extends(PriorityCollection, Backbone.Collection);
+    function PriorityCollection() {
+      PriorityCollection.__super__.constructor.apply(this, arguments);
     }
-    PrioritiesCollection.prototype.localStorage = new Store('priorities-knockback-extended');
-    return PrioritiesCollection;
+    PriorityCollection.prototype.localStorage = new Store('priorities-knockback-extended');
+    return PriorityCollection;
   })();
 }).call(this);

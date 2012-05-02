@@ -7,27 +7,27 @@
     child.__super__ = parent.prototype;
     return child;
   };
-  window.TodosCollection = (function() {
-    __extends(TodosCollection, Backbone.Collection);
-    function TodosCollection() {
-      TodosCollection.__super__.constructor.apply(this, arguments);
+  window.TodoCollection = (function() {
+    __extends(TodoCollection, Backbone.Collection);
+    function TodoCollection() {
+      TodoCollection.__super__.constructor.apply(this, arguments);
     }
-    TodosCollection.prototype.localStorage = new Store('todos-knockback');
-    TodosCollection.prototype.model = Todo;
-    TodosCollection.prototype.completedCount = function() {
+    TodoCollection.prototype.localStorage = new Store('todos-knockback');
+    TodoCollection.prototype.model = Todo;
+    TodoCollection.prototype.completedCount = function() {
       return this.models.reduce((function(prev, cur) {
         return prev + (cur.completed() ? 1 : 0);
       }), 0);
     };
-    TodosCollection.prototype.remainingCount = function() {
+    TodoCollection.prototype.remainingCount = function() {
       return this.models.length - this.completedCount();
     };
-    TodosCollection.prototype.completeAll = function(completed) {
+    TodoCollection.prototype.completeAll = function(completed) {
       return this.each(function(todo) {
         return todo.completed(completed);
       });
     };
-    TodosCollection.prototype.destroyCompleted = function() {
+    TodoCollection.prototype.destroyCompleted = function() {
       var completed_tasks, model, _i, _len, _results;
       completed_tasks = this.filter(function(todo) {
         return todo.completed();
@@ -39,6 +39,6 @@
       }
       return _results;
     };
-    return TodosCollection;
+    return TodoCollection;
   })();
 }).call(this);

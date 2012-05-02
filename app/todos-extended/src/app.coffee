@@ -20,13 +20,13 @@ $ ->
 
 	# Create and bind the app viewmodels
 	window.app = {viewmodels: {}}
-	priorities = new PrioritiesCollection()
+	priorities = new PriorityCollection()
 	app.viewmodels.settings = new SettingsViewModel([
 		new Backbone.ModelRef(priorities, 'high'),
 		new Backbone.ModelRef(priorities, 'medium'),
 		new Backbone.ModelRef(priorities, 'low')
 	], kb.locale_manager.getLocales())
-	todos = new TodosCollection()
+	todos = new TodoCollection()
 	app.viewmodels.header = new HeaderViewModel(todos)
 	app.viewmodels.todos = new TodosViewModel(todos)
 	app.viewmodels.footer = new FooterViewModel(todos)

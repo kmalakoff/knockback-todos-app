@@ -92,12 +92,12 @@ With the MVVM pattern, instead of Model, View, Controller you use Model, View, V
 
 ### MVVM in "Todos - Classic"
 
-The Classic application is an upgraded port of the Backbone Todos application so it has the same ORM with Todo (Backbone.Model) and TodosCollection (Backbone.Collection), but the two views are replaced by various ViewModels and templates for each section of the screen (SettingsViewModel, HeaderViewModel, TodosViewModel, FooterViewModel).
+The Classic application is an upgraded port of the Backbone Todos application so it has the same ORM with Todo (Backbone.Model) and TodoCollection (Backbone.Collection), but the two views are replaced by various ViewModels and templates for each section of the screen (SettingsViewModel, HeaderViewModel, TodosViewModel, FooterViewModel).
 
 **Models (Backbone.Model + Backbone.Collection)**
 
 * **Todo:** provides the data and operations for a Todo like setting its complete state and saving changes on the server/local-storage
-* **TodosCollection:** fetches models from the server and provides summary information on the Todo data like how many are completed, remaining, etc
+* **TodoCollection:** fetches models from the server and provides summary information on the Todo data like how many are completed, remaining, etc
 
 **ViewModels**
 
@@ -112,7 +112,7 @@ This application extends the "Todos - Classic" by adding settings including todo
 **Models (Backbone.Model + Backbone.Collection)**
 
 * **Priority:** provides the data for the priority and color information that is saved on the server/local-storage. It could be a generic Backbone.Model but for clarity and consistency with the mock up, it is given a class.
-* **PrioritiesCollection:** a very basic collection for fetching all of the priority settings
+* **PriorityCollection:** a very basic collection for fetching all of the priority settings
 
 **ViewModels**
 
