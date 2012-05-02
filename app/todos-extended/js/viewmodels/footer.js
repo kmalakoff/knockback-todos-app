@@ -2,9 +2,6 @@
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   window.FooterViewModel = function(todos) {
     this.collection_observable = kb.collectionObservable(todos);
-    this.remaining_count = ko.computed(__bind(function() {
-      return this.collection_observable.collection().remainingCount();
-    }, this));
     this.remaining_text_key = ko.computed(__bind(function() {
       if (todos.remainingCount() === 1) {
         return 'remaining_template_s';
@@ -13,7 +10,10 @@
       }
     }, this));
     this.remaining_text = kb.observable(kb.locale_manager, {
-      key: this.remaining_text_key
+      key: this.remaining_text_key,
+      args: __bind(function() {
+        return this.collection_observable.collection().remainingCount();
+      }, this)
     });
     this.clear_text_key = ko.computed(__bind(function() {
       if (this.collection_observable.collection().completedCount() === 0) {

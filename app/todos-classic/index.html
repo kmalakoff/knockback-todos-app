@@ -27,10 +27,7 @@
 			</ul>
 		</section>
 		<footer id="footer" data-bind="block: todos.tasks_exist">
-			<span id="todo-count">
-				<strong data-bind="text: footer.remaining_count"></strong>
-				<span data-bind="text: footer.remaining_text"></span>
-			</span>
+			<span id="todo-count" data-bind="html: footer.remaining_text"></span>
 			<ul id="filters">
 				<li>
 					<a href="#/" data-bind="css: {selected: settings.list_filter_mode()==''}">All</a>

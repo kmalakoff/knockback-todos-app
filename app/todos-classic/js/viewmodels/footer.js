@@ -2,11 +2,8 @@
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   window.FooterViewModel = function(todos) {
     this.collection_observable = kb.collectionObservable(todos);
-    this.remaining_count = ko.computed(__bind(function() {
-      return this.collection_observable.collection().remainingCount();
-    }, this));
     this.remaining_text = ko.computed(__bind(function() {
-      return "" + (this.collection_observable.collection().remainingCount() === 1 ? 'item' : 'items') + " left";
+      return "<strong>" + (this.collection_observable.collection().remainingCount()) + "</strong> " + (this.collection_observable.collection().remainingCount() === 1 ? 'item' : 'items') + " left";
     }, this));
     this.clear_text = ko.computed(__bind(function() {
       var count;
