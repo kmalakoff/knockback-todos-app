@@ -19,17 +19,17 @@ $ ->
 		update: (element, value_accessor, all_bindings_accessor, view_model) -> $(element).attr('placeholder', ko.utils.unwrapObservable(value_accessor()))
 
 	# Create and bind the app viewmodels
-	window.app = {viewmodels: {}}
-	priorities = new PriorityCollection()
+	window.app = {viewmodels: {}, collections: {}}
+	app.collections.priorities = new PriorityCollection()
 	app.viewmodels.settings = new SettingsViewModel([
-		new Backbone.ModelRef(priorities, 'high'),
-		new Backbone.ModelRef(priorities, 'medium'),
-		new Backbone.ModelRef(priorities, 'low')
+		new Backbone.ModelRef(app.collections.priorities, 'high'),
+		new Backbone.ModelRef(app.collections.priorities, 'medium'),
+		new Backbone.ModelRef(app.collections.priorities, 'low')
 	], kb.locale_manager.getLocales())
-	todos = new TodoCollection()
-	app.viewmodels.header = new HeaderViewModel(todos)
-	app.viewmodels.todos = new TodosViewModel(todos)
-	app.viewmodels.footer = new FooterViewModel(todos)
+	app.collections.todos = new TodoCollection()
+	app.viewmodels.header = new HeaderViewModel(app.collections.todos)
+	app.viewmodels.todos = new TodosViewModel(app.collections.todos)
+	app.viewmodels.footer = new FooterViewModel(app.collections.todos)
 	ko.applyBindings(app.viewmodels, $('#todoapp')[0])
 
 	# Start the app routing
@@ -37,11 +37,11 @@ $ ->
 	Backbone.history.start()
 
 	# Load the todos
-	todos.fetch()
+	app.collections.todos.fetch()
 
 	# EXTENSIONS: Load the prioties late to show the dynamic nature of Knockback with Backbone.ModelRef
 	_.delay((->
-		priorities.fetch(
+		app.collections.priorities.fetch(
 			success: (collection) ->
 				collection.create({id:'high', color:'#bf30ff'}) if not collection.get('high')
 				collection.create({id:'medium', color:'#98acff'}) if not collection.get('medium')
@@ -51,7 +51,7 @@ $ ->
 		# set up color pickers
 		$('.colorpicker').mColorPicker({imageFolder: $.fn.mColorPicker.init.imageFolder})
 		$('.colorpicker').bind('colorpicked', ->
-			model = priorities.get($(this).attr('id'))
+			model = app.collections.priorities.get($(this).attr('id'))
 			model.save({color: $(this).val()}) if model
 		)
 	), 1000)

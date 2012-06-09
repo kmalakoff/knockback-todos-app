@@ -1,6 +1,6 @@
 ###
   knockback-todos.js
-  (c) 2011 Kevin Malakoff.
+  (c) 2011, 2012 Kevin Malakoff.
   Knockback-Todos is freely distributable under the MIT license.
   See the following for full license details:
     https:#github.com/kmalakoff/knockback-todos/blob/master/LICENSE

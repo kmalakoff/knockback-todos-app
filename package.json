@@ -1,0 +1,29 @@
+{
+  "author"        : "Kevin Malakoff <https://github.com/kmalakoff>",
+  "name"          : "knockback-todos",
+  "description"   : "Knockback-Todos: the obligatory todo app for Knockback.js",
+  "keywords"      : ["knockback-todos", "knockbackjs-todos", "knockback", "knockbackjs", "backbone", "backbonejs", "knockout", "knockoutjs"],
+
+  "url"           : "http://kmalakoff.github.com/knockback-todos/",
+  "homepage"      : "http://kmalakoff.github.com/knockback-todos/",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/kmalakoff/knockback-todos.git"
+  },
+
+  "scripts": {
+    "preinstall": "npm install coffee-script; npm install easy-bake@0.1.2",
+    "postinstall": "cake postinstall",
+    "test": "cake -c -b test"
+  },
+  "optionalDependencies": {
+    "underscore": "latest",
+    "backbone": "latest",
+    "backbone-modelref": "latest",
+    "knockout" : "latest",
+    "knockback" : "latest"
+  },
+
+  "main"          : "knockback-todos.js",
+  "version"       : "0.1.1"
+}

@@ -13,12 +13,12 @@ $ ->
 			_.defer(=>ko.bindingHandlers.hasfocus.update(element, value_accessor))
 
 	# Create and bind the app viewmodels
-	window.app = {viewmodels: {}}
+	window.app = {viewmodels: {}, collections: {}}
 	app.viewmodels.settings = new SettingsViewModel()
-	todos = new TodoCollection()
-	app.viewmodels.header = new HeaderViewModel(todos)
-	app.viewmodels.todos = new TodosViewModel(todos)
-	app.viewmodels.footer = new FooterViewModel(todos)
+	app.collections.todos = new TodoCollection()
+	app.viewmodels.header = new HeaderViewModel(app.collections.todos)
+	app.viewmodels.todos = new TodosViewModel(app.collections.todos)
+	app.viewmodels.footer = new FooterViewModel(app.collections.todos)
 	ko.applyBindings(app.viewmodels, $('#todoapp')[0])
 
 	# Start the app routing
@@ -26,6 +26,6 @@ $ ->
 	Backbone.history.start()
 
 	# Load the todos
-	todos.fetch()
+	app.collections.todos.fetch()
 
 	# kb.vmRelease(app.viewmodels)		# Destroy when finished with the view model
