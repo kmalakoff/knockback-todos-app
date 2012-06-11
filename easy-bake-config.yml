@@ -1,16 +1,20 @@
-toods_apps:
+todos_apps:
   output: ../js
   directories: ['app/todos-classic/src', 'app/todos-extended/src']
 
 tests:
-  output: ./build
+  output: build
   directories:
     - test/todos-classic
     - test/todos-extended
+  files:
+    - '**/*.coffee'
   options:
     test:
       command: phantomjs
       runner: phantomjs-qunit-runner.js
+      files:
+        - '**/*.html'
     build:
       no_files_ok: ['test/packaging']
 
@@ -71,4 +75,4 @@ postinstall:
     args: ['vendor/mColorPicker.min.js', 'app/todos-extended/js/lib/mColorPicker.min.js']
   extended_copy_latest_globalize:
     command: 'cp'
-    args: ['-r', 'vendor/globalize', 'app/todos-extended/js/lib']
+    args: ['-r', 'vendor/globalize', 'app/todos-extended/js/lib/globalize']
