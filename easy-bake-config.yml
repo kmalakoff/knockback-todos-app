@@ -9,70 +9,34 @@ tests:
     - test/todos-extended
   files:
     - '**/*.coffee'
-  options:
+  modes:
     test:
       command: phantomjs
       runner: phantomjs-qunit-runner.js
       files:
         - '**/*.html'
-    build:
-      no_files_ok: ['test/packaging']
 
 postinstall:
-  # vendor
-  copy_latest_underscore:
-    command: 'cp'
-    args: ['underscore/underscore-min.js', 'vendor/underscore-latest.min.js']
-  copy_latest_backbone:
-    command: 'cp'
-    args: ['backbone/backbone-min.js', 'vendor/backbone-latest.min.js']
-  copy_latest_backbone_model_ref:
-    command: 'cp'
-    args: ['backbone-modelref/backbone-modelref.min.js', 'vendor/backbone-modelref-latest.min.js']
-  copy_latest_knockback:
-    command: 'cp'
-    args: ['knockback/knockback.min.js', 'vendor/knockback-latest.min.js']
+  commands:
+    # vendor
+    - 'cp underscore/underscore-min.js vendor/underscore-latest.min.js'
+    - 'cp backbone/backbone-min.js vendor/backbone-latest.min.js'
+    - 'cp backbone-modelref/backbone-modelref.min.js vendor/backbone-modelref-latest.min.js'
+    - 'cp knockback/knockback.min.js vendor/knockback-latest.min.js'
 
-  # Todos Classic
-  classic_copy_latest_underscore:
-    command: 'cp'
-    args: ['vendor/underscore-latest.min.js', 'app/todos-classic/js/lib/underscore-latest.min.js']
-  classic_copy_latest_backbone:
-    command: 'cp'
-    args: ['vendor/backbone-latest.min.js', 'app/todos-classic/js/lib/backbone-latest.min.js']
-  classic_copy_latest_local_storage:
-    command: 'cp'
-    args: ['vendor/backbone.localStorage-min.js', 'app/todos-classic/js/lib/backbone.localStorage-min.js']
-  classic_copy_latest_knockout:
-    command: 'cp'
-    args: ['vendor/knockout-latest.min.js', 'app/todos-classic/js/lib/knockout-latest.min.js']
-  classic_copy_latest_knockback:
-    command: 'cp'
-    args: ['vendor/knockback-latest.min.js', 'app/todos-classic/js/lib/knockback-latest.min.js']
+    # todos-classic
+    - 'cp vendor/underscore-latest.min.js app/todos-classic/js/lib/underscore-latest.min.js'
+    - 'cp vendor/backbone-latest.min.js app/todos-classic/js/lib/backbone-latest.min.js'
+    - 'cp vendor/backbone.localStorage-min.js app/todos-classic/js/lib/backbone.localStorage-min.js'
+    - 'cp vendor/knockout-latest.min.js app/todos-classic/js/lib/knockout-latest.min.js'
+    - 'cp vendor/knockback-latest.min.js app/todos-classic/js/lib/knockback-latest.min.js'
 
-  # Todos Extended
-  extended_copy_latest_underscore:
-    command: 'cp'
-    args: ['vendor/underscore-latest.min.js', 'app/todos-extended/js/lib/underscore-latest.min.js']
-  extended_copy_latest_backbone:
-    command: 'cp'
-    args: ['vendor/backbone-latest.min.js', 'app/todos-extended/js/lib/backbone-latest.min.js']
-  extended_copy_latest_local_storage:
-    command: 'cp'
-    args: ['vendor/backbone.localStorage-min.js', 'app/todos-extended/js/lib/backbone.localStorage-min.js']
-  extended_copy_latest_knockout:
-    command: 'cp'
-    args: ['vendor/knockout-latest.min.js', 'app/todos-extended/js/lib/knockout-latest.min.js']
-  extended_copy_latest_knockback:
-    command: 'cp'
-    args: ['vendor/knockback-latest.min.js', 'app/todos-extended/js/lib/knockback-latest.min.js']
-
-  extended_copy_latest_backbone_model_ref:
-    command: 'cp'
-    args: ['vendor/backbone-modelref-latest.min.js', 'app/todos-extended/js/lib/backbone-modelref-latest.min.js']
-  extended_copy_latest_color_picker:
-    command: 'cp'
-    args: ['vendor/mColorPicker.min.js', 'app/todos-extended/js/lib/mColorPicker.min.js']
-  extended_copy_latest_globalize:
-    command: 'cp'
-    args: ['-r', 'vendor/globalize', 'app/todos-extended/js/lib/globalize']
+    # todos-extended
+    - 'cp vendor/underscore-latest.min.js app/todos-extended/js/lib/underscore-latest.min.js'
+    - 'cp vendor/backbone-latest.min.js app/todos-extended/js/lib/backbone-latest.min.js'
+    - 'cp vendor/backbone.localStorage-min.js app/todos-extended/js/lib/backbone.localStorage-min.js'
+    - 'cp vendor/knockout-latest.min.js app/todos-extended/js/lib/knockout-latest.min.js'
+    - 'cp vendor/knockback-latest.min.js app/todos-extended/js/lib/knockback-latest.min.js'
+    - 'cp vendor/backbone-modelref-latest.min.js app/todos-extended/js/lib/backbone-modelref-latest.min.js'
+    - 'cp vendor/mColorPicker.min.js app/todos-extended/js/lib/backbone-modelref-latest.min.js'
+    - 'cp -r vendor/globalize app/todos-extended/js/lib/globalize'
