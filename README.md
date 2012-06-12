@@ -1,3 +1,5 @@
+[![Build Status](https://secure.travis-ci.org/kmalakoff/knockback-todos.png)](http://travis-ci.org/kmalakoff/knockback-todos)
+
 ```
     __ __                  __   __               __       _
    / //_/____  ____  _____/ /__/ /_  ____ ______/ /__    (_)____
