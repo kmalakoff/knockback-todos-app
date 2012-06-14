@@ -22,6 +22,7 @@ postinstall:
     - 'cp underscore/underscore-min.js vendor/underscore-latest.min.js'
     - 'cp backbone/backbone-min.js vendor/backbone-latest.min.js'
     - 'cp backbone-modelref/backbone-modelref.min.js vendor/backbone-modelref-latest.min.js'
+    - 'cp knockout-client vendor/knockout-latest.min.js'
     - 'cp knockback/knockback.min.js vendor/knockback-latest.min.js'
 
     # todos-classic

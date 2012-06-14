@@ -1,6 +1,6 @@
 {
-  "author"        : "Kevin Malakoff <https://github.com/kmalakoff>",
-  "name"          : "knockback-todos",
+  "author"        : {"name": "Kevin Malakoff", "url": "https://github.com/kmalakoff"},
+  "name"          : "knockback-todos_dev",
   "description"   : "Knockback-Todos: the obligatory todo app for Knockback.js",
   "keywords"      : ["knockback-todos", "knockbackjs-todos", "knockback", "knockbackjs", "backbone", "backbonejs", "knockout", "knockoutjs"],
 
@@ -20,7 +20,8 @@
     "underscore": "latest",
     "backbone": "latest",
     "backbone-modelref": "latest",
-    "knockout" : "latest",
+    "knockout-client": "latest",
+    "knockout": "latest",
     "knockback" : "latest"
   },
 
