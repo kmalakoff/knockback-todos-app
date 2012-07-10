@@ -1,0 +1,2753 @@
+info it worked if it ends with ok
+verbose cli [ 'node', '/usr/local/bin/npm', 'install' ]
+info using npm@1.1.21
+info using node@v0.6.18
+verbose config file /Users/kevin/.npmrc
+verbose config file /usr/local/etc/npmrc
+verbose config file /usr/local/lib/node_modules/npm/npmrc
+verbose caching /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/package.json
+verbose loadDefaults _knockback-todos@0.1.1
+verbose readDependencies: using package.json deps
+verbose where, deps [ '/Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos',
+verbose where, deps   [ 'underscore',
+verbose where, deps     'backbone',
+verbose where, deps     'backbone-modelref',
+verbose where, deps     'knockout-client',
+verbose where, deps     'knockout',
+verbose where, deps     'knockback',
+verbose where, deps     'coffee-script',
+verbose where, deps     'easy-bake' ] ]
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/package.json
+info preinstall _knockback-todos@0.1.1
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/package.json
+verbose readDependencies: using package.json deps
+verbose cache add [ 'underscore@>=1.3.3', null ]
+silly cache add: name, spec, args [ undefined,
+silly cache add: name, spec, args   'underscore@>=1.3.3',
+silly cache add: name, spec, args   [ 'underscore@>=1.3.3', null ] ]
+verbose parsed url { pathname: 'underscore@',
+verbose parsed url   path: 'underscore@',
+verbose parsed url   href: 'underscore@' }
+silly cache add: name, spec, args [ 'underscore', '>=1.3.3', [ 'underscore', '>=1.3.3' ] ]
+verbose parsed url { pathname: '=1.3.3', path: '=1.3.3', href: '=1.3.3' }
+verbose addNamed [ 'underscore', '>=1.3.3' ]
+verbose addNamed [ null, '>=1.3.3' ]
+silly name, range, hasData [ 'underscore', '>=1.3.3', false ]
+verbose cache add [ 'backbone@>=0.9.2', null ]
+silly cache add: name, spec, args [ undefined, 'backbone@>=0.9.2', [ 'backbone@>=0.9.2', null ] ]
+verbose parsed url { pathname: 'backbone@', path: 'backbone@', href: 'backbone@' }
+silly cache add: name, spec, args [ 'backbone', '>=0.9.2', [ 'backbone', '>=0.9.2' ] ]
+verbose parsed url { pathname: '=0.9.2', path: '=0.9.2', href: '=0.9.2' }
+verbose addNamed [ 'backbone', '>=0.9.2' ]
+verbose addNamed [ null, '>=0.9.2' ]
+silly name, range, hasData [ 'backbone', '>=0.9.2', false ]
+verbose cache add [ 'backbone-modelref@>=0.1.2', null ]
+silly cache add: name, spec, args [ undefined,
+silly cache add: name, spec, args   'backbone-modelref@>=0.1.2',
+silly cache add: name, spec, args   [ 'backbone-modelref@>=0.1.2', null ] ]
+verbose parsed url { pathname: 'backbone-modelref@',
+verbose parsed url   path: 'backbone-modelref@',
+verbose parsed url   href: 'backbone-modelref@' }
+silly cache add: name, spec, args [ 'backbone-modelref',
+silly cache add: name, spec, args   '>=0.1.2',
+silly cache add: name, spec, args   [ 'backbone-modelref', '>=0.1.2' ] ]
+verbose parsed url { pathname: '=0.1.2', path: '=0.1.2', href: '=0.1.2' }
+verbose addNamed [ 'backbone-modelref', '>=0.1.2' ]
+verbose addNamed [ null, '>=0.1.2' ]
+silly name, range, hasData [ 'backbone-modelref', '>=0.1.2', false ]
+verbose cache add [ 'knockout-client@>=2.1.0', null ]
+silly cache add: name, spec, args [ undefined,
+silly cache add: name, spec, args   'knockout-client@>=2.1.0',
+silly cache add: name, spec, args   [ 'knockout-client@>=2.1.0', null ] ]
+verbose parsed url { pathname: 'knockout-client@',
+verbose parsed url   path: 'knockout-client@',
+verbose parsed url   href: 'knockout-client@' }
+silly cache add: name, spec, args [ 'knockout-client',
+silly cache add: name, spec, args   '>=2.1.0',
+silly cache add: name, spec, args   [ 'knockout-client', '>=2.1.0' ] ]
+verbose parsed url { pathname: '=2.1.0', path: '=2.1.0', href: '=2.1.0' }
+verbose addNamed [ 'knockout-client', '>=2.1.0' ]
+verbose addNamed [ null, '>=2.1.0' ]
+silly name, range, hasData [ 'knockout-client', '>=2.1.0', false ]
+verbose cache add [ 'knockout@>=2.1.0', null ]
+silly cache add: name, spec, args [ undefined, 'knockout@>=2.1.0', [ 'knockout@>=2.1.0', null ] ]
+verbose parsed url { pathname: 'knockout@', path: 'knockout@', href: 'knockout@' }
+silly cache add: name, spec, args [ 'knockout', '>=2.1.0', [ 'knockout', '>=2.1.0' ] ]
+verbose parsed url { pathname: '=2.1.0', path: '=2.1.0', href: '=2.1.0' }
+verbose addNamed [ 'knockout', '>=2.1.0' ]
+verbose addNamed [ null, '>=2.1.0' ]
+silly name, range, hasData [ 'knockout', '>=2.1.0', false ]
+verbose cache add [ 'knockback@>=0.15.3', null ]
+silly cache add: name, spec, args [ undefined,
+silly cache add: name, spec, args   'knockback@>=0.15.3',
+silly cache add: name, spec, args   [ 'knockback@>=0.15.3', null ] ]
+verbose parsed url { pathname: 'knockback@',
+verbose parsed url   path: 'knockback@',
+verbose parsed url   href: 'knockback@' }
+silly cache add: name, spec, args [ 'knockback', '>=0.15.3', [ 'knockback', '>=0.15.3' ] ]
+verbose parsed url { pathname: '=0.15.3', path: '=0.15.3', href: '=0.15.3' }
+verbose addNamed [ 'knockback', '>=0.15.3' ]
+verbose addNamed [ null, '>=0.15.3' ]
+silly name, range, hasData [ 'knockback', '>=0.15.3', false ]
+verbose cache add [ 'coffee-script@>=1.3.3', null ]
+silly cache add: name, spec, args [ undefined,
+silly cache add: name, spec, args   'coffee-script@>=1.3.3',
+silly cache add: name, spec, args   [ 'coffee-script@>=1.3.3', null ] ]
+verbose parsed url { pathname: 'coffee-script@',
+verbose parsed url   path: 'coffee-script@',
+verbose parsed url   href: 'coffee-script@' }
+silly cache add: name, spec, args [ 'coffee-script', '>=1.3.3', [ 'coffee-script', '>=1.3.3' ] ]
+verbose parsed url { pathname: '=1.3.3', path: '=1.3.3', href: '=1.3.3' }
+verbose addNamed [ 'coffee-script', '>=1.3.3' ]
+verbose addNamed [ null, '>=1.3.3' ]
+silly name, range, hasData [ 'coffee-script', '>=1.3.3', false ]
+verbose cache add [ 'easy-bake@0.1.5', null ]
+silly cache add: name, spec, args [ undefined, 'easy-bake@0.1.5', [ 'easy-bake@0.1.5', null ] ]
+verbose parsed url { pathname: 'easy-bake@0.1.5',
+verbose parsed url   path: 'easy-bake@0.1.5',
+verbose parsed url   href: 'easy-bake@0.1.5' }
+silly cache add: name, spec, args [ 'easy-bake', '0.1.5', [ 'easy-bake', '0.1.5' ] ]
+verbose parsed url { pathname: '0.1.5', path: '0.1.5', href: '0.1.5' }
+verbose addNamed [ 'easy-bake', '0.1.5' ]
+verbose addNamed [ '0.1.5', '0.1.5' ]
+verbose raw, before any munging underscore
+verbose url resolving [ 'https://registry.npmjs.org/', './underscore' ]
+verbose url resolved https://registry.npmjs.org/underscore
+verbose etag "5EU01KFZXCKO2JVZYE7LZXAUF"
+http GET https://registry.npmjs.org/underscore
+verbose raw, before any munging backbone
+verbose url resolving [ 'https://registry.npmjs.org/', './backbone' ]
+verbose url resolved https://registry.npmjs.org/backbone
+verbose etag "8DR58F8JMCPZQ2P4DB4WA23UV"
+http GET https://registry.npmjs.org/backbone
+verbose raw, before any munging backbone-modelref
+verbose url resolving [ 'https://registry.npmjs.org/', './backbone-modelref' ]
+verbose url resolved https://registry.npmjs.org/backbone-modelref
+verbose etag "45MGI4GOKN339VP6ADXOBWBY9"
+http GET https://registry.npmjs.org/backbone-modelref
+verbose raw, before any munging knockout-client
+verbose url resolving [ 'https://registry.npmjs.org/', './knockout-client' ]
+verbose url resolved https://registry.npmjs.org/knockout-client
+verbose etag "N04FR1KIQGAK9QXIWX7VCXY2"
+http GET https://registry.npmjs.org/knockout-client
+verbose raw, before any munging knockout
+verbose url resolving [ 'https://registry.npmjs.org/', './knockout' ]
+verbose url resolved https://registry.npmjs.org/knockout
+verbose etag "BLU8ACXMYN1A4ZMYEBOE055UO"
+http GET https://registry.npmjs.org/knockout
+verbose raw, before any munging knockback
+verbose url resolving [ 'https://registry.npmjs.org/', './knockback' ]
+verbose url resolved https://registry.npmjs.org/knockback
+verbose etag "9749BG1G4ELRD3K1SWKUPKT17"
+http GET https://registry.npmjs.org/knockback
+verbose raw, before any munging coffee-script
+verbose url resolving [ 'https://registry.npmjs.org/', './coffee-script' ]
+verbose url resolved https://registry.npmjs.org/coffee-script
+verbose etag "2T8OLBZ31C8AKEM8TKFKS9L1I"
+http GET https://registry.npmjs.org/coffee-script
+verbose raw, before any munging easy-bake/0.1.5
+verbose url resolving [ 'https://registry.npmjs.org/', './easy-bake/0.1.5' ]
+verbose url resolved https://registry.npmjs.org/easy-bake/0.1.5
+verbose etag "959XNRXONBP15FVWRXG5QT31T"
+http GET https://registry.npmjs.org/easy-bake/0.1.5
+http 304 https://registry.npmjs.org/knockout-client
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.2.0 (Erlang OTP/R15B)',
+silly get cb     etag: '"N04FR1KIQGAK9QXIWX7VCXY2"',
+silly get cb     date: 'Tue, 10 Jul 2012 15:44:02 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag knockout-client from cache
+silly name, range, hasData 2 [ 'knockout-client', '>=2.1.0', true ]
+silly versions [ 'knockout-client', [ '1.2.0', '1.2.1', '2.0.0', '2.1.0' ] ]
+verbose bin dist [ '0.6-ares1.7.5-DEV-evundefined-openssl0.9.8r-v83.6.6.25-darwin-x64-11.4.0',
+verbose bin dist   { shasum: 'dd699738f90c051698f1b2152f0bf0358ca70f34',
+verbose bin dist     tarball: 'http://registry.npmjs.org/knockout-client/-/knockout-client-2.1.0.tgz' } ]
+verbose caching /Users/kevin/.npm/knockout-client/2.1.0/package/package.json
+verbose loadDefaults knockout-client@2.1.0
+http 304 https://registry.npmjs.org/underscore
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.2.0 (Erlang OTP/R15B)',
+silly get cb     etag: '"5EU01KFZXCKO2JVZYE7LZXAUF"',
+silly get cb     date: 'Tue, 10 Jul 2012 15:44:02 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag underscore from cache
+silly name, range, hasData 2 [ 'underscore', '>=1.3.3', true ]
+silly versions [ 'underscore',
+silly versions   [ '1.0.3',
+silly versions     '1.0.4',
+silly versions     '1.1.0',
+silly versions     '1.1.1',
+silly versions     '1.1.2',
+silly versions     '1.1.3',
+silly versions     '1.1.4',
+silly versions     '1.1.5',
+silly versions     '1.1.6',
+silly versions     '1.1.7',
+silly versions     '1.2.0',
+silly versions     '1.2.1',
+silly versions     '1.2.2',
+silly versions     '1.2.3',
+silly versions     '1.2.4',
+silly versions     '1.3.0',
+silly versions     '1.3.1',
+silly versions     '1.3.2',
+silly versions     '1.3.3' ] ]
+verbose bin dist [ '0.6-ares1.7.5-DEV-evundefined-openssl0.9.8r-v83.6.6.25-darwin-x64-11.4.0',
+verbose bin dist   { shasum: '47ac53683daf832bfa952e1774417da47817ae42',
+verbose bin dist     tarball: 'http://registry.npmjs.org/underscore/-/underscore-1.3.3.tgz' } ]
+verbose caching /Users/kevin/.npm/underscore/1.3.3/package/package.json
+verbose loadDefaults underscore@1.3.3
+http 304 https://registry.npmjs.org/backbone-modelref
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.2.0 (Erlang OTP/R15B)',
+silly get cb     etag: '"45MGI4GOKN339VP6ADXOBWBY9"',
+silly get cb     date: 'Tue, 10 Jul 2012 15:44:02 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag backbone-modelref from cache
+silly name, range, hasData 2 [ 'backbone-modelref', '>=0.1.2', true ]
+silly versions [ 'backbone-modelref', [ '0.1.1', '0.1.2', '0.1.3' ] ]
+verbose bin dist [ '0.6-ares1.7.5-DEV-evundefined-openssl0.9.8r-v83.6.6.25-darwin-x64-11.4.0',
+verbose bin dist   { shasum: '0fd264ebbb6c2f22889f37a43e5a846a346bd320',
+verbose bin dist     tarball: 'http://registry.npmjs.org/backbone-modelref/-/backbone-modelref-0.1.3.tgz' } ]
+verbose caching /Users/kevin/.npm/backbone-modelref/0.1.3/package/package.json
+verbose loadDefaults backbone-modelref@0.1.3
+http 304 https://registry.npmjs.org/knockout
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.2.0 (Erlang OTP/R15B)',
+silly get cb     etag: '"BLU8ACXMYN1A4ZMYEBOE055UO"',
+silly get cb     date: 'Tue, 10 Jul 2012 15:44:02 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag knockout from cache
+silly name, range, hasData 2 [ 'knockout', '>=2.1.0', true ]
+silly versions [ 'knockout', [ '2.1.0pre', '2.1.0' ] ]
+verbose bin dist [ '0.6-ares1.7.5-DEV-evundefined-openssl0.9.8r-v83.6.6.25-darwin-x64-11.4.0',
+verbose bin dist   { shasum: '08fafc7fc8d1aff7845dfba868292b21db70767a',
+verbose bin dist     tarball: 'http://registry.npmjs.org/knockout/-/knockout-2.1.0.tgz' } ]
+verbose caching /Users/kevin/.npm/knockout/2.1.0/package/package.json
+verbose loadDefaults knockout@2.1.0
+http 304 https://registry.npmjs.org/backbone
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.2.0 (Erlang OTP/R15B)',
+silly get cb     etag: '"8DR58F8JMCPZQ2P4DB4WA23UV"',
+silly get cb     date: 'Tue, 10 Jul 2012 15:44:02 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag backbone from cache
+silly name, range, hasData 2 [ 'backbone', '>=0.9.2', true ]
+silly versions [ 'backbone',
+silly versions   [ '0.1.1',
+silly versions     '0.1.2',
+silly versions     '0.2.0',
+silly versions     '0.3.0',
+silly versions     '0.3.1',
+silly versions     '0.3.2',
+silly versions     '0.3.3',
+silly versions     '0.5.0',
+silly versions     '0.5.1',
+silly versions     '0.5.2',
+silly versions     '0.5.3',
+silly versions     '0.9.0',
+silly versions     '0.9.1',
+silly versions     '0.9.2' ] ]
+verbose bin dist [ '0.6-ares1.7.5-DEV-evundefined-openssl0.9.8r-v83.6.6.25-darwin-x64-11.4.0',
+verbose bin dist   { shasum: '53537bc2eaa85b615faf11de1622c03d26371be5',
+verbose bin dist     tarball: 'http://registry.npmjs.org/backbone/-/backbone-0.9.2.tgz' } ]
+verbose caching /Users/kevin/.npm/backbone/0.9.2/package/package.json
+verbose loadDefaults backbone@0.9.2
+http 304 https://registry.npmjs.org/coffee-script
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.2.0 (Erlang OTP/R15B)',
+silly get cb     etag: '"2T8OLBZ31C8AKEM8TKFKS9L1I"',
+silly get cb     date: 'Tue, 10 Jul 2012 15:44:02 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag coffee-script from cache
+http 304 https://registry.npmjs.org/knockback
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.2.0 (Erlang OTP/R15B)',
+silly get cb     etag: '"9749BG1G4ELRD3K1SWKUPKT17"',
+silly get cb     date: 'Tue, 10 Jul 2012 15:44:02 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag knockback from cache
+silly name, range, hasData 2 [ 'knockback', '>=0.15.3', true ]
+silly versions [ 'knockback', [ '0.15.1', '0.15.3', '0.15.4' ] ]
+verbose bin dist [ '0.6-ares1.7.5-DEV-evundefined-openssl0.9.8r-v83.6.6.25-darwin-x64-11.4.0',
+verbose bin dist   { shasum: 'f5213636077f7736d18ca51dc94fbbe1dd3b011c',
+verbose bin dist     tarball: 'http://registry.npmjs.org/knockback/-/knockback-0.15.4.tgz' } ]
+silly name, range, hasData 2 [ 'coffee-script', '>=1.3.3', true ]
+silly versions [ 'coffee-script',
+silly versions   [ '0.7.0',
+silly versions     '0.7.1',
+silly versions     '0.7.2',
+silly versions     '0.9.0',
+silly versions     '0.9.1',
+silly versions     '0.9.2',
+silly versions     '0.9.3',
+silly versions     '0.9.4',
+silly versions     '0.9.5',
+silly versions     '0.9.6',
+silly versions     '1.0.0',
+silly versions     '1.0.1',
+silly versions     '1.1.0',
+silly versions     '1.1.1',
+silly versions     '1.1.2',
+silly versions     '1.1.3',
+silly versions     '1.2.0',
+silly versions     '1.3.0',
+silly versions     '1.3.1',
+silly versions     '1.3.2',
+silly versions     '1.3.3' ] ]
+verbose bin dist [ '0.6-ares1.7.5-DEV-evundefined-openssl0.9.8r-v83.6.6.25-darwin-x64-11.4.0',
+verbose bin dist   { shasum: '150d6b4cb522894369efed6a2101c20bc7f4a4f4',
+verbose bin dist     tarball: 'http://registry.npmjs.org/coffee-script/-/coffee-script-1.3.3.tgz' } ]
+verbose caching /Users/kevin/.npm/knockback/0.15.4/package/package.json
+verbose loadDefaults knockback@0.15.4
+verbose caching /Users/kevin/.npm/coffee-script/1.3.3/package/package.json
+verbose loadDefaults coffee-script@1.3.3
+http 304 https://registry.npmjs.org/easy-bake/0.1.5
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.2.0 (Erlang OTP/R15B)',
+silly get cb     etag: '"959XNRXONBP15FVWRXG5QT31T"',
+silly get cb     date: 'Tue, 10 Jul 2012 15:44:02 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag easy-bake/0.1.5 from cache
+verbose bin dist [ '0.6-ares1.7.5-DEV-evundefined-openssl0.9.8r-v83.6.6.25-darwin-x64-11.4.0',
+verbose bin dist   { shasum: '2c635e4dddfef973750d356534c7073f0222b2d3',
+verbose bin dist     tarball: 'http://registry.npmjs.org/easy-bake/-/easy-bake-0.1.5.tgz' } ]
+verbose caching /Users/kevin/.npm/easy-bake/0.1.5/package/package.json
+verbose loadDefaults easy-bake@0.1.5
+silly resolved [ { author: 
+silly resolved      { name: 'Steven Sanderson',
+silly resolved        url: 'https://github.com/SteveSanderson' },
+silly resolved     name: 'knockout-client',
+silly resolved     contributors: [ { name: 'Matthew Smith', email: 'mtscout6@gmail.com' } ],
+silly resolved     maintainers: 'Matthew Smith <mtscout6@gmail.com>',
+silly resolved     licenses: [ 'MIT' ],
+silly resolved     description: 'The client version of KnockoutJS. If you are looking for a server-side verion (using jsdom) don\'t use this package! Instead use: \'npm install knockout\'',
+silly resolved     keywords: [ 'knockout-client', 'knockout', 'knockoutjs', 'client', 'mvvm' ],
+silly resolved     homepage: 'http://knockoutjs.com/',
+silly resolved     url: 'https://github.com/SteveSanderson/knockout/',
+silly resolved     repository: 
+silly resolved      { type: 'git',
+silly resolved        url: 'git://github.com/SteveSanderson/knockout.git' },
+silly resolved     main: 'knockout.js',
+silly resolved     version: '2.1.0',
+silly resolved     _npmUser: { name: 'kmalakoff', email: 'xmann.intl@gmail.com' },
+silly resolved     _id: 'knockout-client@2.1.0',
+silly resolved     dependencies: {},
+silly resolved     devDependencies: {},
+silly resolved     optionalDependencies: {},
+silly resolved     engines: { node: '*' },
+silly resolved     _engineSupported: true,
+silly resolved     _npmVersion: '1.1.21',
+silly resolved     _nodeVersion: 'v0.6.18',
+silly resolved     _defaultsLoaded: true,
+silly resolved     _from: 'knockout-client@>=2.1.0',
+silly resolved     scripts: {} },
+silly resolved   { name: 'underscore',
+silly resolved     description: 'JavaScript\'s functional programming helper library.',
+silly resolved     homepage: 'http://documentcloud.github.com/underscore/',
+silly resolved     keywords: [ 'util', 'functional', 'server', 'client', 'browser' ],
+silly resolved     author: { name: 'Jeremy Ashkenas', email: 'jeremy@documentcloud.org' },
+silly resolved     repository: 
+silly resolved      { type: 'git',
+silly resolved        url: 'git://github.com/documentcloud/underscore.git' },
+silly resolved     main: 'underscore.js',
+silly resolved     version: '1.3.3',
+silly resolved     _npmUser: { name: 'kmalakoff', email: 'xmann.intl@gmail.com' },
+silly resolved     _id: 'underscore@1.3.3',
+silly resolved     dependencies: {},
+silly resolved     devDependencies: {},
+silly resolved     optionalDependencies: {},
+silly resolved     engines: { node: '*' },
+silly resolved     _engineSupported: true,
+silly resolved     _npmVersion: '1.1.21',
+silly resolved     _nodeVersion: 'v0.6.18',
+silly resolved     _defaultsLoaded: true,
+silly resolved     _from: 'underscore@>=1.3.3',
+silly resolved     scripts: {} },
+silly resolved   { author: { name: 'Kevin Malakoff', url: 'https://github.com/kmalakoff' },
+silly resolved     name: 'backbone-modelref',
+silly resolved     description: 'Backbone-ModelRef.js provides a mechanism to respond to lazy-loaded Backbone.js models.',
+silly resolved     keywords: 
+silly resolved      [ 'backbone-modelref',
+silly resolved        'backbone-modelrefjs',
+silly resolved        'backbone',
+silly resolved        'backbonejs',
+silly resolved        'knockback',
+silly resolved        'knockbackjs' ],
+silly resolved     url: 'http://kmalakoff.github.com/backbone-modelref/',
+silly resolved     homepage: 'http://kmalakoff.github.com/backbone-modelref/',
+silly resolved     repository: 
+silly resolved      { type: 'git',
+silly resolved        url: 'git://github.com/kmalakoff/backbone-modelref.git' },
+silly resolved     optionalDependencies: { underscore: '>=1.3.3', backbone: '>=0.9.2' },
+silly resolved     main: 'backbone-modelref.js',
+silly resolved     version: '0.1.3',
+silly resolved     _npmUser: { name: 'kmalakoff', email: 'xmann.intl@gmail.com' },
+silly resolved     _id: 'backbone-modelref@0.1.3',
+silly resolved     dependencies: { underscore: '>=1.3.3', backbone: '>=0.9.2' },
+silly resolved     devDependencies: {},
+silly resolved     engines: { node: '*' },
+silly resolved     _engineSupported: true,
+silly resolved     _npmVersion: '1.1.21',
+silly resolved     _nodeVersion: 'v0.6.18',
+silly resolved     _defaultsLoaded: true,
+silly resolved     _from: 'backbone-modelref@>=0.1.2',
+silly resolved     scripts: {} },
+silly resolved   { name: 'knockout',
+silly resolved     version: '2.1.0',
+silly resolved     description: 'NodeJs Testable version of client script which Simplifies Dynamic JavaScript UIs by applying the Model-View-ViewModel (MVVM) Pattern.',
+silly resolved     repository: 
+silly resolved      { type: 'git',
+silly resolved        url: 'git://github.com/mtscout6/knockout-node.git' },
+silly resolved     keywords: [ 'testing', 'mvvm' ],
+silly resolved     author: { name: 'Steven Sanderson' },
+silly resolved     contributors: [ { name: 'Matthew Smith', email: 'mtscout6@gmail.com' } ],
+silly resolved     maintainers: 'Matthew Smith <mtscout6@gmail.com>',
+silly resolved     licenses: [ 'MIT' ],
+silly resolved     dependencies: { jsdom: '=0.2.1' },
+silly resolved     main: 'lib/knockout.js',
+silly resolved     _npmUser: { name: 'kmalakoff', email: 'xmann.intl@gmail.com' },
+silly resolved     _id: 'knockout@2.1.0',
+silly resolved     devDependencies: {},
+silly resolved     optionalDependencies: {},
+silly resolved     engines: { node: '*' },
+silly resolved     _engineSupported: true,
+silly resolved     _npmVersion: '1.1.21',
+silly resolved     _nodeVersion: 'v0.6.18',
+silly resolved     _defaultsLoaded: true,
+silly resolved     _from: 'knockout@>=2.1.0',
+silly resolved     scripts: {} },
+silly resolved   { name: 'backbone',
+silly resolved     description: 'Give your JS App some Backbone with Models, Views, Collections, and Events.',
+silly resolved     url: 'http://backbonejs.org',
+silly resolved     keywords: [ 'util', 'functional', 'server', 'client', 'browser' ],
+silly resolved     author: { name: 'Jeremy Ashkenas', email: 'jeremy@documentcloud.org' },
+silly resolved     contributors: [],
+silly resolved     dependencies: { underscore: '>=1.3.1' },
+silly resolved     lib: '.',
+silly resolved     main: 'backbone.js',
+silly resolved     version: '0.9.2',
+silly resolved     _npmUser: { name: 'kmalakoff', email: 'xmann.intl@gmail.com' },
+silly resolved     _id: 'backbone@0.9.2',
+silly resolved     devDependencies: {},
+silly resolved     optionalDependencies: {},
+silly resolved     engines: { node: '*' },
+silly resolved     _engineSupported: true,
+silly resolved     _npmVersion: '1.1.21',
+silly resolved     _nodeVersion: 'v0.6.18',
+silly resolved     _defaultsLoaded: true,
+silly resolved     _from: 'backbone@>=0.9.2',
+silly resolved     scripts: {} },
+silly resolved   { author: { name: 'Kevin Malakoff', url: 'https://github.com/kmalakoff' },
+silly resolved     name: 'knockback',
+silly resolved     description: 'Knockback.js provides Knockout.js magic for Backbone.js Models and Collections',
+silly resolved     keywords: 
+silly resolved      [ 'knockback',
+silly resolved        'knockbackjs',
+silly resolved        'backbone',
+silly resolved        'backbonejs',
+silly resolved        'knockout',
+silly resolved        'knockoutjs' ],
+silly resolved     url: 'http://kmalakoff.github.com/knockback/',
+silly resolved     homepage: 'http://kmalakoff.github.com/knockback/',
+silly resolved     repository: { type: 'git', url: 'git://github.com/kmalakoff/knockback.git' },
+silly resolved     optionalDependencies: 
+silly resolved      { underscore: '>=1.3.3',
+silly resolved        backbone: '>=0.9.2',
+silly resolved        'knockout-client': '>=2.1.0',
+silly resolved        knockout: '>=2.1.0' },
+silly resolved     main: 'knockback.js',
+silly resolved     version: '0.15.4',
+silly resolved     _npmUser: { name: 'kmalakoff', email: 'xmann.intl@gmail.com' },
+silly resolved     _id: 'knockback@0.15.4',
+silly resolved     dependencies: 
+silly resolved      { underscore: '>=1.3.3',
+silly resolved        backbone: '>=0.9.2',
+silly resolved        'knockout-client': '>=2.1.0',
+silly resolved        knockout: '>=2.1.0' },
+silly resolved     devDependencies: {},
+silly resolved     engines: { node: '*' },
+silly resolved     _engineSupported: true,
+silly resolved     _npmVersion: '1.1.21',
+silly resolved     _nodeVersion: 'v0.6.18',
+silly resolved     _defaultsLoaded: true,
+silly resolved     _from: 'knockback@>=0.15.3',
+silly resolved     scripts: {} },
+silly resolved   { name: 'coffee-script',
+silly resolved     description: 'Unfancy JavaScript',
+silly resolved     keywords: [ 'javascript', 'language', 'coffeescript', 'compiler' ],
+silly resolved     author: { name: 'Jeremy Ashkenas' },
+silly resolved     version: '1.3.3',
+silly resolved     licenses: 
+silly resolved      [ { type: 'MIT',
+silly resolved          url: 'https://raw.github.com/jashkenas/coffee-script/master/LICENSE' } ],
+silly resolved     engines: { node: '>=0.4.0' },
+silly resolved     directories: { lib: './lib/coffee-script' },
+silly resolved     main: './lib/coffee-script/coffee-script',
+silly resolved     bin: { coffee: './bin/coffee', cake: './bin/cake' },
+silly resolved     homepage: 'http://coffeescript.org',
+silly resolved     bugs: { name: 'https://github.com/jashkenas/coffee-script/issues' },
+silly resolved     repository: 
+silly resolved      { type: 'git',
+silly resolved        url: 'git://github.com/jashkenas/coffee-script.git' },
+silly resolved     devDependencies: { 'uglify-js': '>=1.0.0', jison: '>=0.2.0' },
+silly resolved     _npmUser: { name: 'kmalakoff', email: 'xmann.intl@gmail.com' },
+silly resolved     _id: 'coffee-script@1.3.3',
+silly resolved     dependencies: {},
+silly resolved     optionalDependencies: {},
+silly resolved     _engineSupported: true,
+silly resolved     _npmVersion: '1.1.21',
+silly resolved     _nodeVersion: 'v0.6.18',
+silly resolved     _defaultsLoaded: true,
+silly resolved     _from: 'coffee-script@>=1.3.3',
+silly resolved     scripts: {} },
+silly resolved   { author: { name: 'Kevin Malakoff', url: 'https://github.com/kmalakoff' },
+silly resolved     name: 'easy-bake',
+silly resolved     description: 'EasyBake provide YAML-based Cakefile helpers for common CoffeeScript library packaging functionality',
+silly resolved     keywords: 
+silly resolved      [ 'easybake',
+silly resolved        'easy-bake',
+silly resolved        'coffeescript',
+silly resolved        'library',
+silly resolved        'build',
+silly resolved        'packaging',
+silly resolved        'package',
+silly resolved        'utility',
+silly resolved        'util' ],
+silly resolved     url: 'http://kmalakoff.github.com/easy-bake/',
+silly resolved     homepage: 'http://kmalakoff.github.com/easy-bake/',
+silly resolved     repository: { type: 'git', url: 'git://github.com/kmalakoff/easy-bake.git' },
+silly resolved     dependencies: 
+silly resolved      { 'coffee-script': '>=1.3.3',
+silly resolved        underscore: '>=1.3.3',
+silly resolved        'module-bundler': '>=0.1.0',
+silly resolved        'glob-whatev': '>=0.1.6',
+silly resolved        wrench: '>=1.3.9',
+silly resolved        'uglify-js': '>=1.3.0',
+silly resolved        elementtree: '>=0.1.1' },
+silly resolved     main: 'easy-bake.js',
+silly resolved     bin: { nuget: './bin/nuget' },
+silly resolved     version: '0.1.5',
+silly resolved     _npmUser: { name: 'kmalakoff', email: 'xmann.intl@gmail.com' },
+silly resolved     _id: 'easy-bake@0.1.5',
+silly resolved     devDependencies: {},
+silly resolved     optionalDependencies: {},
+silly resolved     engines: { node: '*' },
+silly resolved     _engineSupported: true,
+silly resolved     _npmVersion: '1.1.21',
+silly resolved     _nodeVersion: 'v0.6.18',
+silly resolved     _defaultsLoaded: true,
+silly resolved     _from: 'easy-bake@0.1.5',
+silly resolved     scripts: {} } ]
+info into /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos knockout-client@2.1.0
+info into /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos underscore@1.3.3
+info into /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos backbone-modelref@0.1.3
+info into /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos knockout@2.1.0
+info into /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos backbone@0.9.2
+info into /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos knockback@0.15.4
+info into /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos coffee-script@1.3.3
+info into /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos easy-bake@0.1.5
+info installOne knockout-client@2.1.0
+info installOne underscore@1.3.3
+info installOne backbone-modelref@0.1.3
+info installOne knockout@2.1.0
+info installOne backbone@0.9.2
+info installOne knockback@0.15.4
+info installOne coffee-script@1.3.3
+info installOne easy-bake@0.1.5
+verbose from cache /Users/kevin/.npm/knockout-client/2.1.0/package/package.json
+info unbuild /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout-client
+verbose from cache /Users/kevin/.npm/underscore/1.3.3/package/package.json
+info unbuild /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/underscore
+verbose from cache /Users/kevin/.npm/backbone-modelref/0.1.3/package/package.json
+info unbuild /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/backbone-modelref
+verbose from cache /Users/kevin/.npm/knockout/2.1.0/package/package.json
+info unbuild /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout
+verbose from cache /Users/kevin/.npm/backbone/0.9.2/package/package.json
+info unbuild /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/backbone
+verbose from cache /Users/kevin/.npm/knockback/0.15.4/package/package.json
+info unbuild /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockback
+verbose from cache /Users/kevin/.npm/coffee-script/1.3.3/package/package.json
+info unbuild /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/coffee-script
+verbose from cache /Users/kevin/.npm/easy-bake/0.1.5/package/package.json
+info unbuild /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake
+verbose unpack /Users/kevin/.npm/knockout-client/2.1.0/package.tgz
+verbose unpack /Users/kevin/.npm/underscore/1.3.3/package.tgz
+verbose unpack /Users/kevin/.npm/backbone-modelref/0.1.3/package.tgz
+verbose unpack /Users/kevin/.npm/knockout/2.1.0/package.tgz
+verbose unpack /Users/kevin/.npm/backbone/0.9.2/package.tgz
+verbose unpack /Users/kevin/.npm/knockback/0.15.4/package.tgz
+verbose unpack /Users/kevin/.npm/coffee-script/1.3.3/package.tgz
+verbose unpack /Users/kevin/.npm/easy-bake/0.1.5/package.tgz
+silly gunzTarPerm modes [ '755', '644' ]
+silly gunzTarPerm modes [ '755', '644' ]
+silly gunzTarPerm modes [ '755', '644' ]
+silly gunzTarPerm modes [ '755', '644' ]
+silly gunzTarPerm modes [ '755', '644' ]
+silly gunzTarPerm modes [ '755', '644' ]
+silly gunzTarPerm modes [ '755', '644' ]
+silly gunzTarPerm modes [ '755', '644' ]
+silly extracting entry package.json
+silly extracting entry package.json
+silly extracting entry package.json
+silly extracting entry package.json
+silly extracting entry package.json
+silly extracting entry package.json
+silly extracting entry package.json
+silly extracting entry package.json
+silly extracting entry README.md
+silly extracting entry knockout.debug.js
+silly extracting entry .npmignore
+silly extracting entry README.md
+silly extracting entry backbone-modelref.js
+silly extracting entry backbone-modelref.min.js
+silly extracting entry lib/knockout.js
+silly extracting entry .npmignore
+silly extracting entry README.md
+silly extracting entry knockback.js
+silly extracting entry knockback.min.js
+silly extracting entry .npmignore
+silly extracting entry README
+silly extracting entry easy-bake.js
+silly extracting entry bin/nuget
+silly extracting entry lib/knockout.js~
+silly extracting entry knockout.js
+silly extracting entry LICENSE
+silly extracting entry index.js
+silly extracting entry LICENSE
+silly extracting entry backbone.js
+silly extracting entry LICENSE
+silly extracting entry bin/cake
+silly extracting entry bin/NuGet.exe
+silly extracting entry underscore-min.js
+silly extracting entry underscore.js
+silly extracting entry backbone-min.js
+silly extracting entry index.js
+silly extracting entry bin/coffee
+silly extracting entry CNAME
+silly extracting entry CNAME
+silly extracting entry index.html
+silly extracting entry extras/jsl.conf
+silly extracting entry lib/coffee-script/browser.js
+silly extracting entry examples/backbone-localstorage.js
+silly extracting entry index.html
+silly extracting entry raw/underscore.psd
+silly extracting entry examples/todos/todos.js
+silly extracting entry examples/todos/destroy.png
+silly extracting entry lib/coffee-script/command.js
+silly extracting entry lib/coffee-script/grammar.js
+silly extracting entry examples/todos/index.html
+silly extracting entry lib/coffee-script/helpers.js
+silly extracting entry examples/todos/todos.css
+silly extracting entry Rakefile
+silly extracting entry lib/coffee-script/index.js
+silly extracting entry lib/coffee-script/coffee-script.js
+silly extracting entry docs/backbone-localstorage.html
+silly extracting entry docs/backbone.html
+silly extracting entry favicon.ico
+silly extracting entry lib/coffee-script/nodes.js
+silly extracting entry lib/coffee-script/optparse.js
+silly extracting entry docs/docco.css
+silly extracting entry docs/images/flow.png
+silly extracting entry lib/easy-bake-commands.js
+silly extracting entry lib/coffee-script/parser.js
+silly extracting entry lib/easy-bake-utils.js
+silly extracting entry lib/test_runners/phantomjs-jasmine-runner.js
+verbose caching /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/backbone-modelref/package.json
+verbose loadDefaults backbone-modelref@0.1.3
+info preinstall backbone-modelref@0.1.3
+silly extracting entry lib/coffee-script/repl.js
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/backbone-modelref/package.json
+verbose readDependencies: using package.json deps
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/backbone-modelref/package.json
+silly extracting entry lib/coffee-script/rewriter.js
+verbose readDependencies: using package.json deps
+silly resolved []
+verbose about to build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/backbone-modelref
+info build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/backbone-modelref
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/backbone-modelref/package.json
+verbose linkStuff [ false,
+verbose linkStuff   false,
+verbose linkStuff   false,
+verbose linkStuff   '/Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules' ]
+info linkStuff backbone-modelref@0.1.3
+verbose linkBins backbone-modelref@0.1.3
+verbose linkMans backbone-modelref@0.1.3
+verbose rebuildBundles backbone-modelref@0.1.3
+silly extracting entry lib/coffee-script/cake.js
+info install backbone-modelref@0.1.3
+silly extracting entry lib/coffee-script/scope.js
+silly extracting entry lib/test_runners/phantomjs-qunit-runner.js
+silly extracting entry docs/images/airbnb-mobile.png
+silly extracting entry lib/coffee-script/lexer.js
+info postinstall backbone-modelref@0.1.3
+silly extracting entry Rakefile
+silly extracting entry docs/images/arrows.png
+silly extracting entry docs/images/attictv.png
+silly extracting entry docs/images/audiovroom.png
+silly extracting entry docs/images/backbone-mobile.png
+silly extracting entry docs/images/backbone.png
+silly extracting entry docs/images/background.png
+silly extracting entry docs/images/baroque.jpg
+silly extracting entry docs/images/basecamp-mobile.png
+silly extracting entry docs/images/battlefield.png
+silly extracting entry docs/images/blackcomb.png
+silly extracting entry docs/images/blossom.png
+silly extracting entry docs/images/chaincal.png
+silly extracting entry docs/images/chop.png
+silly extracting entry docs/images/cloudapp.png
+verbose caching /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockback/package.json
+verbose loadDefaults knockback@0.15.4
+silly extracting entry docs/images/code-school.png
+info preinstall knockback@0.15.4
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockback/package.json
+verbose readDependencies: using package.json deps
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockback/package.json
+verbose readDependencies: using package.json deps
+silly resolved []
+verbose about to build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockback
+info build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockback
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockback/package.json
+verbose linkStuff [ false,
+verbose linkStuff   false,
+verbose linkStuff   false,
+verbose linkStuff   '/Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules' ]
+info linkStuff knockback@0.15.4
+verbose linkBins knockback@0.15.4
+verbose linkMans knockback@0.15.4
+verbose rebuildBundles knockback@0.15.4
+info install knockback@0.15.4
+info postinstall knockback@0.15.4
+silly extracting entry docs/images/dc-workspace.png
+silly extracting entry docs/images/decide.png
+silly extracting entry docs/images/diaspora.png
+silly extracting entry docs/images/do.png
+silly extracting entry docs/images/ducksboard.png
+silly extracting entry docs/images/favicon.ico
+silly extracting entry docs/images/animoto.png
+silly extracting entry docs/images/foursquare.png
+silly extracting entry docs/images/groupon.png
+silly extracting entry docs/images/grove.png
+silly extracting entry docs/images/khan-academy.png
+silly extracting entry docs/images/kicksend.png
+silly extracting entry docs/images/linkedin-mobile.png
+verbose caching /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout-client/package.json
+verbose loadDefaults knockout-client@2.1.0
+info preinstall knockout-client@2.1.0
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout-client/package.json
+verbose readDependencies: using package.json deps
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout-client/package.json
+verbose readDependencies: using package.json deps
+silly resolved []
+verbose about to build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout-client
+info build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout-client
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout-client/package.json
+verbose linkStuff [ false,
+verbose linkStuff   false,
+verbose linkStuff   false,
+verbose linkStuff   '/Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules' ]
+info linkStuff knockout-client@2.1.0
+verbose linkBins knockout-client@2.1.0
+verbose linkMans knockout-client@2.1.0
+verbose rebuildBundles knockout-client@2.1.0
+info install knockout-client@2.1.0
+info postinstall knockout-client@2.1.0
+silly extracting entry docs/images/menagerievet.png
+silly extracting entry docs/images/pandora.png
+silly extracting entry docs/images/picklive.png
+silly extracting entry docs/images/posterous-spaces.png
+silly extracting entry docs/images/quietwrite.png
+silly extracting entry docs/images/salon.png
+silly extracting entry docs/images/seatgeek.png
+silly extracting entry docs/images/shortmail.png
+silly extracting entry docs/images/slavery-footprint.png
+silly extracting entry docs/images/soundcloud.png
+silly extracting entry docs/images/stripe.png
+silly extracting entry docs/images/tilemill.png
+silly extracting entry docs/images/todos.png
+silly extracting entry docs/images/trello.png
+silly extracting entry docs/images/tzigla.png
+silly extracting entry docs/images/wunderkit.png
+verbose caching /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/package.json
+verbose loadDefaults knockout@2.1.0
+info preinstall knockout@2.1.0
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/package.json
+silly extracting entry docs/jsl.conf
+silly extracting entry docs/todos.html
+verbose readDependencies: using package.json deps
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/package.json
+verbose readDependencies: using package.json deps
+silly extracting entry test/collection.js
+verbose cache add [ 'jsdom@=0.2.1', null ]
+silly cache add: name, spec, args [ undefined, 'jsdom@=0.2.1', [ 'jsdom@=0.2.1', null ] ]
+verbose parsed url { pathname: 'jsdom@=0.2.1',
+verbose parsed url   path: 'jsdom@=0.2.1',
+verbose parsed url   href: 'jsdom@=0.2.1' }
+silly cache add: name, spec, args [ 'jsdom', '=0.2.1', [ 'jsdom', '=0.2.1' ] ]
+verbose parsed url { pathname: '=0.2.1', path: '=0.2.1', href: '=0.2.1' }
+verbose addNamed [ 'jsdom', '=0.2.1' ]
+verbose addNamed [ '0.2.1', '=0.2.1' ]
+silly extracting entry test/sync.js
+silly extracting entry test/model.js
+silly extracting entry test/noconflict.js
+silly extracting entry test/router.js
+silly extracting entry test/setdomlibrary.js
+verbose raw, before any munging jsdom/0.2.1
+verbose url resolving [ 'https://registry.npmjs.org/', './jsdom/0.2.1' ]
+verbose url resolved https://registry.npmjs.org/jsdom/0.2.1
+verbose etag "41QW78J6Y1OLQYVCM4J54XVU0"
+http GET https://registry.npmjs.org/jsdom/0.2.1
+silly extracting entry test/events.js
+silly extracting entry test/view.js
+silly extracting entry test/speed.js
+silly extracting entry test/model.coffee
+silly extracting entry test/test-ender.html
+silly extracting entry test/test-zepto.html
+silly extracting entry test/test.html
+silly extracting entry test/vendor/ender-jeesh.js
+silly extracting entry test/vendor/jquery-1.7.1.js
+silly extracting entry test/vendor/jslitmus.js
+silly extracting entry test/vendor/json2.js
+silly extracting entry test/vendor/qunit.js
+silly extracting entry test/vendor/underscore-1.3.1.js
+silly extracting entry test/vendor/zepto-0.6.js
+silly extracting entry test/vendor/qunit.css
+verbose caching /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/underscore/package.json
+verbose loadDefaults underscore@1.3.3
+info preinstall underscore@1.3.3
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/underscore/package.json
+verbose readDependencies: using package.json deps
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/underscore/package.json
+verbose readDependencies: using package.json deps
+silly resolved []
+verbose about to build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/underscore
+info build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/underscore
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/underscore/package.json
+verbose linkStuff [ false,
+verbose linkStuff   false,
+verbose linkStuff   false,
+verbose linkStuff   '/Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules' ]
+info linkStuff underscore@1.3.3
+verbose linkBins underscore@1.3.3
+verbose linkMans underscore@1.3.3
+verbose rebuildBundles underscore@1.3.3
+info install underscore@1.3.3
+verbose caching /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/coffee-script/package.json
+verbose loadDefaults coffee-script@1.3.3
+info postinstall underscore@1.3.3
+info preinstall coffee-script@1.3.3
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/coffee-script/package.json
+verbose readDependencies: using package.json deps
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/coffee-script/package.json
+verbose readDependencies: using package.json deps
+silly resolved []
+verbose about to build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/coffee-script
+info build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/coffee-script
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/coffee-script/package.json
+verbose linkStuff [ false,
+verbose linkStuff   false,
+verbose linkStuff   false,
+verbose linkStuff   '/Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules' ]
+info linkStuff coffee-script@1.3.3
+verbose linkBins coffee-script@1.3.3
+verbose bins linking [ { coffee: './bin/coffee', cake: './bin/cake' },
+verbose bins linking   '/Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/.bin',
+verbose bins linking   false ]
+verbose linkMans coffee-script@1.3.3
+verbose rebuildBundles coffee-script@1.3.3
+info install coffee-script@1.3.3
+info postinstall coffee-script@1.3.3
+verbose caching /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/package.json
+verbose loadDefaults easy-bake@0.1.5
+info preinstall easy-bake@0.1.5
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/package.json
+verbose readDependencies: using package.json deps
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/package.json
+verbose readDependencies: using package.json deps
+verbose cache add [ 'module-bundler@>=0.1.0', null ]
+silly cache add: name, spec, args [ undefined,
+silly cache add: name, spec, args   'module-bundler@>=0.1.0',
+silly cache add: name, spec, args   [ 'module-bundler@>=0.1.0', null ] ]
+verbose parsed url { pathname: 'module-bundler@',
+verbose parsed url   path: 'module-bundler@',
+verbose parsed url   href: 'module-bundler@' }
+silly cache add: name, spec, args [ 'module-bundler', '>=0.1.0', [ 'module-bundler', '>=0.1.0' ] ]
+verbose parsed url { pathname: '=0.1.0', path: '=0.1.0', href: '=0.1.0' }
+verbose addNamed [ 'module-bundler', '>=0.1.0' ]
+verbose addNamed [ null, '>=0.1.0' ]
+silly name, range, hasData [ 'module-bundler', '>=0.1.0', false ]
+verbose cache add [ 'glob-whatev@>=0.1.6', null ]
+silly cache add: name, spec, args [ undefined,
+silly cache add: name, spec, args   'glob-whatev@>=0.1.6',
+silly cache add: name, spec, args   [ 'glob-whatev@>=0.1.6', null ] ]
+verbose parsed url { pathname: 'glob-whatev@',
+verbose parsed url   path: 'glob-whatev@',
+verbose parsed url   href: 'glob-whatev@' }
+silly cache add: name, spec, args [ 'glob-whatev', '>=0.1.6', [ 'glob-whatev', '>=0.1.6' ] ]
+verbose parsed url { pathname: '=0.1.6', path: '=0.1.6', href: '=0.1.6' }
+verbose addNamed [ 'glob-whatev', '>=0.1.6' ]
+verbose addNamed [ null, '>=0.1.6' ]
+silly name, range, hasData [ 'glob-whatev', '>=0.1.6', false ]
+verbose cache add [ 'wrench@>=1.3.9', null ]
+silly cache add: name, spec, args [ undefined, 'wrench@>=1.3.9', [ 'wrench@>=1.3.9', null ] ]
+verbose parsed url { pathname: 'wrench@', path: 'wrench@', href: 'wrench@' }
+silly cache add: name, spec, args [ 'wrench', '>=1.3.9', [ 'wrench', '>=1.3.9' ] ]
+verbose parsed url { pathname: '=1.3.9', path: '=1.3.9', href: '=1.3.9' }
+verbose addNamed [ 'wrench', '>=1.3.9' ]
+verbose addNamed [ null, '>=1.3.9' ]
+silly name, range, hasData [ 'wrench', '>=1.3.9', false ]
+verbose raw, before any munging module-bundler
+verbose url resolving [ 'https://registry.npmjs.org/', './module-bundler' ]
+verbose url resolved https://registry.npmjs.org/module-bundler
+verbose etag "E6ZWIJ2T47SR9H0W0EOXKS8G1"
+http GET https://registry.npmjs.org/module-bundler
+verbose raw, before any munging glob-whatev
+verbose url resolving [ 'https://registry.npmjs.org/', './glob-whatev' ]
+verbose url resolved https://registry.npmjs.org/glob-whatev
+verbose etag "DYD80U50REVR158SLAVI7XBN9"
+http GET https://registry.npmjs.org/glob-whatev
+verbose raw, before any munging wrench
+verbose url resolving [ 'https://registry.npmjs.org/', './wrench' ]
+verbose url resolved https://registry.npmjs.org/wrench
+verbose etag "9CGD3AMUKRH5DV9K435DRDDMT"
+http GET https://registry.npmjs.org/wrench
+verbose cache add [ 'uglify-js@>=1.3.0', null ]
+silly cache add: name, spec, args [ undefined, 'uglify-js@>=1.3.0', [ 'uglify-js@>=1.3.0', null ] ]
+verbose parsed url { pathname: 'uglify-js@',
+verbose parsed url   path: 'uglify-js@',
+verbose parsed url   href: 'uglify-js@' }
+silly cache add: name, spec, args [ 'uglify-js', '>=1.3.0', [ 'uglify-js', '>=1.3.0' ] ]
+verbose parsed url { pathname: '=1.3.0', path: '=1.3.0', href: '=1.3.0' }
+verbose addNamed [ 'uglify-js', '>=1.3.0' ]
+verbose addNamed [ null, '>=1.3.0' ]
+silly name, range, hasData [ 'uglify-js', '>=1.3.0', false ]
+verbose cache add [ 'elementtree@>=0.1.1', null ]
+silly cache add: name, spec, args [ undefined,
+silly cache add: name, spec, args   'elementtree@>=0.1.1',
+silly cache add: name, spec, args   [ 'elementtree@>=0.1.1', null ] ]
+verbose parsed url { pathname: 'elementtree@',
+verbose parsed url   path: 'elementtree@',
+verbose parsed url   href: 'elementtree@' }
+silly cache add: name, spec, args [ 'elementtree', '>=0.1.1', [ 'elementtree', '>=0.1.1' ] ]
+verbose parsed url { pathname: '=0.1.1', path: '=0.1.1', href: '=0.1.1' }
+verbose addNamed [ 'elementtree', '>=0.1.1' ]
+verbose addNamed [ null, '>=0.1.1' ]
+silly name, range, hasData [ 'elementtree', '>=0.1.1', false ]
+verbose raw, before any munging uglify-js
+verbose url resolving [ 'https://registry.npmjs.org/', './uglify-js' ]
+verbose url resolved https://registry.npmjs.org/uglify-js
+verbose etag "8T0AG3MEZ1GFHFKEDL8ETKPZ"
+http GET https://registry.npmjs.org/uglify-js
+verbose raw, before any munging elementtree
+verbose url resolving [ 'https://registry.npmjs.org/', './elementtree' ]
+verbose url resolved https://registry.npmjs.org/elementtree
+verbose etag "1POUU4HN35Y9FASE2M0QJ4BCV"
+http GET https://registry.npmjs.org/elementtree
+http 304 https://registry.npmjs.org/jsdom/0.2.1
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.2.0 (Erlang OTP/R15B)',
+silly get cb     etag: '"41QW78J6Y1OLQYVCM4J54XVU0"',
+silly get cb     date: 'Tue, 10 Jul 2012 15:44:05 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag jsdom/0.2.1 from cache
+verbose bin dist [ '0.6-ares1.7.5-DEV-evundefined-openssl0.9.8r-v83.6.6.25-darwin-x64-11.4.0',
+verbose bin dist   { shasum: 'b8b600610e4e46a9b323b5b7e049e3de959942e3',
+verbose bin dist     tarball: 'http://registry.npmjs.org/jsdom/-/jsdom-0.2.1.tgz' } ]
+verbose caching /Users/kevin/.npm/jsdom/0.2.1/package/package.json
+verbose loadDefaults jsdom@0.2.1
+silly resolved [ { name: 'jsdom',
+silly resolved     version: '0.2.1',
+silly resolved     description: 'A javascript implementation of the W3C DOM',
+silly resolved     keywords: [ 'dom', 'w3c', 'javascript' ],
+silly resolved     maintainers: 
+silly resolved      [ { name: 'Elijah Insua',
+silly resolved          email: 'tmpvar@gmail.com',
+silly resolved          url: 'http://tmpvar.com' } ],
+silly resolved     contributors: 
+silly resolved      [ { name: 'Vincent Greene', email: 'ulteriorlife@gmail.com' },
+silly resolved        { name: 'Dav Glass', email: 'davglass@gmail.com' },
+silly resolved        { name: 'Felix Gnass', email: 'fgnass@gmail.com' },
+silly resolved        { name: 'Charlie Robbins', email: 'charlie.robbins@gmail.com' },
+silly resolved        { name: 'Aria Stewart', email: 'aredridel@nbtsc.org' },
+silly resolved        { name: 'Matthew',
+silly resolved          email: 'N.A.',
+silly resolved          url: 'http://github.com/matthewpflueger/' },
+silly resolved        { name: 'Olivier El Mekki',
+silly resolved          email: 'unknown',
+silly resolved          url: 'http://blog.olivier-elmekki.com/' },
+silly resolved        { name: 'Shimon Dookdin', email: 'helpmepro1@gmail.com' },
+silly resolved        { name: 'Daniel Cassidy',
+silly resolved          email: 'mail@danielcassidy.me.uk',
+silly resolved          url: 'http://www.danielcassidy.me.uk/' },
+silly resolved        { name: 'Sam Ruby',
+silly resolved          email: 'N/A',
+silly resolved          url: 'http://intertwingly.net/blog/' },
+silly resolved        { name: 'hij1nx', url: 'http://github.com/hij1nx' },
+silly resolved        { name: 'Daniel Cassidy', email: 'mail@danielcassidy.me.uk' },
+silly resolved        { name: 'Yonathan Randolph', url: 'http://github.com/yonran' },
+silly resolved        { name: 'Martin Davis', url: 'http://github.com/waslogic' },
+silly resolved        { name: 'Andreas Lind Petersen', email: 'andreas@one.com' },
+silly resolved        { name: 'd-ash', url: 'http://github.com/d-ash' },
+silly resolved        { name: 'Robin', email: 'fbzhong@gmail.com' },
+silly resolved        { name: 'Alexander Flatter', email: 'flatter@gmail.com' },
+silly resolved        { name: 'Heng Liu', email: 'liucougar@gmail.com' } ],
+silly resolved     bugs: 
+silly resolved      { email: 'tmpvar@gmail.com',
+silly resolved        url: 'http://github.com/tmpvar/jsdom/issues' },
+silly resolved     licenses: 
+silly resolved      [ { type: 'MIT',
+silly resolved          url: 'http://github.com/tmpvar/jsdom/blob/master/LICENSE.txt' } ],
+silly resolved     repositories: [ { type: 'git', url: 'http://github.com/tmpvar/jsdom.git' } ],
+silly resolved     implements: [ 'http://www.w3.org/TR/REC-DOM-Level-1' ],
+silly resolved     dependencies: { htmlparser: '>=1.7.0', request: '>=1.0.0', cssom: '>=0.2.0' },
+silly resolved     devDependencies: { nodeunit: '>=0.5.x', 'console.log': '*', optimist: '*' },
+silly resolved     engines: { node: '>=0.1.9' },
+silly resolved     directories: { lib: './lib/jsdom' },
+silly resolved     main: './lib/jsdom',
+silly resolved     _npmUser: { name: 'kmalakoff', email: 'xmann.intl@gmail.com' },
+silly resolved     _id: 'jsdom@0.2.1',
+silly resolved     optionalDependencies: {},
+silly resolved     _engineSupported: true,
+silly resolved     _npmVersion: '1.1.21',
+silly resolved     _nodeVersion: 'v0.6.18',
+silly resolved     _defaultsLoaded: true,
+silly resolved     _from: 'jsdom@=0.2.1',
+silly resolved     scripts: {} } ]
+info into /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout jsdom@0.2.1
+info installOne jsdom@0.2.1
+verbose from cache /Users/kevin/.npm/jsdom/0.2.1/package/package.json
+info unbuild /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules/jsdom
+verbose unpack /Users/kevin/.npm/jsdom/0.2.1/package.tgz
+silly gunzTarPerm modes [ '755', '644' ]
+silly extracting entry package.json
+silly extracting entry .npmignore
+silly extracting entry README.md
+silly extracting entry changelog
+silly extracting entry example/browser/browser.js
+silly extracting entry example/ender/ender.js
+silly extracting entry example/ender/run.js
+silly extracting entry example/jquery/jquery.js
+silly extracting entry example/jquery/run.js
+silly extracting entry example/node-xml/run.js
+silly extracting entry example/node-xml/example.xml
+silly extracting entry example/pure/pure.js
+silly extracting entry example/pure/run.js
+silly extracting entry example/pure/sax-test.js
+silly extracting entry example/pure/sax.js
+silly extracting entry example/sizzle/run.js
+silly extracting entry example/sizzle/sax.js
+silly extracting entry example/sizzle/sizzle.js
+silly extracting entry autotag.sh
+silly extracting entry LICENSE.txt
+silly extracting entry test/all.js
+silly extracting entry test/DOMTestCase.js
+silly extracting entry test/collector.php
+silly extracting entry test/window/index.js
+silly extracting entry test/jsdom/index.js
+silly extracting entry test/jsdom/leak.js
+silly extracting entry test/jsdom/files/163.js
+silly extracting entry test/jsdom/files/179.js
+silly extracting entry test/jsdom/files/ctx-script1.js
+silly extracting entry test/jsdom/files/ctx-script2.js
+silly extracting entry test/jsdom/files/ender-qwery.js
+silly extracting entry test/jsdom/files/hello.js
+silly extracting entry test/jsdom/files/jquery.js
+silly extracting entry test/jsdom/files/ctx-test.html
+silly extracting entry test/jsdom/files/env.html
+silly extracting entry test/level1/core.js
+silly extracting entry test/level1/html.js
+silly extracting entry test/level1/svg.js
+silly extracting entry test/level1/core/files/extra.xml.js
+silly extracting entry test/level1/core/files/hc_nodtdstaff.xml.js
+silly extracting entry test/level1/core/files/hc_staff.xml.js
+silly extracting entry test/level1/core/files/staff.xml.js
+silly extracting entry test/level1/html/files/hc_nodtdstaff.html.js
+silly extracting entry test/level1/html/files/hc_staff.html.js
+silly extracting entry test/level1/svg/files/hc_nodtdstaff.svg.js
+silly extracting entry test/level1/svg/files/hc_staff.svg.js
+silly extracting entry test/level1/svg/files/staff.svg.js
+silly extracting entry test/browser/index.js
+silly extracting entry test/browser/files/js/jquery.js
+silly extracting entry test/browser/files/site.html
+silly extracting entry test/level3/core.js
+silly extracting entry test/level3/ls.js
+silly extracting entry test/level3/xpath.js
+silly extracting entry test/level3/core/files/barfoo.xml.js
+silly extracting entry test/level3/core/files/barfoo_standalone_no.xml.js
+silly extracting entry test/level3/core/files/barfoo_standalone_yes.xml.js
+silly extracting entry test/level3/core/files/barfoo_utf16.xml.js
+http 304 https://registry.npmjs.org/elementtree
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.2.0 (Erlang OTP/R15B)',
+silly get cb     etag: '"1POUU4HN35Y9FASE2M0QJ4BCV"',
+silly get cb     date: 'Tue, 10 Jul 2012 15:44:05 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag elementtree from cache
+silly extracting entry test/level3/core/files/barfoo_utf8.xml.js
+silly extracting entry test/level3/core/files/barfoo_nodefaultns.xml.js
+silly extracting entry test/level3/core/files/datatype_normalization2.xml.js
+silly extracting entry test/level3/core/files/external_barfoo.xml.js
+silly extracting entry test/level3/core/files/hc_nodtdstaff.xml.js
+silly extracting entry test/level3/core/files/hc_staff.xml.js
+silly extracting entry test/level3/core/files/typeinfo.xml.js
+silly extracting entry test/level3/core/files/datatype_normalization.xml.js
+silly name, range, hasData 2 [ 'elementtree', '>=0.1.1', true ]
+silly versions [ 'elementtree', [ '0.1.0', '0.1.1' ] ]
+verbose bin dist [ '0.6-ares1.7.5-DEV-evundefined-openssl0.9.8r-v83.6.6.25-darwin-x64-11.4.0',
+verbose bin dist   { shasum: '8a46cbae8d268bfe28909a0f2660a1c9603b511d',
+verbose bin dist     tarball: 'http://registry.npmjs.org/elementtree/-/elementtree-0.1.1.tgz' } ]
+silly extracting entry test/level3/core/files/orig/barfoo_base.xml.js
+silly extracting entry test/level3/core/files/orig/svgtest.js
+silly extracting entry test/level3/core/files/orig/svgunit.js
+silly extracting entry test/level3/core/files/orig/datatype_normalization2.svg.xsd
+silly extracting entry test/level3/core/files/orig/barfoo_base.svg
+silly extracting entry test/level3/core/files/orig/barfoo_base.xhtml
+verbose caching /Users/kevin/.npm/elementtree/0.1.1/package/package.json
+verbose loadDefaults elementtree@0.1.1
+silly extracting entry test/level3/core/files/orig/barfoo_base.xml
+silly extracting entry test/level3/core/files/orig/back.gif
+silly extracting entry test/level3/core/files/orig/barfoo_nodefaultns.svg
+silly extracting entry test/level3/core/files/orig/barfoo_nodefaultns.xhtml
+silly extracting entry test/level3/core/files/orig/barfoo_nodefaultns.xml
+silly extracting entry test/level3/core/files/orig/barfoo_standalone_no.svg
+silly extracting entry test/level3/core/files/orig/barfoo_standalone_no.xhtml
+silly extracting entry test/level3/core/files/orig/barfoo_standalone_no.xml
+silly extracting entry test/level3/core/files/orig/barfoo_standalone_yes.svg
+silly extracting entry test/level3/core/files/orig/barfoo_standalone_yes.xhtml
+silly extracting entry test/level3/core/files/orig/barfoo_standalone_yes.xml
+silly extracting entry test/level3/core/files/orig/barfoo_utf16.svg
+silly extracting entry test/level3/core/files/orig/barfoo_utf16.xhtml
+silly extracting entry test/level3/core/files/orig/barfoo_utf16.xml
+silly extracting entry test/level3/core/files/orig/barfoo_utf8.svg
+silly extracting entry test/level3/core/files/orig/barfoo_utf8.xhtml
+silly extracting entry test/level3/core/files/orig/barfoo_utf8.xml
+silly extracting entry test/level3/core/files/orig/blank.gif
+silly extracting entry test/level3/core/files/orig/canonicalform01.svg
+silly extracting entry test/level3/core/files/orig/canonicalform01.xhtml
+silly extracting entry test/level3/core/files/orig/canonicalform01.xml
+silly extracting entry test/level3/core/files/orig/canonicalform02.svg
+silly extracting entry test/level3/core/files/orig/canonicalform02.xhtml
+silly extracting entry test/level3/core/files/orig/canonicalform02.xml
+silly extracting entry test/level3/core/files/orig/canonicalform03.svg
+silly extracting entry test/level3/core/files/orig/canonicalform03.xhtml
+silly extracting entry test/level3/core/files/orig/canonicalform03.xml
+silly extracting entry test/level3/core/files/orig/canonicalform04.svg
+silly extracting entry test/level3/core/files/orig/canonicalform04.xhtml
+http 304 https://registry.npmjs.org/wrench
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.2.0 (Erlang OTP/R15B)',
+silly get cb     etag: '"9CGD3AMUKRH5DV9K435DRDDMT"',
+silly get cb     date: 'Tue, 10 Jul 2012 15:44:05 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag wrench from cache
+silly extracting entry test/level3/core/files/orig/canonicalform04.xml
+silly extracting entry test/level3/core/files/orig/canonicalform05.svg
+silly extracting entry test/level3/core/files/orig/canonicalform05.xhtml
+silly extracting entry test/level3/core/files/orig/canonicalform05.xml
+silly name, range, hasData 2 [ 'wrench', '>=1.3.9', true ]
+silly versions [ 'wrench',
+silly versions   [ '0.1.0',
+silly versions     '1.0.0',
+silly versions     '1.1.0',
+silly versions     '1.2.0',
+silly versions     '1.3.0',
+silly versions     '1.3.1',
+silly versions     '1.3.2',
+silly versions     '1.3.3',
+silly versions     '1.3.4',
+silly versions     '1.3.5',
+silly versions     '1.3.6',
+silly versions     '1.3.7',
+silly versions     '1.3.8',
+silly versions     '1.3.9' ] ]
+verbose bin dist [ '0.6-ares1.7.5-DEV-evundefined-openssl0.9.8r-v83.6.6.25-darwin-x64-11.4.0',
+verbose bin dist   { shasum: '6f13ec35145317eb292ca5f6531391b244111411',
+verbose bin dist     tarball: 'http://registry.npmjs.org/wrench/-/wrench-1.3.9.tgz' } ]
+silly extracting entry test/level3/core/files/orig/datatype_normalization.svg
+silly extracting entry test/level3/core/files/orig/datatype_normalization.svg.xsd
+silly extracting entry test/level3/core/files/orig/datatype_normalization.xml
+silly extracting entry test/level3/core/files/orig/datatype_normalization.xsd
+silly extracting entry test/level3/core/files/orig/datatype_normalization2.svg
+silly extracting entry test/level3/core/files/orig/barfoo.svg
+verbose caching /Users/kevin/.npm/wrench/1.3.9/package/package.json
+verbose loadDefaults wrench@1.3.9
+silly extracting entry test/level3/core/files/orig/datatype_normalization2.xhtml
+silly extracting entry test/level3/core/files/orig/datatype_normalization2.xml
+silly extracting entry test/level3/core/files/orig/datatype_normalization2.xsd
+silly extracting entry test/level3/core/files/orig/external_barfoo.svg
+silly extracting entry test/level3/core/files/orig/external_barfoo.xhtml
+silly extracting entry test/level3/core/files/orig/external_barfoo.xml
+silly extracting entry test/level3/core/files/orig/external_foo.ent
+http 304 https://registry.npmjs.org/module-bundler
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.2.0 (Erlang OTP/R15B)',
+silly get cb     etag: '"E6ZWIJ2T47SR9H0W0EOXKS8G1"',
+silly get cb     date: 'Tue, 10 Jul 2012 15:44:05 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag module-bundler from cache
+silly extracting entry test/level3/core/files/orig/external_foobr.ent
+silly extracting entry test/level3/core/files/orig/external_widget.ent
+silly extracting entry test/level3/core/files/orig/hc_nodtdstaff.html
+silly extracting entry test/level3/core/files/orig/hc_nodtdstaff.html.1
+silly extracting entry test/level3/core/files/orig/hc_nodtdstaff.svg
+silly extracting entry test/level3/core/files/orig/hc_nodtdstaff.xhtml
+silly extracting entry test/level3/core/files/orig/hc_nodtdstaff.xml
+silly name, range, hasData 2 [ 'module-bundler', '>=0.1.0', true ]
+silly versions [ 'module-bundler', [ '0.1.0' ] ]
+verbose bin dist [ '0.6-ares1.7.5-DEV-evundefined-openssl0.9.8r-v83.6.6.25-darwin-x64-11.4.0',
+verbose bin dist   { shasum: '94cd4fcf047e0526263ebe8a3b7a4482fce9a17d',
+verbose bin dist     tarball: 'http://registry.npmjs.org/module-bundler/-/module-bundler-0.1.0.tgz' } ]
+silly extracting entry test/level3/core/files/orig/hc_staff.svg
+silly extracting entry test/level3/core/files/orig/hc_staff.svg.xsd
+http 304 https://registry.npmjs.org/uglify-js
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.2.0 (Erlang OTP/R15B)',
+silly get cb     etag: '"8T0AG3MEZ1GFHFKEDL8ETKPZ"',
+silly get cb     date: 'Tue, 10 Jul 2012 15:44:05 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag uglify-js from cache
+silly extracting entry test/level3/core/files/orig/hc_staff.xhtml
+silly extracting entry test/level3/core/files/orig/hc_staff.xml
+silly extracting entry test/level3/core/files/orig/hc_staff.xsd
+silly extracting entry test/level3/core/files/orig/image2.gif
+verbose caching /Users/kevin/.npm/module-bundler/0.1.0/package/package.json
+verbose loadDefaults module-bundler@0.1.0
+silly extracting entry test/level3/core/files/orig/index.html
+silly extracting entry test/level3/core/files/orig/index.html.1
+silly extracting entry test/level3/core/files/orig/index.html.2
+silly name, range, hasData 2 [ 'uglify-js', '>=1.3.0', true ]
+silly versions [ 'uglify-js',
+silly versions   [ '0.0.1',
+silly versions     '0.0.2',
+silly versions     '0.0.3',
+silly versions     '0.0.4',
+silly versions     '0.0.5',
+silly versions     '1.0.1',
+silly versions     '1.0.2',
+silly versions     '1.0.3',
+silly versions     '1.0.4',
+silly versions     '1.0.5',
+silly versions     '1.0.6',
+silly versions     '1.0.7',
+silly versions     '1.1.0',
+silly versions     '1.1.1',
+silly versions     '1.2.0',
+silly versions     '1.2.1',
+silly versions     '1.2.2',
+silly versions     '1.2.3',
+silly versions     '1.2.4',
+silly versions     '1.2.5',
+silly versions     '1.2.6',
+silly versions     '1.3.0',
+silly versions     '1.3.1',
+silly versions     '1.3.2' ] ]
+verbose bin dist [ '0.6-ares1.7.5-DEV-evundefined-openssl0.9.8r-v83.6.6.25-darwin-x64-11.4.0',
+verbose bin dist   { shasum: '7ed11c9dedf77f29632286ea4dc96a2229aef98e',
+verbose bin dist     tarball: 'http://registry.npmjs.org/uglify-js/-/uglify-js-1.3.2.tgz' } ]
+verbose caching /Users/kevin/.npm/uglify-js/1.3.2/package/package.json
+verbose loadDefaults uglify-js@1.3.2
+silly extracting entry test/level3/core/files/orig/index.html?C=D;O=A
+silly extracting entry test/level3/core/files/orig/index.html?C=M;O=A
+silly extracting entry test/level3/core/files/orig/index.html?C=N;O=D
+silly extracting entry test/level3/core/files/orig/index.html?C=S;O=A
+silly extracting entry test/level3/core/files/orig/robots.txt
+silly extracting entry test/level3/core/files/orig/barfoo.xhtml
+silly extracting entry test/level3/core/files/orig/barfoo.xml
+silly extracting entry test/level3/core/files/orig/text.gif
+silly extracting entry test/level3/core/files/orig/typeinfo.svg
+silly extracting entry test/level3/core/files/orig/typeinfo.svg.xsd
+silly extracting entry test/level3/core/files/orig/typeinfo.xhtml
+silly extracting entry test/level3/core/files/orig/typeinfo.xml
+silly extracting entry test/level3/core/files/orig/typeinfo.xsd
+silly extracting entry test/level3/core/files/orig/unknown.gif
+silly extracting entry test/level3/core/files/orig/xhtml-lat1.ent
+silly extracting entry test/level3/core/files/orig/xhtml-special.ent
+silly extracting entry test/level3/core/files/orig/xhtml-symbol.ent
+silly extracting entry test/level3/core/files/orig/xhtml1-frameset.dtd
+silly extracting entry test/level3/core/files/orig/xhtml1-strict.dtd
+silly extracting entry test/level3/core/files/orig/xhtml1-transitional.dtd
+silly extracting entry test/level3/core/files/orig/Yes
+silly extracting entry test/level3/ls/files/index.html
+http 304 https://registry.npmjs.org/glob-whatev
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.2.0 (Erlang OTP/R15B)',
+silly get cb     etag: '"DYD80U50REVR158SLAVI7XBN9"',
+silly get cb     date: 'Tue, 10 Jul 2012 15:44:05 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag glob-whatev from cache
+silly extracting entry test/level3/ls/files/subdir/index.html
+silly extracting entry test/LICENSE.txt
+silly extracting entry test/runner
+silly extracting entry test/sizzle/index.js
+silly extracting entry test/sizzle/files/index.html
+silly extracting entry test/sizzle/files/with_fries.xml
+silly extracting entry test/sizzle/support/jquery-1.6.2.js
+silly name, range, hasData 2 [ 'glob-whatev', '>=0.1.6', true ]
+silly versions [ 'glob-whatev',
+silly versions   [ '0.1.0',
+silly versions     '0.1.1',
+silly versions     '0.1.2',
+silly versions     '0.1.3',
+silly versions     '0.1.4',
+silly versions     '0.1.5',
+silly versions     '0.1.6',
+silly versions     '0.1.7' ] ]
+verbose bin dist [ '0.6-ares1.7.5-DEV-evundefined-openssl0.9.8r-v83.6.6.25-darwin-x64-11.4.0',
+verbose bin dist   { shasum: '30c3f3c76a95f70edd28d95e01c0425e9556c28f',
+verbose bin dist     tarball: 'http://registry.npmjs.org/glob-whatev/-/glob-whatev-0.1.7.tgz' } ]
+verbose caching /Users/kevin/.npm/glob-whatev/0.1.7/package/package.json
+verbose loadDefaults glob-whatev@0.1.7
+silly resolved [ { author: { name: 'Rackspace US, Inc.' },
+silly resolved     contributors: 
+silly resolved      [ { name: 'Paul Querna', email: 'paul.querna@rackspace.com' },
+silly resolved        { name: 'Tomaz Muraus', email: 'tomaz.muraus@rackspace.com' } ],
+silly resolved     name: 'elementtree',
+silly resolved     description: 'XML Serialization and Parsing module based on Python\'s ElementTree.',
+silly resolved     version: '0.1.1',
+silly resolved     keywords: [ 'xml', 'sax', 'parser', 'seralization', 'elementtree' ],
+silly resolved     homepage: 'https://github.com/racker/node-elementtree',
+silly resolved     repository: 
+silly resolved      { type: 'git',
+silly resolved        url: 'git://github.com/racker/node-elementtree.git' },
+silly resolved     main: 'lib/elementtree.js',
+silly resolved     directories: { lib: 'lib' },
+silly resolved     scripts: { test: 'make test' },
+silly resolved     engines: { node: '>= 0.4.0' },
+silly resolved     dependencies: { sax: '0.2.3' },
+silly resolved     devDependencies: { whiskey: '0.4.1' },
+silly resolved     licenses: 
+silly resolved      [ { type: 'Apache',
+silly resolved          url: 'http://www.apache.org/licenses/LICENSE-2.0.html' } ],
+silly resolved     _npmUser: { name: 'kmalakoff', email: 'xmann.intl@gmail.com' },
+silly resolved     _id: 'elementtree@0.1.1',
+silly resolved     optionalDependencies: {},
+silly resolved     _engineSupported: true,
+silly resolved     _npmVersion: '1.1.21',
+silly resolved     _nodeVersion: 'v0.6.18',
+silly resolved     _defaultsLoaded: true,
+silly resolved     _from: 'elementtree@>=0.1.1' },
+silly resolved   { name: 'wrench',
+silly resolved     description: 'Recursive filesystem (and other) operations that Node *should* have.',
+silly resolved     version: '1.3.9',
+silly resolved     author: { name: 'Ryan McGrath', email: 'ryan@venodesigns.net' },
+silly resolved     repository: 
+silly resolved      { type: 'git',
+silly resolved        url: 'git://github.com/ryanmcgrath/wrench-js.git' },
+silly resolved     bugs: { url: 'http://github.com/ryanmcgrath/wrench-js/issues' },
+silly resolved     directories: { lib: './lib/' },
+silly resolved     dependencies: {},
+silly resolved     devDependencies: { nodeunit: '>= 0.6.4' },
+silly resolved     main: './lib/wrench',
+silly resolved     engines: { node: '>=0.1.97' },
+silly resolved     scripts: { test: 'nodeunit tests/runner.js' },
+silly resolved     licenses: 
+silly resolved      [ { type: 'MIT',
+silly resolved          url: 'http://github.com/ryanmcgrath/wrench-js/raw/master/LICENSE' } ],
+silly resolved     _npmUser: { name: 'kmalakoff', email: 'xmann.intl@gmail.com' },
+silly resolved     _id: 'wrench@1.3.9',
+silly resolved     optionalDependencies: {},
+silly resolved     _engineSupported: true,
+silly resolved     _npmVersion: '1.1.21',
+silly resolved     _nodeVersion: 'v0.6.18',
+silly resolved     _defaultsLoaded: true,
+silly resolved     _from: 'wrench@>=1.3.9' },
+silly resolved   { author: { name: 'Kevin Malakoff', url: 'https://github.com/kmalakoff' },
+silly resolved     name: 'module-bundler',
+silly resolved     description: 'ModuleBundler combines javascript files and provides a minimal AMD-like loader to access them',
+silly resolved     keywords: 
+silly resolved      [ 'module-bundler',
+silly resolved        'require',
+silly resolved        'bundler',
+silly resolved        'easy-bake',
+silly resolved        'easybake',
+silly resolved        'browser',
+silly resolved        'client',
+silly resolved        'test' ],
+silly resolved     url: 'http://kmalakoff.github.com/module-bundler/',
+silly resolved     homepage: 'http://kmalakoff.github.com/module-bundler/',
+silly resolved     repository: 
+silly resolved      { type: 'git',
+silly resolved        url: 'git://github.com/kmalakoff/module-bundler.git' },
+silly resolved     dependencies: { wrench: '>=1.3.9' },
+silly resolved     main: 'module-bundler.js',
+silly resolved     bin: { mbundle: './bin/mbundle' },
+silly resolved     version: '0.1.0',
+silly resolved     _npmUser: { name: 'kmalakoff', email: 'xmann.intl@gmail.com' },
+silly resolved     _id: 'module-bundler@0.1.0',
+silly resolved     devDependencies: {},
+silly resolved     optionalDependencies: {},
+silly resolved     engines: { node: '*' },
+silly resolved     _engineSupported: true,
+silly resolved     _npmVersion: '1.1.21',
+silly resolved     _nodeVersion: 'v0.6.18',
+silly resolved     _defaultsLoaded: true,
+silly resolved     _from: 'module-bundler@>=0.1.0',
+silly resolved     scripts: {} },
+silly resolved   { name: 'uglify-js',
+silly resolved     description: 'JavaScript parser and compressor/beautifier toolkit',
+silly resolved     author: 
+silly resolved      { name: 'Mihai Bazon',
+silly resolved        email: 'mihai.bazon@gmail.com',
+silly resolved        url: 'http://mihai.bazon.net/blog' },
+silly resolved     version: '1.3.2',
+silly resolved     main: './uglify-js.js',
+silly resolved     bin: { uglifyjs: './bin/uglifyjs' },
+silly resolved     repository: { type: 'git', url: 'git@github.com:mishoo/UglifyJS.git' },
+silly resolved     devDependencies: { nodeunit: '0.7.x' },
+silly resolved     scripts: { test: '$(which nodeunit || echo node_modules/nodeunit/bin/nodeunit) test/unit/scripts.js && test/testparser.js && test/testconsolidator.js' },
+silly resolved     _npmUser: { name: 'kmalakoff', email: 'xmann.intl@gmail.com' },
+silly resolved     _id: 'uglify-js@1.3.2',
+silly resolved     dependencies: {},
+silly resolved     optionalDependencies: {},
+silly resolved     engines: { node: '*' },
+silly resolved     _engineSupported: true,
+silly resolved     _npmVersion: '1.1.21',
+silly resolved     _nodeVersion: 'v0.6.18',
+silly resolved     _defaultsLoaded: true,
+silly resolved     _from: 'uglify-js@>=1.3.0' },
+silly resolved   { name: 'glob-whatev',
+silly resolved     description: 'A quick and dirty file globbing utility based on minimatch.',
+silly resolved     version: '0.1.7',
+silly resolved     homepage: 'http://github.com/cowboy/node-glob-whatev',
+silly resolved     author: { name: '"Cowboy" Ben Alman', url: 'http://benalman.com/' },
+silly resolved     repository: 
+silly resolved      { type: 'git',
+silly resolved        url: 'git://github.com/cowboy/node-glob-whatev.git' },
+silly resolved     bugs: { url: 'https://github.com/cowboy/node-glob-whatev/issues' },
+silly resolved     licenses: 
+silly resolved      [ { type: 'MIT',
+silly resolved          url: 'http://github.com/cowboy/node-glob-whatev/blob/master/LICENSE-MIT' } ],
+silly resolved     dependencies: { minimatch: '~0.2.5' },
+silly resolved     devDependencies: { grunt: '~0.3.11' },
+silly resolved     keywords: [ 'glob', 'wildcard', 'star', 'file', 'sync', 'synchronous' ],
+silly resolved     engines: { node: '>= 0.6.0' },
+silly resolved     main: 'lib/glob',
+silly resolved     scripts: { test: 'grunt test' },
+silly resolved     _npmUser: { name: 'kmalakoff', email: 'xmann.intl@gmail.com' },
+silly resolved     _id: 'glob-whatev@0.1.7',
+silly resolved     optionalDependencies: {},
+silly resolved     _engineSupported: true,
+silly resolved     _npmVersion: '1.1.21',
+silly resolved     _nodeVersion: 'v0.6.18',
+silly resolved     _defaultsLoaded: true,
+silly resolved     _from: 'glob-whatev@>=0.1.6' } ]
+info into /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake elementtree@0.1.1
+info into /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake wrench@1.3.9
+info into /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake module-bundler@0.1.0
+info into /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake uglify-js@1.3.2
+info into /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake glob-whatev@0.1.7
+info installOne elementtree@0.1.1
+info installOne wrench@1.3.9
+info installOne module-bundler@0.1.0
+info installOne uglify-js@1.3.2
+info installOne glob-whatev@0.1.7
+verbose from cache /Users/kevin/.npm/elementtree/0.1.1/package/package.json
+info unbuild /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/elementtree
+verbose from cache /Users/kevin/.npm/wrench/1.3.9/package/package.json
+info unbuild /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/wrench
+verbose from cache /Users/kevin/.npm/module-bundler/0.1.0/package/package.json
+info unbuild /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/module-bundler
+verbose from cache /Users/kevin/.npm/uglify-js/1.3.2/package/package.json
+info unbuild /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/uglify-js
+verbose from cache /Users/kevin/.npm/glob-whatev/0.1.7/package/package.json
+info unbuild /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/glob-whatev
+verbose unpack /Users/kevin/.npm/elementtree/0.1.1/package.tgz
+verbose unpack /Users/kevin/.npm/wrench/1.3.9/package.tgz
+verbose unpack /Users/kevin/.npm/module-bundler/0.1.0/package.tgz
+verbose unpack /Users/kevin/.npm/uglify-js/1.3.2/package.tgz
+verbose unpack /Users/kevin/.npm/glob-whatev/0.1.7/package.tgz
+silly gunzTarPerm modes [ '755', '644' ]
+silly gunzTarPerm modes [ '755', '644' ]
+silly gunzTarPerm modes [ '755', '644' ]
+silly gunzTarPerm modes [ '755', '644' ]
+silly gunzTarPerm modes [ '755', '644' ]
+silly extracting entry test/sizzle/support/qunit.js
+silly extracting entry package.json
+silly extracting entry package.json
+silly extracting entry package.json
+silly extracting entry package.json
+silly extracting entry package.json
+silly extracting entry test/sizzle/support/selector.js
+silly extracting entry .npmignore
+silly extracting entry README.md
+silly extracting entry .npmignore
+silly extracting entry LICENSE
+silly extracting entry module-bundler.js
+silly extracting entry bin/mbundle
+silly extracting entry .npmignore
+silly extracting entry uglify-js.js
+silly extracting entry .npmignore
+silly extracting entry README.md
+silly extracting entry test/level2/core.js
+silly extracting entry lib/constants.js
+silly extracting entry lib/elementpath.js
+silly extracting entry lib/wrench.js
+silly extracting entry lib/x.js
+silly extracting entry lib/mbundle.js
+silly extracting entry bin/uglifyjs
+silly extracting entry docstyle.css
+silly extracting entry grunt.js
+silly extracting entry lib/glob.js
+silly extracting entry lib/elementtree.js
+silly extracting entry lib/errors.js
+silly extracting entry readme.md
+silly extracting entry tests/mkdir.js
+silly extracting entry LICENSE-MIT
+silly extracting entry test/glob_test.js
+silly extracting entry lib/consolidator.js
+silly extracting entry lib/parse-js.js
+silly extracting entry tests/readdir.js
+silly extracting entry test/fixture/boot
+silly extracting entry test/fixture/foo/bar/baz/boot
+silly extracting entry test/fixture/foo/bar/boot
+silly extracting entry lib/parser.js
+silly extracting entry lib/sprintf.js
+silly extracting entry test/level2/events.js
+silly extracting entry lib/process.js
+silly extracting entry test/level2/extra.js
+silly extracting entry tests/runner.js
+silly extracting entry tests/readdir/bar.txt
+silly extracting entry test/level2/html.js
+silly extracting entry lib/squeeze-more.js
+silly extracting entry tests/readdir/foo/bar/ipsum.js
+silly extracting entry README.html
+silly extracting entry tests/readdir/foo/dolor.md
+silly extracting entry test/fixture/foo/boot
+silly extracting entry tests/readdir/foo/lorem.txt
+silly extracting entry README.org
+silly extracting entry test/beautify.js
+silly extracting entry test/testconsolidator.js
+silly extracting entry lib/treebuilder.js
+silly extracting entry lib/utils.js
+silly extracting entry test/testparser.js
+silly extracting entry lib/parsers/index.js
+silly extracting entry test/unit/scripts.js
+silly extracting entry lib/parsers/sax.js
+silly extracting entry test/unit/compress/expected/1e21.js
+silly extracting entry test/unit/compress/expected/issue17.js
+silly extracting entry LICENSE.txt
+silly extracting entry test/unit/compress/expected/issue20.js
+silly extracting entry Makefile
+silly extracting entry test/unit/compress/expected/issue21.js
+silly extracting entry NOTICE
+silly extracting entry test/unit/compress/expected/issue25.js
+silly extracting entry tests/test-simple.js
+silly extracting entry test/unit/compress/expected/issue16.js
+silly extracting entry tests/data/xml1.xml
+silly extracting entry test/unit/compress/expected/issue278.js
+silly extracting entry test/unit/compress/expected/issue28.js
+silly extracting entry test/unit/compress/expected/issue29.js
+silly extracting entry test/unit/compress/expected/issue30.js
+silly extracting entry test/unit/compress/expected/issue34.js
+silly extracting entry test/unit/compress/expected/issue14.js
+silly extracting entry test/unit/compress/expected/issue349.js
+silly extracting entry test/unit/compress/expected/issue13.js
+silly extracting entry test/unit/compress/expected/issue353.js
+verbose caching /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/module-bundler/package.json
+verbose loadDefaults module-bundler@0.1.0
+info preinstall module-bundler@0.1.0
+silly extracting entry test/unit/compress/expected/issue11.js
+silly extracting entry test/unit/compress/expected/issue372.js
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/module-bundler/package.json
+verbose readDependencies: using package.json deps
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/module-bundler/package.json
+silly extracting entry test/unit/compress/expected/issue10.js
+silly extracting entry test/level2/style.js
+verbose readDependencies: using package.json deps
+silly resolved []
+verbose about to build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/module-bundler
+info build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/module-bundler
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/module-bundler/package.json
+verbose linkStuff [ false,
+verbose linkStuff   false,
+verbose linkStuff   false,
+verbose linkStuff   '/Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules' ]
+info linkStuff module-bundler@0.1.0
+verbose linkBins module-bundler@0.1.0
+verbose bins linking [ { mbundle: './bin/mbundle' },
+verbose bins linking   '/Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/.bin',
+verbose bins linking   false ]
+verbose linkMans module-bundler@0.1.0
+verbose rebuildBundles module-bundler@0.1.0
+silly extracting entry test/unit/compress/expected/issue4.js
+silly extracting entry test/level2/core/files/hc_staff.xml.js
+silly extracting entry test/level2/core/files/staff.xml.js
+info install module-bundler@0.1.0
+silly extracting entry test/unit/compress/expected/infinite.js
+silly extracting entry test/unit/compress/expected/issue48.js
+silly extracting entry test/level2/core/files/staff2.xml.js
+info postinstall module-bundler@0.1.0
+silly extracting entry test/unit/compress/expected/ifreturn2.js
+silly extracting entry test/level2/core/files/staffNS.xml.js
+silly extracting entry test/unit/compress/expected/issue50.js
+silly extracting entry test/level2/core/files/orig/internalSubset01.js
+silly extracting entry test/unit/compress/expected/ifreturn.js
+silly extracting entry test/level2/core/files/orig/svgtest.js
+silly extracting entry test/unit/compress/expected/issue53.js
+silly extracting entry test/level2/core/files/orig/svgunit.js
+silly extracting entry test/unit/compress/expected/if.js
+silly extracting entry test/level2/core/files/orig/staff2.svg
+silly extracting entry test/unit/compress/expected/issue54.1.js
+silly extracting entry test/level2/core/files/orig/index.html
+silly extracting entry test/unit/compress/expected/if-not.js
+silly extracting entry test/level2/core/files/orig/hc_staff.html
+silly extracting entry test/unit/compress/expected/issue68.js
+silly extracting entry test/level2/core/files/orig/nodtdstaff.svg
+silly extracting entry test/unit/compress/expected/forstatement.js
+silly extracting entry test/level2/core/files/orig/nodtdstaff.xml
+silly extracting entry test/unit/compress/expected/issue69.js
+silly extracting entry test/level2/core/files/orig/robots.txt
+silly extracting entry test/unit/compress/expected/empty-blocks.js
+silly extracting entry test/level2/core/files/orig/staff.dtd
+silly extracting entry test/unit/compress/expected/issue9.js
+silly extracting entry test/level2/core/files/orig/staff.svg
+silly extracting entry test/unit/compress/expected/const.js
+silly extracting entry test/level2/core/files/orig/staff.xml
+silly extracting entry test/unit/compress/expected/issues222_324.js
+silly extracting entry test/level2/core/files/orig/staff2.dtd
+silly extracting entry test/unit/compress/expected/concatstring.js
+silly extracting entry test/level2/core/files/orig/hc_staff.svg
+silly extracting entry test/unit/compress/expected/mangle.js
+silly extracting entry test/level2/core/files/orig/staff2.xml
+silly extracting entry test/unit/compress/expected/assignment.js
+silly extracting entry test/level2/core/files/orig/staffNS.dtd
+silly extracting entry test/unit/compress/expected/null_string.js
+silly extracting entry test/level2/core/files/orig/staffNS.svg
+silly extracting entry test/unit/compress/expected/array4.js
+silly extracting entry test/level2/core/files/orig/staffNS.xml
+silly extracting entry test/unit/compress/expected/strict-equals.js
+silly extracting entry test/level2/core/files/orig/hc_staff.xhtml
+silly extracting entry test/unit/compress/expected/array3.js
+silly extracting entry test/level2/core/files/orig/hc_staff.xml
+silly extracting entry test/unit/compress/expected/var.js
+silly extracting entry test/level2/core/files/orig/xhtml-lat1.ent
+silly extracting entry test/unit/compress/expected/array2.js
+silly extracting entry test/level2/core/files/orig/xhtml-special.ent
+silly extracting entry test/unit/compress/expected/whitespace.js
+silly extracting entry test/level2/core/files/orig/xhtml-symbol.ent
+silly extracting entry test/unit/compress/expected/array1.js
+silly extracting entry test/level2/core/files/orig/xhtml1-frameset.dtd
+silly extracting entry test/unit/compress/expected/with.js
+silly extracting entry test/level2/core/files/orig/xhtml1-strict.dtd
+silly extracting entry test/unit/compress/expected/issue27.js
+silly extracting entry test/level2/core/files/orig/xhtml1-transitional.dtd
+silly extracting entry test/unit/compress/test/1e21.js
+silly extracting entry test/level2/events/files/hc_staff.xml.js
+silly extracting entry test/unit/compress/test/issue17.js
+silly extracting entry test/level2/html/files/isindex.html
+silly extracting entry test/unit/compress/test/issue20.js
+silly extracting entry test/level2/html/files/anchor.html
+silly extracting entry test/unit/compress/test/issue21.js
+silly extracting entry test/level2/html/files/applet.html
+silly extracting entry test/unit/compress/test/issue25.js
+silly extracting entry test/level2/html/files/applet2.html
+silly extracting entry test/unit/compress/test/issue16.js
+silly extracting entry test/level2/html/files/area.html
+silly extracting entry test/unit/compress/test/issue278.js
+silly extracting entry test/level2/html/files/area2.html
+silly extracting entry test/unit/compress/test/issue28.js
+silly extracting entry test/level2/html/files/base.html
+silly extracting entry test/unit/compress/test/issue29.js
+silly extracting entry test/level2/html/files/base2.html
+silly extracting entry test/unit/compress/test/issue30.js
+silly extracting entry test/level2/html/files/basefont.html
+silly extracting entry test/unit/compress/test/issue34.js
+silly extracting entry test/level2/html/files/body.html
+silly extracting entry test/unit/compress/test/issue14.js
+silly extracting entry test/level2/html/files/br.html
+silly extracting entry test/unit/compress/test/issue349.js
+silly extracting entry test/level2/html/files/button.html
+silly extracting entry test/unit/compress/test/issue13.js
+silly extracting entry test/level2/html/files/collection.html
+silly extracting entry test/unit/compress/test/issue353.js
+silly extracting entry test/level2/html/files/directory.html
+silly extracting entry test/unit/compress/test/issue11.js
+silly extracting entry test/level2/html/files/div.html
+silly extracting entry test/unit/compress/test/issue372.js
+silly extracting entry test/level2/html/files/dl.html
+silly extracting entry test/unit/compress/test/issue10.js
+silly extracting entry test/level2/html/files/document.html
+silly extracting entry test/unit/compress/test/issue4.js
+silly extracting entry test/level2/html/files/element.html
+silly extracting entry test/unit/compress/test/infinite.js
+silly extracting entry test/level2/html/files/fieldset.html
+silly extracting entry test/unit/compress/test/issue48.js
+silly extracting entry test/level2/html/files/font.html
+silly extracting entry test/unit/compress/test/ifreturn2.js
+verbose caching /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/glob-whatev/package.json
+verbose loadDefaults glob-whatev@0.1.7
+silly extracting entry test/level2/html/files/form.html
+silly extracting entry test/unit/compress/test/issue50.js
+silly extracting entry test/level2/html/files/form2.html
+silly extracting entry test/unit/compress/test/ifreturn.js
+silly extracting entry test/unit/compress/test/issue53.js
+info preinstall glob-whatev@0.1.7
+silly extracting entry test/unit/compress/test/if.js
+silly extracting entry test/unit/compress/test/issue54.1.js
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/glob-whatev/package.json
+silly extracting entry test/unit/compress/test/if-not.js
+verbose readDependencies: using package.json deps
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/glob-whatev/package.json
+silly extracting entry test/unit/compress/test/issue68.js
+verbose readDependencies: using package.json deps
+silly extracting entry test/unit/compress/test/forstatement.js
+silly extracting entry test/level2/html/files/form3.html
+silly extracting entry test/level2/html/files/frame.html
+silly extracting entry test/unit/compress/test/issue69.js
+silly extracting entry test/unit/compress/test/empty-blocks.js
+verbose cache add [ 'minimatch@~0.2.5', null ]
+silly cache add: name, spec, args [ undefined, 'minimatch@~0.2.5', [ 'minimatch@~0.2.5', null ] ]
+verbose parsed url { pathname: 'minimatch@~0.2.5',
+verbose parsed url   path: 'minimatch@~0.2.5',
+verbose parsed url   href: 'minimatch@~0.2.5' }
+silly cache add: name, spec, args [ 'minimatch', '~0.2.5', [ 'minimatch', '~0.2.5' ] ]
+verbose parsed url { pathname: '~0.2.5', path: '~0.2.5', href: '~0.2.5' }
+verbose addNamed [ 'minimatch', '~0.2.5' ]
+verbose addNamed [ null, '>=0.2.5- <0.3.0-' ]
+silly name, range, hasData [ 'minimatch', '>=0.2.5- <0.3.0-', false ]
+silly extracting entry test/unit/compress/test/issue9.js
+silly extracting entry test/unit/compress/test/const.js
+silly extracting entry test/unit/compress/test/issues222_324.js
+silly extracting entry test/unit/compress/test/concatstring.js
+silly extracting entry test/unit/compress/test/mangle.js
+verbose caching /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/wrench/package.json
+verbose loadDefaults wrench@1.3.9
+silly extracting entry test/level2/html/files/frame2.html
+silly extracting entry test/level2/html/files/frameset.html
+silly extracting entry test/unit/compress/test/assignment.js
+silly extracting entry test/unit/compress/test/null_string.js
+silly extracting entry test/level2/html/files/head.html
+verbose raw, before any munging minimatch
+verbose url resolving [ 'https://registry.npmjs.org/', './minimatch' ]
+verbose url resolved https://registry.npmjs.org/minimatch
+verbose etag "7OXEY71JSQJUYD7UW9SSFQTEE"
+http GET https://registry.npmjs.org/minimatch
+silly extracting entry test/unit/compress/test/array4.js
+info preinstall wrench@1.3.9
+silly extracting entry test/unit/compress/test/strict-equals.js
+silly extracting entry test/unit/compress/test/array3.js
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/wrench/package.json
+silly extracting entry test/unit/compress/test/var.js
+verbose readDependencies: using package.json deps
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/wrench/package.json
+silly extracting entry test/unit/compress/test/array2.js
+verbose readDependencies: using package.json deps
+silly resolved []
+verbose about to build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/wrench
+info build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/wrench
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/wrench/package.json
+verbose linkStuff [ false,
+verbose linkStuff   false,
+verbose linkStuff   false,
+verbose linkStuff   '/Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules' ]
+info linkStuff wrench@1.3.9
+verbose linkBins wrench@1.3.9
+verbose linkMans wrench@1.3.9
+verbose rebuildBundles wrench@1.3.9
+silly extracting entry test/unit/compress/test/whitespace.js
+info install wrench@1.3.9
+silly extracting entry test/level2/html/files/heading.html
+silly extracting entry test/level2/html/files/hr.html
+silly extracting entry test/unit/compress/test/array1.js
+silly extracting entry test/unit/compress/test/with.js
+info postinstall wrench@1.3.9
+silly extracting entry test/unit/compress/test/issue27.js
+silly extracting entry tmp/hoist.js
+silly extracting entry tmp/instrument.js
+silly extracting entry tmp/test.js
+silly extracting entry test/level2/html/files/html.html
+silly extracting entry test/level2/html/files/iframe.html
+silly extracting entry test/level2/html/files/iframe2.html
+silly extracting entry test/level2/html/files/img/right.png
+silly extracting entry test/level2/html/files/img/w3c_main.png
+silly extracting entry test/level2/html/files/img.html
+silly extracting entry test/level2/html/files/input.html
+silly extracting entry test/level2/html/files/anchor2.html
+silly extracting entry test/level2/html/files/js/script1.js
+silly extracting entry test/level2/html/files/label.html
+silly extracting entry test/level2/html/files/legend.html
+silly extracting entry test/level2/html/files/li.html
+silly extracting entry test/level2/html/files/link.html
+silly extracting entry test/level2/html/files/link2.html
+silly extracting entry test/level2/html/files/map.html
+silly extracting entry test/level2/html/files/menu.html
+silly extracting entry test/level2/html/files/meta.html
+silly extracting entry test/level2/html/files/mod.html
+silly extracting entry test/level2/html/files/object.html
+silly extracting entry test/level2/html/files/object2.html
+silly extracting entry test/level2/html/files/olist.html
+silly extracting entry test/level2/html/files/optgroup.html
+silly extracting entry test/level2/html/files/option.html
+silly extracting entry test/level2/html/files/optionscollection.html
+silly extracting entry test/level2/html/files/paragraph.html
+silly extracting entry test/level2/html/files/param.html
+silly extracting entry test/level2/html/files/pre.html
+silly extracting entry test/level2/html/files/quote.html
+silly extracting entry test/level2/html/files/right.png
+silly extracting entry test/level2/html/files/script.html
+silly extracting entry test/level2/html/files/select.html
+silly extracting entry test/level2/html/files/style.html
+silly extracting entry test/level2/html/files/table.html
+silly extracting entry test/level2/html/files/table1.html
+silly extracting entry test/level2/html/files/tablecaption.html
+silly extracting entry test/level2/html/files/tablecell.html
+silly extracting entry test/level2/html/files/tablecol.html
+silly extracting entry test/level2/html/files/tablerow.html
+silly extracting entry test/level2/html/files/tablesection.html
+silly extracting entry test/level2/html/files/textarea.html
+silly extracting entry test/level2/html/files/title.html
+silly extracting entry test/level2/html/files/ulist.html
+silly extracting entry test/level2/html/files/w3c_main.png
+silly extracting entry benchmark/mark.js
+silly extracting entry benchmark/stats.json
+silly extracting entry status.json
+silly extracting entry lib/jsdom.js
+silly extracting entry lib/jsdom/browser/domtohtml.js
+silly extracting entry lib/jsdom/browser/htmlencoding.js
+silly extracting entry lib/jsdom/browser/htmltodom.js
+silly extracting entry lib/jsdom/browser/index.js
+silly extracting entry lib/jsdom/level1/core.js
+silly extracting entry lib/jsdom/level2/core.js
+silly extracting entry lib/jsdom/level2/events.js
+silly extracting entry lib/jsdom/level2/html.js
+verbose caching /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/elementtree/package.json
+verbose loadDefaults elementtree@0.1.1
+silly extracting entry lib/jsdom/level2/index.js
+silly extracting entry lib/jsdom/level2/style.js
+info preinstall elementtree@0.1.1
+silly extracting entry lib/jsdom/level2/languages/javascript.js
+silly extracting entry lib/jsdom/level3/core.js
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/elementtree/package.json
+silly extracting entry lib/jsdom/level3/events.js
+verbose readDependencies: using package.json deps
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/elementtree/package.json
+silly extracting entry lib/jsdom/level3/html.js
+verbose readDependencies: using package.json deps
+silly extracting entry lib/jsdom/level3/index.js
+silly extracting entry lib/jsdom/level3/ls.js
+silly extracting entry lib/jsdom/level3/xpath.js
+verbose cache add [ 'sax@0.2.3', null ]
+silly cache add: name, spec, args [ undefined, 'sax@0.2.3', [ 'sax@0.2.3', null ] ]
+verbose parsed url { pathname: 'sax@0.2.3', path: 'sax@0.2.3', href: 'sax@0.2.3' }
+silly cache add: name, spec, args [ 'sax', '0.2.3', [ 'sax', '0.2.3' ] ]
+verbose parsed url { pathname: '0.2.3', path: '0.2.3', href: '0.2.3' }
+verbose addNamed [ 'sax', '0.2.3' ]
+verbose addNamed [ '0.2.3', '0.2.3' ]
+silly extracting entry lib/jsdom/selectors/index.js
+silly extracting entry lib/jsdom/selectors/sizzle.js
+verbose raw, before any munging sax/0.2.3
+verbose url resolving [ 'https://registry.npmjs.org/', './sax/0.2.3' ]
+verbose url resolved https://registry.npmjs.org/sax/0.2.3
+verbose etag "166RTVMS2PWST8LBDRQSTJ8L9"
+http GET https://registry.npmjs.org/sax/0.2.3
+verbose caching /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/uglify-js/package.json
+verbose loadDefaults uglify-js@1.3.2
+info preinstall uglify-js@1.3.2
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/uglify-js/package.json
+verbose readDependencies: using package.json deps
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/uglify-js/package.json
+verbose readDependencies: using package.json deps
+silly resolved []
+verbose about to build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/uglify-js
+info build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/uglify-js
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/uglify-js/package.json
+verbose linkStuff [ false,
+verbose linkStuff   false,
+verbose linkStuff   false,
+verbose linkStuff   '/Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules' ]
+info linkStuff uglify-js@1.3.2
+verbose linkBins uglify-js@1.3.2
+verbose bins linking [ { uglifyjs: './bin/uglifyjs' },
+verbose bins linking   '/Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/.bin',
+verbose bins linking   false ]
+verbose linkMans uglify-js@1.3.2
+verbose rebuildBundles uglify-js@1.3.2
+info install uglify-js@1.3.2
+info postinstall uglify-js@1.3.2
+http 304 https://registry.npmjs.org/minimatch
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.2.0 (Erlang OTP/R15B)',
+silly get cb     etag: '"7OXEY71JSQJUYD7UW9SSFQTEE"',
+silly get cb     date: 'Tue, 10 Jul 2012 15:44:06 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag minimatch from cache
+silly name, range, hasData 2 [ 'minimatch', '>=0.2.5- <0.3.0-', true ]
+silly versions [ 'minimatch',
+silly versions   [ '0.0.1',
+silly versions     '0.0.2',
+silly versions     '0.0.4',
+silly versions     '0.0.5',
+silly versions     '0.1.1',
+silly versions     '0.1.2',
+silly versions     '0.1.3',
+silly versions     '0.1.4',
+silly versions     '0.1.5',
+silly versions     '0.2.0',
+silly versions     '0.2.2',
+silly versions     '0.2.3',
+silly versions     '0.2.4',
+silly versions     '0.2.5' ] ]
+verbose bin dist [ '0.6-ares1.7.5-DEV-evundefined-openssl0.9.8r-v83.6.6.25-darwin-x64-11.4.0',
+verbose bin dist   { shasum: 'a85048c04cc707538cdcb6fb798c421c3cbc7026',
+verbose bin dist     tarball: 'http://registry.npmjs.org/minimatch/-/minimatch-0.2.5.tgz' } ]
+verbose caching /Users/kevin/.npm/minimatch/0.2.5/package/package.json
+verbose loadDefaults minimatch@0.2.5
+silly resolved [ { author: 
+silly resolved      { name: 'Isaac Z. Schlueter',
+silly resolved        email: 'i@izs.me',
+silly resolved        url: 'http://blog.izs.me' },
+silly resolved     name: 'minimatch',
+silly resolved     description: 'a glob matcher in javascript',
+silly resolved     version: '0.2.5',
+silly resolved     repository: { type: 'git', url: 'git://github.com/isaacs/minimatch.git' },
+silly resolved     main: 'minimatch.js',
+silly resolved     scripts: { test: 'tap test' },
+silly resolved     engines: { node: '*' },
+silly resolved     dependencies: { 'lru-cache': '~1' },
+silly resolved     devDependencies: { tap: '' },
+silly resolved     licenses: 
+silly resolved      [ { type: 'MIT',
+silly resolved          url: 'http://github.com/isaacs/minimatch/raw/master/LICENSE' } ],
+silly resolved     _npmUser: { name: 'kmalakoff', email: 'xmann.intl@gmail.com' },
+silly resolved     _id: 'minimatch@0.2.5',
+silly resolved     optionalDependencies: {},
+silly resolved     _engineSupported: true,
+silly resolved     _npmVersion: '1.1.21',
+silly resolved     _nodeVersion: 'v0.6.18',
+silly resolved     _defaultsLoaded: true,
+silly resolved     _from: 'minimatch@~0.2.5' } ]
+info into /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/glob-whatev minimatch@0.2.5
+info installOne minimatch@0.2.5
+verbose from cache /Users/kevin/.npm/minimatch/0.2.5/package/package.json
+info unbuild /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/glob-whatev/node_modules/minimatch
+verbose unpack /Users/kevin/.npm/minimatch/0.2.5/package.tgz
+silly gunzTarPerm modes [ '755', '644' ]
+silly extracting entry package.json
+silly extracting entry README.md
+silly extracting entry LICENSE
+http 304 https://registry.npmjs.org/sax/0.2.3
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.2.0 (Erlang OTP/R15B)',
+silly get cb     etag: '"166RTVMS2PWST8LBDRQSTJ8L9"',
+silly get cb     date: 'Tue, 10 Jul 2012 15:44:07 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag sax/0.2.3 from cache
+silly extracting entry minimatch.js
+silly extracting entry .travis.yml
+silly extracting entry test/basic.js
+silly extracting entry test/brace-expand.js
+silly extracting entry test/caching.js
+verbose bin dist [ '0.6-ares1.7.5-DEV-evundefined-openssl0.9.8r-v83.6.6.25-darwin-x64-11.4.0',
+verbose bin dist   { shasum: 'bf474651670d0d0dcfcfc4b2a5f83d5e43dc8ea1',
+verbose bin dist     tarball: 'http://registry.npmjs.org/sax/-/sax-0.2.3.tgz' } ]
+silly extracting entry test/defaults.js
+verbose caching /Users/kevin/.npm/sax/0.2.3/package/package.json
+verbose loadDefaults sax@0.2.3
+silly resolved [ { name: 'sax',
+silly resolved     author: { name: 'Isaac Z. Schlueter', email: 'i@izs.me' },
+silly resolved     version: '0.2.3',
+silly resolved     main: 'lib/sax',
+silly resolved     license: 'MIT',
+silly resolved     scripts: { test: 'node test/index.js' },
+silly resolved     _npmUser: { name: 'kmalakoff', email: 'xmann.intl@gmail.com' },
+silly resolved     _id: 'sax@0.2.3',
+silly resolved     dependencies: {},
+silly resolved     devDependencies: {},
+silly resolved     optionalDependencies: {},
+silly resolved     engines: { node: '*' },
+silly resolved     _engineSupported: true,
+silly resolved     _npmVersion: '1.1.21',
+silly resolved     _nodeVersion: 'v0.6.18',
+silly resolved     _defaultsLoaded: true,
+silly resolved     _from: 'sax@0.2.3' } ]
+info into /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/elementtree sax@0.2.3
+info installOne sax@0.2.3
+verbose from cache /Users/kevin/.npm/sax/0.2.3/package/package.json
+info unbuild /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/elementtree/node_modules/sax
+verbose unpack /Users/kevin/.npm/sax/0.2.3/package.tgz
+silly gunzTarPerm modes [ '755', '644' ]
+silly extracting entry package.json
+silly extracting entry README.md
+silly extracting entry LICENSE
+silly extracting entry examples/example.js
+silly extracting entry examples/pretty-print.js
+silly extracting entry examples/switch-bench.js
+silly extracting entry examples/not-pretty.xml
+silly extracting entry examples/strict.dtd
+silly extracting entry examples/test.html
+silly extracting entry examples/test.xml
+silly extracting entry lib/sax.js
+silly extracting entry test/buffer-overrun.js
+silly extracting entry test/cdata-multiple.js
+silly extracting entry test/cdata.js
+silly extracting entry test/index.js
+silly extracting entry test/issue-23.js
+silly extracting entry test/cdata-fake-end.js
+silly extracting entry test/parser-position.js
+silly extracting entry test/self-closing-child-strict.js
+silly extracting entry test/self-closing-child.js
+silly extracting entry test/self-closing-tag.js
+silly extracting entry test/stray-ending.js
+silly extracting entry test/cdata-end-split.js
+silly extracting entry test/trailing-non-whitespace.js
+silly extracting entry test/cdata-chunked.js
+silly extracting entry test/unquoted.js
+silly extracting entry test/issue-30.js
+verbose caching /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/glob-whatev/node_modules/minimatch/package.json
+verbose loadDefaults minimatch@0.2.5
+info preinstall minimatch@0.2.5
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/glob-whatev/node_modules/minimatch/package.json
+verbose readDependencies: using package.json deps
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/glob-whatev/node_modules/minimatch/package.json
+verbose readDependencies: using package.json deps
+verbose cache add [ 'lru-cache@~1', null ]
+silly cache add: name, spec, args [ undefined, 'lru-cache@~1', [ 'lru-cache@~1', null ] ]
+verbose parsed url { pathname: 'lru-cache@~1',
+verbose parsed url   path: 'lru-cache@~1',
+verbose parsed url   href: 'lru-cache@~1' }
+silly cache add: name, spec, args [ 'lru-cache', '~1', [ 'lru-cache', '~1' ] ]
+verbose parsed url { pathname: '~1', path: '~1', href: '~1' }
+verbose addNamed [ 'lru-cache', '~1' ]
+verbose addNamed [ null, '>=1.0.0- <2.0.0-' ]
+silly name, range, hasData [ 'lru-cache', '>=1.0.0- <2.0.0-', false ]
+verbose raw, before any munging lru-cache
+verbose url resolving [ 'https://registry.npmjs.org/', './lru-cache' ]
+verbose url resolved https://registry.npmjs.org/lru-cache
+verbose etag "9N82M3AKSKT7DVEPKQ6VWSEEP"
+http GET https://registry.npmjs.org/lru-cache
+verbose caching /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/elementtree/node_modules/sax/package.json
+verbose loadDefaults sax@0.2.3
+info preinstall sax@0.2.3
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/elementtree/node_modules/sax/package.json
+verbose readDependencies: using package.json deps
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/elementtree/node_modules/sax/package.json
+verbose readDependencies: using package.json deps
+silly resolved []
+verbose about to build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/elementtree/node_modules/sax
+info build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/elementtree/node_modules/sax
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/elementtree/node_modules/sax/package.json
+verbose linkStuff [ false,
+verbose linkStuff   false,
+verbose linkStuff   false,
+verbose linkStuff   '/Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/elementtree/node_modules' ]
+info linkStuff sax@0.2.3
+verbose linkBins sax@0.2.3
+verbose linkMans sax@0.2.3
+verbose rebuildBundles sax@0.2.3
+info install sax@0.2.3
+info postinstall sax@0.2.3
+verbose about to build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/elementtree
+info build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/elementtree
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/elementtree/package.json
+verbose linkStuff [ false,
+verbose linkStuff   false,
+verbose linkStuff   false,
+verbose linkStuff   '/Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules' ]
+info linkStuff elementtree@0.1.1
+verbose linkBins elementtree@0.1.1
+verbose linkMans elementtree@0.1.1
+verbose rebuildBundles elementtree@0.1.1
+verbose rebuildBundles [ 'sax' ]
+info install elementtree@0.1.1
+info postinstall elementtree@0.1.1
+http 304 https://registry.npmjs.org/lru-cache
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.2.0 (Erlang OTP/R15B)',
+silly get cb     etag: '"9N82M3AKSKT7DVEPKQ6VWSEEP"',
+silly get cb     date: 'Tue, 10 Jul 2012 15:44:08 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag lru-cache from cache
+silly name, range, hasData 2 [ 'lru-cache', '>=1.0.0- <2.0.0-', true ]
+silly versions [ 'lru-cache',
+silly versions   [ '1.0.1', '1.0.2', '1.0.3', '1.0.4', '1.0.5', '1.0.6', '1.1.0' ] ]
+verbose bin dist [ '0.6-ares1.7.5-DEV-evundefined-openssl0.9.8r-v83.6.6.25-darwin-x64-11.4.0',
+verbose bin dist   { shasum: '8d4a68dc0ab1cd5a2f39352478c495e9dd33cb61',
+verbose bin dist     tarball: 'http://registry.npmjs.org/lru-cache/-/lru-cache-1.1.0.tgz' } ]
+verbose caching /Users/kevin/.npm/lru-cache/1.1.0/package/package.json
+verbose loadDefaults lru-cache@1.1.0
+silly resolved [ { name: 'lru-cache',
+silly resolved     description: 'A cache object that deletes the least-recently-used items.',
+silly resolved     version: '1.1.0',
+silly resolved     author: { name: 'Isaac Z. Schlueter', email: 'i@izs.me' },
+silly resolved     scripts: { test: 'tap test' },
+silly resolved     main: 'lib/lru-cache.js',
+silly resolved     repository: 
+silly resolved      { type: 'git',
+silly resolved        url: 'git://github.com/isaacs/node-lru-cache.git' },
+silly resolved     devDependencies: { tap: '' },
+silly resolved     license: 
+silly resolved      { type: 'MIT',
+silly resolved        url: 'http://github.com/isaacs/node-lru-cache/raw/master/LICENSE' },
+silly resolved     _npmUser: { name: 'kmalakoff', email: 'xmann.intl@gmail.com' },
+silly resolved     _id: 'lru-cache@1.1.0',
+silly resolved     contributors: 
+silly resolved      [ { name: 'Isaac Z. Schlueter', email: 'i@izs.me' },
+silly resolved        { name: 'Carlos Brito Lage', email: 'carlos@carloslage.net' },
+silly resolved        { name: 'Marko Mikulicic',
+silly resolved          email: 'marko.mikulicic@isti.cnr.it' },
+silly resolved        { name: 'Trent Mick', email: 'trentm@gmail.com' } ],
+silly resolved     dependencies: {},
+silly resolved     optionalDependencies: {},
+silly resolved     engines: { node: '*' },
+silly resolved     _engineSupported: true,
+silly resolved     _npmVersion: '1.1.21',
+silly resolved     _nodeVersion: 'v0.6.18',
+silly resolved     _defaultsLoaded: true,
+silly resolved     _from: 'lru-cache@~1' } ]
+info into /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/glob-whatev/node_modules/minimatch lru-cache@1.1.0
+info installOne lru-cache@1.1.0
+verbose from cache /Users/kevin/.npm/lru-cache/1.1.0/package/package.json
+info unbuild /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/glob-whatev/node_modules/minimatch/node_modules/lru-cache
+verbose unpack /Users/kevin/.npm/lru-cache/1.1.0/package.tgz
+silly gunzTarPerm modes [ '755', '644' ]
+silly extracting entry package.json
+silly extracting entry .npmignore
+silly extracting entry README.md
+silly extracting entry LICENSE
+silly extracting entry AUTHORS
+silly extracting entry lib/lru-cache.js
+silly extracting entry test/basic.js
+verbose caching /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/glob-whatev/node_modules/minimatch/node_modules/lru-cache/package.json
+verbose loadDefaults lru-cache@1.1.0
+info preinstall lru-cache@1.1.0
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/glob-whatev/node_modules/minimatch/node_modules/lru-cache/package.json
+verbose readDependencies: using package.json deps
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/glob-whatev/node_modules/minimatch/node_modules/lru-cache/package.json
+verbose readDependencies: using package.json deps
+silly resolved []
+verbose about to build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/glob-whatev/node_modules/minimatch/node_modules/lru-cache
+info build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/glob-whatev/node_modules/minimatch/node_modules/lru-cache
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/glob-whatev/node_modules/minimatch/node_modules/lru-cache/package.json
+verbose linkStuff [ false,
+verbose linkStuff   false,
+verbose linkStuff   false,
+verbose linkStuff   '/Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/glob-whatev/node_modules/minimatch/node_modules' ]
+info linkStuff lru-cache@1.1.0
+verbose linkBins lru-cache@1.1.0
+verbose linkMans lru-cache@1.1.0
+verbose rebuildBundles lru-cache@1.1.0
+info install lru-cache@1.1.0
+info postinstall lru-cache@1.1.0
+verbose about to build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/glob-whatev/node_modules/minimatch
+info build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/glob-whatev/node_modules/minimatch
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/glob-whatev/node_modules/minimatch/package.json
+verbose linkStuff [ false,
+verbose linkStuff   false,
+verbose linkStuff   false,
+verbose linkStuff   '/Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/glob-whatev/node_modules' ]
+info linkStuff minimatch@0.2.5
+verbose linkBins minimatch@0.2.5
+verbose linkMans minimatch@0.2.5
+verbose rebuildBundles minimatch@0.2.5
+verbose rebuildBundles [ 'lru-cache' ]
+info install minimatch@0.2.5
+info postinstall minimatch@0.2.5
+verbose about to build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/glob-whatev
+info build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/glob-whatev
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules/glob-whatev/package.json
+verbose linkStuff [ false,
+verbose linkStuff   false,
+verbose linkStuff   false,
+verbose linkStuff   '/Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/node_modules' ]
+info linkStuff glob-whatev@0.1.7
+verbose linkBins glob-whatev@0.1.7
+verbose linkMans glob-whatev@0.1.7
+verbose rebuildBundles glob-whatev@0.1.7
+verbose rebuildBundles [ 'minimatch' ]
+info install glob-whatev@0.1.7
+info postinstall glob-whatev@0.1.7
+verbose about to build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake
+info build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/easy-bake/package.json
+verbose linkStuff [ false,
+verbose linkStuff   false,
+verbose linkStuff   false,
+verbose linkStuff   '/Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules' ]
+info linkStuff easy-bake@0.1.5
+verbose linkBins easy-bake@0.1.5
+verbose bins linking [ { nuget: './bin/nuget' },
+verbose bins linking   '/Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/.bin',
+verbose bins linking   false ]
+verbose linkMans easy-bake@0.1.5
+verbose rebuildBundles easy-bake@0.1.5
+verbose rebuildBundles [ '.bin',
+verbose rebuildBundles   'elementtree',
+verbose rebuildBundles   'glob-whatev',
+verbose rebuildBundles   'module-bundler',
+verbose rebuildBundles   'uglify-js',
+verbose rebuildBundles   'wrench' ]
+info install easy-bake@0.1.5
+info postinstall easy-bake@0.1.5
+verbose caching /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/backbone/package.json
+verbose loadDefaults backbone@0.9.2
+info preinstall backbone@0.9.2
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/backbone/package.json
+verbose readDependencies: using package.json deps
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/backbone/package.json
+verbose readDependencies: using package.json deps
+silly resolved []
+verbose about to build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/backbone
+info build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/backbone
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/backbone/package.json
+verbose linkStuff [ false,
+verbose linkStuff   false,
+verbose linkStuff   false,
+verbose linkStuff   '/Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules' ]
+info linkStuff backbone@0.9.2
+verbose linkBins backbone@0.9.2
+verbose linkMans backbone@0.9.2
+verbose rebuildBundles backbone@0.9.2
+info install backbone@0.9.2
+info postinstall backbone@0.9.2
+verbose caching /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules/jsdom/package.json
+verbose loadDefaults jsdom@0.2.1
+info preinstall jsdom@0.2.1
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules/jsdom/package.json
+verbose readDependencies: using package.json deps
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules/jsdom/package.json
+verbose readDependencies: using package.json deps
+verbose cache add [ 'htmlparser@>=1.7.0', null ]
+silly cache add: name, spec, args [ undefined,
+silly cache add: name, spec, args   'htmlparser@>=1.7.0',
+silly cache add: name, spec, args   [ 'htmlparser@>=1.7.0', null ] ]
+verbose parsed url { pathname: 'htmlparser@',
+verbose parsed url   path: 'htmlparser@',
+verbose parsed url   href: 'htmlparser@' }
+silly cache add: name, spec, args [ 'htmlparser', '>=1.7.0', [ 'htmlparser', '>=1.7.0' ] ]
+verbose parsed url { pathname: '=1.7.0', path: '=1.7.0', href: '=1.7.0' }
+verbose addNamed [ 'htmlparser', '>=1.7.0' ]
+verbose addNamed [ null, '>=1.7.0' ]
+silly name, range, hasData [ 'htmlparser', '>=1.7.0', false ]
+verbose cache add [ 'request@>=1.0.0', null ]
+silly cache add: name, spec, args [ undefined, 'request@>=1.0.0', [ 'request@>=1.0.0', null ] ]
+verbose parsed url { pathname: 'request@', path: 'request@', href: 'request@' }
+silly cache add: name, spec, args [ 'request', '>=1.0.0', [ 'request', '>=1.0.0' ] ]
+verbose parsed url { pathname: '=1.0.0', path: '=1.0.0', href: '=1.0.0' }
+verbose addNamed [ 'request', '>=1.0.0' ]
+verbose addNamed [ null, '>=1.0.0' ]
+silly name, range, hasData [ 'request', '>=1.0.0', false ]
+verbose cache add [ 'cssom@>=0.2.0', null ]
+silly cache add: name, spec, args [ undefined, 'cssom@>=0.2.0', [ 'cssom@>=0.2.0', null ] ]
+verbose parsed url { pathname: 'cssom@', path: 'cssom@', href: 'cssom@' }
+silly cache add: name, spec, args [ 'cssom', '>=0.2.0', [ 'cssom', '>=0.2.0' ] ]
+verbose parsed url { pathname: '=0.2.0', path: '=0.2.0', href: '=0.2.0' }
+verbose addNamed [ 'cssom', '>=0.2.0' ]
+verbose addNamed [ null, '>=0.2.0' ]
+silly name, range, hasData [ 'cssom', '>=0.2.0', false ]
+verbose raw, before any munging htmlparser
+verbose url resolving [ 'https://registry.npmjs.org/', './htmlparser' ]
+verbose url resolved https://registry.npmjs.org/htmlparser
+verbose etag "177U0R95396XSUIXZTGOXPU5A"
+http GET https://registry.npmjs.org/htmlparser
+verbose raw, before any munging cssom
+verbose url resolving [ 'https://registry.npmjs.org/', './cssom' ]
+verbose url resolved https://registry.npmjs.org/cssom
+verbose etag "W1UC28STAQ8E7HM3ZRIPFHC8"
+http GET https://registry.npmjs.org/cssom
+verbose raw, before any munging request
+verbose url resolving [ 'https://registry.npmjs.org/', './request' ]
+verbose url resolved https://registry.npmjs.org/request
+verbose etag "N4Q4NWTRYSLV624RKVZBW9ZF"
+http GET https://registry.npmjs.org/request
+http 304 https://registry.npmjs.org/request
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.2.0 (Erlang OTP/R15B)',
+silly get cb     etag: '"N4Q4NWTRYSLV624RKVZBW9ZF"',
+silly get cb     date: 'Tue, 10 Jul 2012 15:44:11 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag request from cache
+silly name, range, hasData 2 [ 'request', '>=1.0.0', true ]
+silly versions [ 'request',
+silly versions   [ '0.10.0',
+silly versions     '0.8.3',
+silly versions     '0.9.0',
+silly versions     '0.9.1',
+silly versions     '0.9.5',
+silly versions     '1.0.0',
+silly versions     '1.1.0',
+silly versions     '1.1.1',
+silly versions     '1.2.0',
+silly versions     '1.9.0',
+silly versions     '1.9.1',
+silly versions     '1.9.2',
+silly versions     '1.9.3',
+silly versions     '1.9.5',
+silly versions     '1.9.7',
+silly versions     '1.9.8',
+silly versions     '1.9.9',
+silly versions     '2.0.0',
+silly versions     '2.0.1',
+silly versions     '2.0.2',
+silly versions     '2.0.3',
+silly versions     '2.0.4',
+silly versions     '2.0.5',
+silly versions     '2.1.0',
+silly versions     '2.1.1',
+silly versions     '2.2.0',
+silly versions     '2.2.5',
+silly versions     '2.2.6',
+silly versions     '2.2.9',
+silly versions     '2.9.0',
+silly versions     '2.9.1',
+silly versions     '2.9.2',
+silly versions     '2.9.3',
+silly versions     '2.9.100',
+silly versions     '2.9.150',
+silly versions     '2.9.151',
+silly versions     '2.9.152',
+silly versions     '2.9.153',
+silly versions     '2.9.200',
+silly versions     '2.9.201',
+silly versions     '2.9.202',
+silly versions     '2.9.203' ] ]
+verbose bin dist [ '0.6-ares1.7.5-DEV-evundefined-openssl0.9.8r-v83.6.6.25-darwin-x64-11.4.0',
+verbose bin dist   { shasum: '6c1711a5407fb94a114219563e44145bcbf4723a',
+verbose bin dist     tarball: 'http://registry.npmjs.org/request/-/request-2.9.203.tgz' } ]
+verbose caching /Users/kevin/.npm/request/2.9.203/package/package.json
+verbose loadDefaults request@2.9.203
+http 304 https://registry.npmjs.org/htmlparser
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.2.0 (Erlang OTP/R15B)',
+silly get cb     etag: '"177U0R95396XSUIXZTGOXPU5A"',
+silly get cb     date: 'Tue, 10 Jul 2012 15:44:11 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag htmlparser from cache
+silly name, range, hasData 2 [ 'htmlparser', '>=1.7.0', true ]
+silly versions [ 'htmlparser',
+silly versions   [ '1.6.2',
+silly versions     '1.7.0',
+silly versions     '1.7.1',
+silly versions     '1.7.2',
+silly versions     '1.7.3',
+silly versions     '1.7.4',
+silly versions     '1.7.5',
+silly versions     '1.7.6' ] ]
+verbose bin dist [ '0.6-ares1.7.5-DEV-evundefined-openssl0.9.8r-v83.6.6.25-darwin-x64-11.4.0',
+verbose bin dist   { shasum: '6a263c7ee5930f3e5c56fa564011f99e49f80d34',
+verbose bin dist     tarball: 'http://registry.npmjs.org/htmlparser/-/htmlparser-1.7.6.tgz' } ]
+verbose caching /Users/kevin/.npm/htmlparser/1.7.6/package/package.json
+verbose loadDefaults htmlparser@1.7.6
+http 304 https://registry.npmjs.org/cssom
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.2.0 (Erlang OTP/R15B)',
+silly get cb     etag: '"W1UC28STAQ8E7HM3ZRIPFHC8"',
+silly get cb     date: 'Tue, 10 Jul 2012 15:44:11 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag cssom from cache
+silly name, range, hasData 2 [ 'cssom', '>=0.2.0', true ]
+silly versions [ 'cssom', [ '0.2.0', '0.2.1', '0.2.2', '0.2.3', '0.2.4' ] ]
+verbose bin dist [ '0.6-ares1.7.5-DEV-evundefined-openssl0.9.8r-v83.6.6.25-darwin-x64-11.4.0',
+verbose bin dist   { shasum: '3d989f0ef82910df370ee03d97f5d546759c8b5f',
+verbose bin dist     tarball: 'http://registry.npmjs.org/cssom/-/cssom-0.2.4.tgz' } ]
+verbose caching /Users/kevin/.npm/cssom/0.2.4/package/package.json
+verbose loadDefaults cssom@0.2.4
+silly resolved [ { name: 'request',
+silly resolved     description: 'Simplified HTTP request client.',
+silly resolved     tags: [ 'http', 'simple', 'util', 'utility' ],
+silly resolved     version: '2.9.203',
+silly resolved     author: { name: 'Mikeal Rogers', email: 'mikeal.rogers@gmail.com' },
+silly resolved     repository: { type: 'git', url: 'git://github.com/mikeal/request.git' },
+silly resolved     bugs: { url: 'http://github.com/mikeal/request/issues' },
+silly resolved     engines: [ 'node >= 0.3.6', node: ' >= 0.3.6' ],
+silly resolved     main: './main',
+silly resolved     scripts: { test: 'node tests/run.js' },
+silly resolved     _npmUser: { name: 'kmalakoff', email: 'xmann.intl@gmail.com' },
+silly resolved     _id: 'request@2.9.203',
+silly resolved     dependencies: {},
+silly resolved     devDependencies: {},
+silly resolved     optionalDependencies: {},
+silly resolved     _engineSupported: true,
+silly resolved     _npmVersion: '1.1.21',
+silly resolved     _nodeVersion: 'v0.6.18',
+silly resolved     _defaultsLoaded: true,
+silly resolved     _from: 'request@>=1.0.0' },
+silly resolved   { name: 'htmlparser',
+silly resolved     description: 'Forgiving HTML/XML/RSS Parser in JS for *both* Node and Browsers',
+silly resolved     version: '1.7.6',
+silly resolved     author: { name: 'Chris Winberry', email: 'chris@winberry.net' },
+silly resolved     contributors: [],
+silly resolved     repository: 
+silly resolved      { type: 'git',
+silly resolved        url: 'git://github.com/tautologistics/node-htmlparser.git' },
+silly resolved     keywords: [ 'html', 'xml', 'rss', 'parser' ],
+silly resolved     directories: { lib: './lib/' },
+silly resolved     main: './lib/htmlparser',
+silly resolved     homepage: 'http://github.com/tautologistics/node-htmlparser',
+silly resolved     bugs: 
+silly resolved      { email: 'chris@winberry.net',
+silly resolved        url: 'http://github.com/tautologistics/node-htmlparser/issues' },
+silly resolved     engines: { node: '>=0.1.33' },
+silly resolved     licenses: 
+silly resolved      [ { type: 'MIT',
+silly resolved          url: 'http://github.com/tautologistics/node-htmlparser/raw/master/LICENSE' } ],
+silly resolved     _npmUser: { name: 'kmalakoff', email: 'xmann.intl@gmail.com' },
+silly resolved     _id: 'htmlparser@1.7.6',
+silly resolved     dependencies: {},
+silly resolved     devDependencies: {},
+silly resolved     optionalDependencies: {},
+silly resolved     _engineSupported: true,
+silly resolved     _npmVersion: '1.1.21',
+silly resolved     _nodeVersion: 'v0.6.18',
+silly resolved     _defaultsLoaded: true,
+silly resolved     _from: 'htmlparser@>=1.7.0',
+silly resolved     scripts: {} },
+silly resolved   { name: 'cssom',
+silly resolved     description: 'CSS Object Model implementation and CSS parser',
+silly resolved     keywords: [ 'CSS', 'CSSOM', 'parser', 'styleSheet' ],
+silly resolved     version: '0.2.4',
+silly resolved     homepage: 'https://github.com/NV/CSSOM',
+silly resolved     author: { name: 'Nikita Vasilyev', email: 'me@elv1s.ru' },
+silly resolved     repository: { type: 'git', url: 'git://github.com/NV/CSSOM.git' },
+silly resolved     bugs: { url: 'https://github.com/NV/CSSOM/issues' },
+silly resolved     directories: { lib: './lib' },
+silly resolved     main: './lib/index.js',
+silly resolved     engines: { node: '>=0.2.0' },
+silly resolved     devDependencies: { jake: '0.2.x' },
+silly resolved     licenses: [ { type: 'MIT', url: 'http://creativecommons.org/licenses/MIT/' } ],
+silly resolved     scripts: { prepublish: 'jake lib/index.js' },
+silly resolved     _npmUser: { name: 'kmalakoff', email: 'xmann.intl@gmail.com' },
+silly resolved     _id: 'cssom@0.2.4',
+silly resolved     dependencies: {},
+silly resolved     optionalDependencies: {},
+silly resolved     _engineSupported: true,
+silly resolved     _npmVersion: '1.1.21',
+silly resolved     _nodeVersion: 'v0.6.18',
+silly resolved     _defaultsLoaded: true,
+silly resolved     _from: 'cssom@>=0.2.0' } ]
+info into /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules/jsdom request@2.9.203
+info into /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules/jsdom htmlparser@1.7.6
+info into /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules/jsdom cssom@0.2.4
+info installOne request@2.9.203
+info installOne htmlparser@1.7.6
+info installOne cssom@0.2.4
+verbose from cache /Users/kevin/.npm/request/2.9.203/package/package.json
+info unbuild /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules/jsdom/node_modules/request
+verbose from cache /Users/kevin/.npm/htmlparser/1.7.6/package/package.json
+info unbuild /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules/jsdom/node_modules/htmlparser
+verbose from cache /Users/kevin/.npm/cssom/0.2.4/package/package.json
+info unbuild /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules/jsdom/node_modules/cssom
+verbose unpack /Users/kevin/.npm/request/2.9.203/package.tgz
+verbose unpack /Users/kevin/.npm/htmlparser/1.7.6/package.tgz
+verbose unpack /Users/kevin/.npm/cssom/0.2.4/package.tgz
+silly gunzTarPerm modes [ '755', '644' ]
+silly gunzTarPerm modes [ '755', '644' ]
+silly gunzTarPerm modes [ '755', '644' ]
+silly extracting entry package.json
+silly extracting entry package.json
+silly extracting entry package.json
+silly extracting entry README.md
+silly extracting entry LICENSE
+silly extracting entry README.md
+silly extracting entry LICENSE
+silly extracting entry .npmignore
+silly extracting entry .gitmodules
+silly extracting entry aws.js
+silly extracting entry forever.js
+silly extracting entry main.js
+silly extracting entry node-htmlparser.old.js
+silly extracting entry profile.getelement.js
+silly extracting entry lib/clone.js
+silly extracting entry lib/CSSKeyframeRule.js
+silly extracting entry mimetypes.js
+silly extracting entry aws2.js
+silly extracting entry newparser.js
+silly extracting entry uuid.js
+silly extracting entry rssbug.js
+silly extracting entry tunnel.js
+silly extracting entry runtests.js
+silly extracting entry oauth.js
+silly extracting entry runtests.min.js
+silly extracting entry tests/test-tunnel.js
+silly extracting entry runtests_new.js
+silly extracting entry tests/test-defaults.js
+silly extracting entry snippet.js
+silly extracting entry lib/CSSKeyframesRule.js
+silly extracting entry lib/CSSMediaRule.js
+silly extracting entry tests/test-errors.js
+silly extracting entry test01.js
+silly extracting entry tests/test-headers.js
+silly extracting entry json2.js
+silly extracting entry tests/test-cookiejar.js
+silly extracting entry tests/run.js
+silly extracting entry tests/test-https.js
+silly extracting entry tests/test-oauth.js
+silly extracting entry lib/CSSRule.js
+silly extracting entry lib/CSSImportRule.js
+silly extracting entry tests/test-params.js
+silly extracting entry tests/test-pipes.js
+silly extracting entry lib/CSSStyleRule.js
+silly extracting entry lib/CSSStyleSheet.js
+silly extracting entry profile.js
+silly extracting entry utils_example.js
+silly extracting entry profile
+silly extracting entry tests/test-cookie.js
+silly extracting entry tests/test-pool.js
+silly extracting entry tests/test-body.js
+silly extracting entry tests/test-proxy.js
+silly extracting entry lib/index.js
+silly extracting entry lib/MediaList.js
+silly extracting entry CHANGELOG
+silly extracting entry profile.getelement.txt
+silly extracting entry tests/test-timeout.js
+silly extracting entry tests/test-qs.js
+silly extracting entry lib/parse.js
+silly extracting entry .project.bak
+silly extracting entry tests/test-toJSON.js
+silly extracting entry profileresults.txt
+silly extracting entry tests/test-redirect.js
+silly extracting entry pulls/node-htmlparser/package.json
+silly extracting entry tests/server.js
+silly extracting entry pulls/node-htmlparser/README.md
+silly extracting entry tests/test-s3.js
+silly extracting entry pulls/node-htmlparser/LICENSE
+silly extracting entry tests/test-httpModule.js
+silly extracting entry pulls/node-htmlparser/utils_example.js
+silly extracting entry tests/test-https-strict.js
+silly extracting entry pulls/node-htmlparser/profile.js
+silly extracting entry tests/ssl/ca/server.js
+silly extracting entry lib/CSSFontFaceRule.js
+silly extracting entry lib/StyleSheet.js
+silly extracting entry pulls/node-htmlparser/json2.js
+silly extracting entry tests/ssl/ca/ca.srl
+silly extracting entry pulls/node-htmlparser/runtests.js
+silly extracting entry tests/ssl/ca/ca.crt
+silly extracting entry lib/CSSStyleDeclaration.js
+silly extracting entry pulls/node-htmlparser/runtests.min.js
+silly extracting entry tests/ssl/ca/ca.csr
+silly extracting entry pulls/node-htmlparser/snippet.js
+silly extracting entry tests/ssl/ca/ca.key
+silly extracting entry pulls/node-htmlparser/runtests.min.html
+silly extracting entry tests/ssl/ca/ca.crl
+silly extracting entry pulls/node-htmlparser/CHANGELOG
+silly extracting entry pulls/node-htmlparser/lib/node-htmlparser.js
+silly extracting entry pulls/node-htmlparser/lib/node-htmlparser.min.js
+silly extracting entry pulls/node-htmlparser/tests/01-basic.js
+silly extracting entry pulls/node-htmlparser/tests/08-extra_spaces_in_tag.js
+silly extracting entry pulls/node-htmlparser/tests/09-unquoted_attrib.js
+silly extracting entry tests/ssl/ca/server.cnf
+silly extracting entry tests/ssl/ca/server.crt
+silly extracting entry pulls/node-htmlparser/tests/10-singular_attribute.js
+silly extracting entry pulls/node-htmlparser/tests/07-unescaped_in_style.js
+silly extracting entry tests/ssl/ca/server.csr
+silly extracting entry pulls/node-htmlparser/tests/12-text_only.js
+silly extracting entry tests/ssl/ca/ca.cnf
+silly extracting entry pulls/node-htmlparser/tests/13-comment_in_text.js
+silly extracting entry tests/ssl/ca/server.key
+silly extracting entry pulls/node-htmlparser/tests/14-comment_in_text_in_script.js
+silly extracting entry tests/ssl/npm-ca.crt
+silly extracting entry pulls/node-htmlparser/tests/15-non-verbose.js
+silly extracting entry tests/ssl/test.crt
+silly extracting entry pulls/node-htmlparser/tests/16-ignore_whitespace.js
+silly extracting entry tests/ssl/test.key
+silly extracting entry pulls/node-htmlparser/tests/06-comment_in_script.js
+silly extracting entry pulls/node-htmlparser/tests/17-xml_namespace.js
+silly extracting entry pulls/node-htmlparser/tests/05-tags_in_comment.js
+silly extracting entry pulls/node-htmlparser/tests/18-enforce_empty_tags.js
+silly extracting entry pulls/node-htmlparser/tests/04-unescaped_in_script.js
+silly extracting entry pulls/node-htmlparser/tests/19-ignore_empty_tags.js
+silly extracting entry pulls/node-htmlparser/tests/03-single_tag_2.js
+silly extracting entry tests/squid.conf
+silly extracting entry tests/googledoodle.png
+silly extracting entry pulls/node-htmlparser/tests/20-rss.js
+silly extracting entry pulls/node-htmlparser/tests/02-single_tag_1.js
+silly extracting entry pulls/node-htmlparser/tests/21-atom.js
+silly extracting entry pulls/node-htmlparser/tests/11-text_outside_tags.js
+silly extracting entry pulls/node-htmlparser/runtests.html
+silly extracting entry vendor/cookie/index.js
+silly extracting entry .project
+silly extracting entry vendor/cookie/jar.js
+silly extracting entry lib/htmlparser.js
+silly extracting entry lib/htmlparser.min.js
+silly extracting entry lib/node-htmlparser.js
+silly extracting entry lib/node-htmlparser.min.js
+silly extracting entry rssbug.rss
+silly extracting entry runtests.html
+silly extracting entry libxmljs.node
+silly extracting entry runtests.min.html
+silly extracting entry .settings/.jsdtscope
+silly extracting entry .settings/org.eclipse.core.resources.prefs
+silly extracting entry .settings/org.eclipse.wst.jsdt.ui.superType.container
+silly extracting entry .settings/org.eclipse.wst.jsdt.ui.superType.name
+silly extracting entry new/compat.js
+silly extracting entry new/htmlparser.js
+silly extracting entry new/test01.js
+silly extracting entry new/test02.js
+silly extracting entry new/a
+silly extracting entry new/b
+silly extracting entry new/parser.zip
+silly extracting entry a
+silly extracting entry b
+silly extracting entry testdata/.tmp_test.html.2854~
+silly extracting entry testdata/.tmp_trackerchecker.html.65425~
+silly extracting entry testdata/.tmp_trackerchecker.html.76922~
+silly extracting entry testdata/.tmp_trackerchecker.html.80022~
+silly extracting entry testdata/.tmp_trackerchecker2.html.51378~
+silly extracting entry testdata/.tmp_trackerchecker2.html.75287~
+silly extracting entry testdata/api.html
+silly extracting entry testdata/getelement.html
+verbose caching /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules/jsdom/node_modules/cssom/package.json
+verbose loadDefaults cssom@0.2.4
+silly extracting entry testdata/trackerchecker.html
+info preinstall cssom@0.2.4
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules/jsdom/node_modules/cssom/package.json
+verbose readDependencies: using package.json deps
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules/jsdom/node_modules/cssom/package.json
+verbose readDependencies: using package.json deps
+silly resolved []
+verbose about to build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules/jsdom/node_modules/cssom
+info build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules/jsdom/node_modules/cssom
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules/jsdom/node_modules/cssom/package.json
+verbose linkStuff [ false,
+verbose linkStuff   false,
+verbose linkStuff   false,
+verbose linkStuff   '/Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules/jsdom/node_modules' ]
+info linkStuff cssom@0.2.4
+verbose linkBins cssom@0.2.4
+verbose linkMans cssom@0.2.4
+verbose rebuildBundles cssom@0.2.4
+info install cssom@0.2.4
+silly extracting entry tests/01-basic.js
+silly extracting entry tests/08-extra_spaces_in_tag.js
+info postinstall cssom@0.2.4
+silly extracting entry tests/09-unquoted_attrib.js
+silly extracting entry tests/10-singular_attribute.js
+silly extracting entry tests/11-text_outside_tags.js
+silly extracting entry tests/07-unescaped_in_style.js
+silly extracting entry tests/13-comment_in_text.js
+silly extracting entry tests/14-comment_in_text_in_script.js
+silly extracting entry tests/15-non-verbose.js
+silly extracting entry tests/16-ignore_whitespace.js
+silly extracting entry tests/17-xml_namespace.js
+silly extracting entry tests/06-comment_in_script.js
+silly extracting entry tests/18-enforce_empty_tags.js
+silly extracting entry tests/05-tags_in_comment.js
+silly extracting entry tests/19-ignore_empty_tags.js
+silly extracting entry tests/04-unescaped_in_script.js
+silly extracting entry tests/20-rss.js
+silly extracting entry tests/03-single_tag_2.js
+silly extracting entry tests/21-atom.js
+silly extracting entry tests/02-single_tag_1.js
+silly extracting entry tests/22-position_data.js
+silly extracting entry tests/12-text_only.js
+silly extracting entry tmp/snippet.js
+silly extracting entry c
+silly extracting entry v8.log
+verbose caching /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules/jsdom/node_modules/request/package.json
+verbose loadDefaults request@2.9.203
+info preinstall request@2.9.203
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules/jsdom/node_modules/request/package.json
+verbose readDependencies: using package.json deps
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules/jsdom/node_modules/request/package.json
+verbose readDependencies: using package.json deps
+silly resolved []
+verbose about to build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules/jsdom/node_modules/request
+info build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules/jsdom/node_modules/request
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules/jsdom/node_modules/request/package.json
+verbose linkStuff [ false,
+verbose linkStuff   false,
+verbose linkStuff   false,
+verbose linkStuff   '/Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules/jsdom/node_modules' ]
+info linkStuff request@2.9.203
+verbose linkBins request@2.9.203
+verbose linkMans request@2.9.203
+verbose rebuildBundles request@2.9.203
+info install request@2.9.203
+info postinstall request@2.9.203
+verbose caching /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules/jsdom/node_modules/htmlparser/package.json
+verbose loadDefaults htmlparser@1.7.6
+info preinstall htmlparser@1.7.6
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules/jsdom/node_modules/htmlparser/package.json
+verbose readDependencies: using package.json deps
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules/jsdom/node_modules/htmlparser/package.json
+verbose readDependencies: using package.json deps
+silly resolved []
+verbose about to build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules/jsdom/node_modules/htmlparser
+info build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules/jsdom/node_modules/htmlparser
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules/jsdom/node_modules/htmlparser/package.json
+verbose linkStuff [ false,
+verbose linkStuff   false,
+verbose linkStuff   false,
+verbose linkStuff   '/Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules/jsdom/node_modules' ]
+info linkStuff htmlparser@1.7.6
+verbose linkBins htmlparser@1.7.6
+verbose linkMans htmlparser@1.7.6
+verbose rebuildBundles htmlparser@1.7.6
+info install htmlparser@1.7.6
+info postinstall htmlparser@1.7.6
+verbose about to build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules/jsdom
+info build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules/jsdom
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules/jsdom/package.json
+verbose linkStuff [ false,
+verbose linkStuff   false,
+verbose linkStuff   false,
+verbose linkStuff   '/Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/node_modules' ]
+info linkStuff jsdom@0.2.1
+verbose linkBins jsdom@0.2.1
+verbose linkMans jsdom@0.2.1
+verbose rebuildBundles jsdom@0.2.1
+verbose rebuildBundles [ 'cssom', 'htmlparser', 'request' ]
+info install jsdom@0.2.1
+info postinstall jsdom@0.2.1
+verbose about to build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout
+info build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules/knockout/package.json
+verbose linkStuff [ false,
+verbose linkStuff   false,
+verbose linkStuff   false,
+verbose linkStuff   '/Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/node_modules' ]
+info linkStuff knockout@2.1.0
+verbose linkBins knockout@2.1.0
+verbose linkMans knockout@2.1.0
+verbose rebuildBundles knockout@2.1.0
+verbose rebuildBundles [ 'jsdom' ]
+info install knockout@2.1.0
+info postinstall knockout@2.1.0
+info build /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos
+verbose from cache /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos/package.json
+verbose linkStuff [ false,
+verbose linkStuff   false,
+verbose linkStuff   false,
+verbose linkStuff   '/Users/kevin/Dev/OpenSourceProjects/Mine' ]
+info linkStuff _knockback-todos@0.1.1
+verbose linkBins _knockback-todos@0.1.1
+verbose linkMans _knockback-todos@0.1.1
+verbose rebuildBundles _knockback-todos@0.1.1
+verbose rebuildBundles [ '.bin',
+verbose rebuildBundles   'backbone',
+verbose rebuildBundles   'backbone-modelref',
+verbose rebuildBundles   'coffee-script',
+verbose rebuildBundles   'easy-bake',
+verbose rebuildBundles   'knockback',
+verbose rebuildBundles   'knockout',
+verbose rebuildBundles   'knockout-client',
+verbose rebuildBundles   'underscore' ]
+info install _knockback-todos@0.1.1
+info postinstall _knockback-todos@0.1.1
+verbose unsafe-perm in lifecycle true
+silly exec sh "-c" "cake postinstall"
+silly spawning [ 'sh',
+silly spawning   [ '-c', 'cake postinstall' ],
+silly spawning   '/Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos' ]
+info _knockback-todos@0.1.1 Failed to exec postinstall script
+ERR! _knockback-todos@0.1.1 postinstall: `cake postinstall`
+ERR! `sh "-c" "cake postinstall"` failed with 1
+ERR! 
+ERR! Failed at the _knockback-todos@0.1.1 postinstall script.
+ERR! This is most likely a problem with the _knockback-todos package,
+ERR! not with npm itself.
+ERR! Tell the author that this fails on your system:
+ERR!     cake postinstall
+ERR! You can get their info via:
+ERR!     npm owner ls _knockback-todos
+ERR! There is likely additional logging output above.
+ERR! 
+ERR! System Darwin 11.4.0
+ERR! command "node" "/usr/local/bin/npm" "install"
+ERR! cwd /Users/kevin/Dev/OpenSourceProjects/Mine/knockback-todos
+ERR! node -v v0.6.18
+ERR! npm -v 1.1.21
+ERR! code ELIFECYCLE
+ERR! message _knockback-todos@0.1.1 postinstall: `cake postinstall`
+ERR! message `sh "-c" "cake postinstall"` failed with 1
+ERR! errno {}
+verbose exit [ 1, true ]

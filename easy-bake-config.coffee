@@ -7,12 +7,12 @@ module.exports =
     ]
 
   tests:
-    output: 'build'
     directories: [
       'test/todos-classic'
       'test/todos-extended'
     ]
-    files: '**/*.coffee'
+    _build:
+      output: 'build'
     _test:
       command: 'phantomjs'
       runner: 'phantomjs-qunit-runner.js'
