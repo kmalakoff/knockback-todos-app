@@ -13,13 +13,12 @@ module.exports =
       'test/todos-extended'
     ]
     files: '**/*.coffee'
-    modes:
-      test:
-        command: 'phantomjs'
-        runner: 'phantomjs-qunit-runner.js'
-        files: '**/*.html'
+    _test:
+      command: 'phantomjs'
+      runner: 'phantomjs-qunit-runner.js'
+      files: '**/*.html'
 
-  postinstall:
+  _postinstall:
     commands: [
       # vendor
       'cp underscore/underscore-min.js vendor/underscore-latest.min.js'
