@@ -41,6 +41,6 @@ module.exports =
       'cp vendor/knockout-latest.min.js app/todos-extended/js/lib/knockout-latest.min.js'
       'cp vendor/knockback-latest.min.js app/todos-extended/js/lib/knockback-latest.min.js'
       'cp vendor/backbone-modelref-latest.min.js app/todos-extended/js/lib/backbone-modelref-latest.min.js'
-      'cp vendor/mColorPicker.min.js app/todos-extended/js/lib/backbone-modelref-latest.min.js'
+      'cp vendor/mColorPicker.min.js app/todos-extended/js/lib/mColorPicker.min.js'
       'cp -r vendor/globalize app/todos-extended/js/lib/globalize'
     ]

@@ -3,7 +3,9 @@
 
   window.FooterViewModel = function(todos) {
     var _this = this;
-    this.todos = kb.collectionObservable(todos);
+    this.todos = kb.collectionObservable(todos, {
+      models_only: true
+    });
     this.todos.collection().bind('change', function() {
       return _this.todos.valueHasMutated();
     });

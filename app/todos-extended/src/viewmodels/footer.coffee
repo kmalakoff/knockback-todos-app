@@ -1,5 +1,5 @@
 window.FooterViewModel = (todos) ->
-	@todos = kb.collectionObservable(todos)
+	@todos = kb.collectionObservable(todos, {models_only: true})
 	@todos.collection().bind('change', => @todos.valueHasMutated())
 
 	# EXTENSIONS: Localization

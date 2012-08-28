@@ -1,5 +1,5 @@
 window.FooterViewModel = (todos) ->
-	@todos = kb.collectionObservable(todos)
+	@todos = kb.collectionObservable(todos, {models_only: true})
 	@todos.collection().bind('change', => @todos.valueHasMutated())   # get notified of changes to any models
 
 	@remaining_text = ko.computed(=> return "<strong>#{@todos.collection().remainingCount()}</strong> #{if @todos.collection().remainingCount() == 1 then 'item' else 'items'} left")

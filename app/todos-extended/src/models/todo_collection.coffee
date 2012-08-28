@@ -1,5 +1,5 @@
 class window.TodoCollection extends Backbone.Collection
-	localStorage: new Store('todos-knockback-extended') # Save all of the todos under the `"todos-knockback-extended"` namespace.
+	localStorage: new Store('todos-knockback-extended') # Save all of the todos under the "todos-knockback-extended" namespace.
 	model: Todo
 
 	completedCount: -> @models.reduce(((prev,cur)-> return prev + if cur.completed() then 1 else 0), 0)
