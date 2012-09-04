@@ -28,7 +28,7 @@
     "backbone-modelref": ">=0.1.2",
     "knockout-client": ">=2.1.0",
     "knockout": ">=2.1.0",
-    "knockback": "=0.16.0beta2"
+    "knockback": "=0.16.0"
   },
 
   "main"          : "knockback-todos.js",
