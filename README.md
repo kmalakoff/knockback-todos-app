@@ -4,14 +4,14 @@
 
 Knockback-Todos: the obligatory todo app for Knockback.js.
 
-### Try the live demo: http://kmalakoff.github.com/knockback-todos-app/
-### Checkout the Knockback.js website for a walkthrough: http://kmalakoff.github.com/knockback/tutorial_todos.html
+* Try the live demo: http://kmalakoff.github.com/knockback-todos-app/
+* Checkout the Knockback.js website for a walkthrough: http://kmalakoff.github.com/knockback/tutorial_todos_app.html
 
 
 Building the web site
 -----------------------
 
-You need [CoffeScript](http://coffeescript.org) to compile if you make changes to the files in the `src` folder.
+You need [CoffeeScript](http://coffeescript.org) through npm to compile if you make changes to the files in the `src` folder.
 
 ## Compile
 
