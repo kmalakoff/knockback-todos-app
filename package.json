@@ -1,14 +1,14 @@
 {
   "author"        : {"name": "Kevin Malakoff", "url": "https://github.com/kmalakoff"},
-  "name"          : "_knockback-todos",
+  "name"          : "_knockback-todos-app",
   "description"   : "Knockback-Todos: the obligatory todo app for Knockback.js",
-  "keywords"      : ["knockback-todos", "knockbackjs-todos", "knockback", "knockbackjs", "backbone", "backbonejs", "knockout", "knockoutjs"],
+  "keywords"      : ["knockback-todos", "knockback-todos-app", "knockbackjs-todos", "knockback", "knockbackjs", "backbone", "backbonejs", "knockout", "knockoutjs", "app"],
 
-  "url"           : "http://kmalakoff.github.com/knockback-todos/",
-  "homepage"      : "http://kmalakoff.github.com/knockback-todos/",
+  "url"           : "http://kmalakoff.github.com/knockback-todos-app/",
+  "homepage"      : "http://kmalakoff.github.com/knockback-todos-app/",
   "repository": {
     "type": "git",
-    "url": "http://github.com/kmalakoff/knockback-todos.git"
+    "url": "http://github.com/kmalakoff/knockback-todos-app.git"
   },
 
   "scripts": {
@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "coffee-script": ">=1.3.3",
-    "easy-bake": "0.1.6"
+    "easy-bake": "0.1.7"
   },
   "optionalDependencies": {
     "underscore": ">=1.3.3",
@@ -28,9 +28,8 @@
     "backbone-modelref": ">=0.1.2",
     "knockout-client": ">=2.1.0",
     "knockout": ">=2.1.0",
-    "knockback": "=0.16.0"
+    "knockback": ">=0.16.0"
   },
 
-  "main"          : "knockback-todos.js",
   "version"       : "0.1.2"
 }

@@ -1,23 +1,10 @@
-[![Build Status](https://secure.travis-ci.org/kmalakoff/knockback-todos.png)](http://travis-ci.org/kmalakoff/knockback-todos)
+[![Build Status](https://secure.travis-ci.org/kmalakoff/knockback-todos-app.png)](http://travis-ci.org/kmalakoff/knockback-todos-app)
 
-```
-    __ __                  __   __               __       _
-   / //_/____  ____  _____/ /__/ /_  ____ ______/ /__    (_)____
-  / ,<  / __ \/ __ \/ ___/ //_/ __ \/ __ `/ ___/ //_/   / / ___/
- / /| |/ / / / /_/ / /__/ ,< / /_/ / /_/ / /__/ ,< _   / (__  )
-/_/ |_/_/ /_/\____/\___/_/|_/_.___/\__,_/\___/_/|_(_)_/ /____/
-                                                   /___/
- ___________        .___
- \__    ___/___   __| _/____  ______
-   |    | /  _ \ / __ |/  _ \/  ___/
-   |    |(  <_> ) /_/ (  <_> )___ \
-   |____| \____/\____ |\____/____  >
-                     \/          \/
-```
+![logo](https://github.com/kmalakoff/knockback-todos-app/raw/master/media/logo.png)
 
 Knockback-Todos: the obligatory todo app for Knockback.js.
 
-### Try the live demo: http://kmalakoff.github.com/knockback-todos/
+### Try the live demo: http://kmalakoff.github.com/knockback-todos-app/
 ### Checkout the Knockback.js website for a walkthrough: http://kmalakoff.github.com/knockback/tutorial_todos.html
 
 
