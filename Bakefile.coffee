@@ -20,27 +20,21 @@ module.exports =
 
   _postinstall:
     commands: [
+      'cp -v backbone-relational vendor/backbone-relational.js'
+      'cp -v lodash vendor/lodash.js'
+
       # vendor
-      'cp underscore/underscore-min.js vendor/underscore-latest.min.js'
-      'cp backbone/backbone-min.js vendor/backbone-latest.min.js'
-      'cp backbone-modelref/backbone-modelref.min.js vendor/backbone-modelref-latest.min.js'
-      'cp knockout-client vendor/knockout-latest.min.js'
-      'cp knockback/knockback.min.js vendor/knockback-latest.min.js'
+      'cp -v knockback/knockback-core-stack.min.js vendor/knockback-core-stack.min.js'
+      'cp -v backbone-modelref/backbone-modelref.min.js vendor/backbone-modelref.min.js'
 
       # todos-classic
-      'cp vendor/underscore-latest.min.js app/todos-classic/js/lib/underscore-latest.min.js'
-      'cp vendor/backbone-latest.min.js app/todos-classic/js/lib/backbone-latest.min.js'
+      'cp -v knockback/knockback-core-stack.min.js app/todos-classic/js/lib/knockback-core-stack.min.js'
       'cp vendor/backbone.localStorage-min.js app/todos-classic/js/lib/backbone.localStorage-min.js'
-      'cp vendor/knockout-latest.min.js app/todos-classic/js/lib/knockout-latest.min.js'
-      'cp vendor/knockback-latest.min.js app/todos-classic/js/lib/knockback-latest.min.js'
 
       # todos-extended
-      'cp vendor/underscore-latest.min.js app/todos-extended/js/lib/underscore-latest.min.js'
-      'cp vendor/backbone-latest.min.js app/todos-extended/js/lib/backbone-latest.min.js'
+      'cp -v knockback/knockback-full-stack.min.js app/todos-extended/js/lib/knockback-full-stack.min.js'
+      'cp -v backbone-modelref/backbone-modelref.min.js app/todos-extended/js/lib/backbone-modelref.min.js'
       'cp vendor/backbone.localStorage-min.js app/todos-extended/js/lib/backbone.localStorage-min.js'
-      'cp vendor/knockout-latest.min.js app/todos-extended/js/lib/knockout-latest.min.js'
-      'cp vendor/knockback-latest.min.js app/todos-extended/js/lib/knockback-latest.min.js'
-      'cp vendor/backbone-modelref-latest.min.js app/todos-extended/js/lib/backbone-modelref-latest.min.js'
       'cp vendor/mColorPicker.min.js app/todos-extended/js/lib/mColorPicker.min.js'
       'cp -r vendor/globalize app/todos-extended/js/lib/globalize'
     ]

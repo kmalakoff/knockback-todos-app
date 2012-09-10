@@ -16,6 +16,8 @@
 
   LocaleManager = (function() {
 
+    _.extend(LocaleManager.prototype, Backbone.Events);
+
     function LocaleManager(locale_identifier, translations_by_locale) {
       this.translations_by_locale = translations_by_locale;
       if (locale_identifier) {
@@ -89,8 +91,6 @@
     return LocaleManager;
 
   })();
-
-  _.extend(LocaleManager.prototype, Backbone.Events);
 
   if (!kb) {
     throw new Error("Please include Knockback before the Locale Manager");

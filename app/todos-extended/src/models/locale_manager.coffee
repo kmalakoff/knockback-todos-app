@@ -8,6 +8,8 @@
 
 # Localization
 class LocaleManager
+  _.extend(@prototype, Backbone.Events) # Mix in Backbone.Events so callers can subscribe
+
   constructor: (locale_identifier, @translations_by_locale) ->
     @setLocale(locale_identifier) if locale_identifier
 
@@ -37,11 +39,6 @@ class LocaleManager
     locale_parts = locale.split('-')
     return locale_parts[locale_parts.length-1].toUpperCase()
   localizeDate: (date) -> Globalize.format(date, Globalize.cultures[@locale_identifier].calendars.standard.patterns.f, @locale_identifier)
-
-#######################################
-# Mix in Backbone.Events so callers can subscribe
-#######################################
-_.extend(LocaleManager.prototype, Backbone.Events)
 
 #######################################
 # Set up strings
