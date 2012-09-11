@@ -1,6 +1,5 @@
 window.FooterViewModel = (todos) ->
 	@todos = kb.collectionObservable(todos, {models_only: true})
-	@todos.collection().bind('change', => @todos.valueHasMutated())
 
 	# EXTENSIONS: Localization
 	@remaining_text_key = ko.computed(=> return if (todos.remainingCount() == 1) then 'remaining_template_s' else 'remaining_template_pl')

@@ -6,9 +6,6 @@
     this.todos = kb.collectionObservable(todos, {
       models_only: true
     });
-    this.todos.collection().bind('change', function() {
-      return _this.todos.valueHasMutated();
-    });
     this.remaining_text_key = ko.computed(function() {
       if (todos.remainingCount() === 1) {
         return 'remaining_template_s';

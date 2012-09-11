@@ -43,16 +43,13 @@ TodoViewModel = (model) ->
 
 window.TodosViewModel = (todos) ->
 	@todos = kb.collectionObservable(todos, {view_model: TodoViewModel, sort_attribute: 'title'})
-	@todos.collection().bind('change', => @todos.valueHasMutated())   # get notified of changes to any models
 
 	@sort_mode = ko.computed(=>
 		new_mode = app.viewmodels.settings.selected_list_sorting()
-		_.defer(=>
-			switch new_mode
-				when 'label_title' then @todos.sortAttribute('title')
-				when 'label_created' then @todos.sortedIndex((models, model)-> return _.sortedIndex(models, model, (test) -> kb.utils.wrappedModel(test).get('created_at').valueOf()))
-				when 'label_priority' then @todos.sortedIndex((models, model)-> return _.sortedIndex(models, model, (test) => app.viewmodels.settings.priorityToRank(kb.utils.wrappedModel(test).get('priority'))))
-		)
+		switch new_mode
+			when 'label_title' then @todos.sortAttribute('title')
+			when 'label_created' then @todos.sortedIndex((models, model)-> return _.sortedIndex(models, model, (test) -> kb.utils.wrappedModel(test).get('created_at').valueOf()))
+			when 'label_priority' then @todos.sortedIndex((models, model)-> return _.sortedIndex(models, model, (test) => app.viewmodels.settings.priorityToRank(kb.utils.wrappedModel(test).get('priority'))))
 	)
 
 	@tasks_exist = ko.computed(=> @todos().length)

@@ -6,9 +6,6 @@
     this.todos = kb.collectionObservable(todos, {
       models_only: true
     });
-    this.todos.collection().bind('change', function() {
-      return _this.todos.valueHasMutated();
-    });
     this.remaining_text = ko.computed(function() {
       return "<strong>" + (_this.todos.collection().remainingCount()) + "</strong> " + (_this.todos.collection().remainingCount() === 1 ? 'item' : 'items') + " left";
     });

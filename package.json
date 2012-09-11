@@ -23,8 +23,8 @@
     "easy-bake": "0.1.8"
   },
   "dependencies": {
-    "backbone-modelref": ">=0.1.2",
-    "knockback": "=0.16.2beta1"
+    "backbone-modelref": ">=0.1.4",
+    "knockback": "=0.16.2"
   },
 
   "version"       : "0.1.2"

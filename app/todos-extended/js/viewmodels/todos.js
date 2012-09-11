@@ -96,31 +96,26 @@
       view_model: TodoViewModel,
       sort_attribute: 'title'
     });
-    this.todos.collection().bind('change', function() {
-      return _this.todos.valueHasMutated();
-    });
     this.sort_mode = ko.computed(function() {
       var new_mode;
       new_mode = app.viewmodels.settings.selected_list_sorting();
-      return _.defer(function() {
-        switch (new_mode) {
-          case 'label_title':
-            return _this.todos.sortAttribute('title');
-          case 'label_created':
-            return _this.todos.sortedIndex(function(models, model) {
-              return _.sortedIndex(models, model, function(test) {
-                return kb.utils.wrappedModel(test).get('created_at').valueOf();
-              });
+      switch (new_mode) {
+        case 'label_title':
+          return _this.todos.sortAttribute('title');
+        case 'label_created':
+          return _this.todos.sortedIndex(function(models, model) {
+            return _.sortedIndex(models, model, function(test) {
+              return kb.utils.wrappedModel(test).get('created_at').valueOf();
             });
-          case 'label_priority':
-            return _this.todos.sortedIndex(function(models, model) {
-              var _this = this;
-              return _.sortedIndex(models, model, function(test) {
-                return app.viewmodels.settings.priorityToRank(kb.utils.wrappedModel(test).get('priority'));
-              });
+          });
+        case 'label_priority':
+          return _this.todos.sortedIndex(function(models, model) {
+            var _this = this;
+            return _.sortedIndex(models, model, function(test) {
+              return app.viewmodels.settings.priorityToRank(kb.utils.wrappedModel(test).get('priority'));
             });
-        }
-      });
+          });
+      }
     });
     this.tasks_exist = ko.computed(function() {
       return _this.todos().length;

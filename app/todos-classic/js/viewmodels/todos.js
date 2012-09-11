@@ -62,9 +62,6 @@
     this.todos = kb.collectionObservable(todos, {
       view_model: TodoViewModel
     });
-    this.todos.collection().bind('change', function() {
-      return _this.todos.valueHasMutated();
-    });
     this.tasks_exist = ko.computed(function() {
       return _this.todos().length;
     });

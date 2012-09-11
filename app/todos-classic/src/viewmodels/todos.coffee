@@ -25,7 +25,6 @@ TodoViewModel = (model) ->
 
 window.TodosViewModel = (todos) ->
 	@todos = kb.collectionObservable(todos, {view_model: TodoViewModel})
-	@todos.collection().bind('change', => @todos.valueHasMutated())   # get notified of changes to any models
 
 	@tasks_exist = ko.computed(=> @todos().length)
 
