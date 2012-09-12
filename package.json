@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "backbone-modelref": ">=0.1.4",
-    "knockback": "=0.16.2"
+    "knockback": ">=0.16.3"
   },
 
   "version"       : "0.1.2"
