@@ -11,8 +11,6 @@
 
   window.TodoApp = function(view_model, element) {
     var router, tooltip_visible;
-    kb.locale_manager.setLocale('en');
-    kb.locale_change_observable = kb.triggeredObservable(kb.locale_manager, 'change');
     app.collections.todos = new TodoCollection();
     app.collections.todos.fetch();
     app.collections.priorities = new PriorityCollection();

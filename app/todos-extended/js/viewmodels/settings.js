@@ -34,7 +34,7 @@
     this.language_options = _.map(locales, function(locale) {
       return new SettingLanguageOptionViewModel(locale);
     });
-    this.current_language = ko.observable(kb.locale_manager.getLocale());
+    this.current_language = ko.observable();
     this.selected_language = ko.computed({
       read: function() {
         return _this.current_language();
@@ -44,6 +44,7 @@
         return _this.current_language(new_locale);
       }
     });
+    this.selected_language('en');
     this.priorities = _.map(priorities, function(model) {
       return new PrioritiesViewModel(model);
     });

@@ -20,15 +20,16 @@ SettingListSortingOptionViewModel = (string_id) ->
 	@
 
 window.SettingsViewModel = (priorities, locales) ->
-	# EXTENSIONS: Language settings
+	# Language settings
 	@language_options = _.map(locales, (locale) -> return new SettingLanguageOptionViewModel(locale))
-	@current_language = ko.observable(kb.locale_manager.getLocale())
+	@current_language = ko.observable() # start in english
 	@selected_language = ko.computed(
 		read: => return @current_language() # used to create a dependency
 		write: (new_locale) => kb.locale_manager.setLocale(new_locale); @current_language(new_locale)
 	)
+	@selected_language('en') # start in English by default
 
-	# EXTENSIONS: Priorities settings
+	# Priorities settings
 	@priorities = _.map(priorities, (model) -> return new PrioritiesViewModel(model))
 	@getColorByPriority = (priority) ->
 		@createColorsDependency()
@@ -44,11 +45,12 @@ window.SettingsViewModel = (priorities, locales) ->
 			when 'low' then return 2
 
 	@list_filter_mode = ko.observable('')
-	# EXTENSIONS: List sorting
+
+	# List sorting
 	@list_sorting_options = [new SettingListSortingOptionViewModel('label_title'), new SettingListSortingOptionViewModel('label_created'), new SettingListSortingOptionViewModel('label_priority')]
 	@selected_list_sorting = ko.observable('label_title')
 
-	# EXTENSIONS: Localization
+	# Localization
 	@label_filter_all = kb.observable(kb.locale_manager, 'todo_filter_all')
 	@label_filter_active = kb.observable(kb.locale_manager, 'todo_filter_active')
 	@label_filter_completed = kb.observable(kb.locale_manager, 'todo_filter_completed')

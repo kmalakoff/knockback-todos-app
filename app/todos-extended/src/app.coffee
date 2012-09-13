@@ -9,10 +9,6 @@ window.TodoApp = (view_model, element) ->
 	#############################
 	# Shared
 	#############################
-	# EXTENSIONS: Configure localization manager
-	kb.locale_manager.setLocale('en')
-	kb.locale_change_observable = kb.triggeredObservable(kb.locale_manager, 'change') # use to register a localization dependency
-
 	# collections
 	app.collections.todos = new TodoCollection()
 	app.collections.todos.fetch()
@@ -39,7 +35,7 @@ window.TodoApp = (view_model, element) ->
 		return true if not $.trim(view_model.title()) or (event.keyCode != ENTER_KEY)
 
 		# Create task and reset UI
-		app.collections.todos.create({title: $.trim(view_model.title()), priority: app.settings.default_priority()}) # EXTENDED: add priority
+		app.collections.todos.create({title: $.trim(view_model.title()), priority: app.settings.default_priority()}) # EXTENDED: Add priority to Todo
 		view_model.title('')
 
 	#############################
@@ -67,12 +63,16 @@ window.TodoApp = (view_model, element) ->
 	router.route('completed', null, -> app.settings.list_filter_mode('completed'))
 	Backbone.history.start()
 
+
 	#############################
 	#############################
 	# Extensions
 	#############################
 	#############################
 
+	#############################
+	# Header Section
+	#############################
 	view_model.input_placeholder_text = kb.observable(kb.locale_manager, {key: 'placeholder_create'})
 	view_model.input_tooltip_text = kb.observable(kb.locale_manager, {key: 'tooltip_create'})
 
@@ -97,7 +97,6 @@ window.TodoApp = (view_model, element) ->
 			when 'label_priority' then view_model.todos.sortedIndex((models, model)-> return _.sortedIndex(models, model, (test) -> app.settings.priorityToRank(kb.utils.wrappedModel(test).get('priority'))))
 	)
 
-	# EXTENSIONS: Localization
 	view_model.complete_all_text = kb.observable(kb.locale_manager, {key: 'complete_all'})
 
 	#############################
