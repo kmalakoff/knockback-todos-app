@@ -1,6 +1,6 @@
 [![Build Status](https://secure.travis-ci.org/kmalakoff/knockback-todos-app.png)](http://travis-ci.org/kmalakoff/knockback-todos-app)
 
-![logo](https://github.com/kmalakoff/knockback-todos-app/raw/master/media/logo.png)
+![logo](https://github.com/kmalakoff/knockback-todos-app/raw/master/media/logo_knockback_todos.png)
 
 Knockback-Todos: the obligatory todo app for Knockback.js.
 
