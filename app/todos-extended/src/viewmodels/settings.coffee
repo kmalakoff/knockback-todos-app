@@ -24,7 +24,7 @@ window.SettingsViewModel = (priorities, locales) ->
 	@language_options = _.map(locales, (locale) -> return new SettingLanguageOptionViewModel(locale))
 	@current_language = ko.observable(kb.locale_manager.getLocale())
 	@selected_language = ko.computed(
-		read: => return @current_language()  # used to create a dependency
+		read: => return @current_language() # used to create a dependency
 		write: (new_locale) => kb.locale_manager.setLocale(new_locale); @current_language(new_locale)
 	)
 
