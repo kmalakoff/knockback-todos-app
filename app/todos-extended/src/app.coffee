@@ -27,6 +27,7 @@ window.TodoApp = (view_model, element) ->
 
   # shared observables
   view_model.todos = kb.collectionObservable(app.collections.todos, {view_model: TodoViewModel, sort_attribute: 'title'}) # EXTENSIONS: Add sorting
+  app.collections.todos.bind('change', -> view_model.todos.notifySubscribers(view_model.todos())) # trigger an update whenever a model changes (default is only when added, removed, or resorted)
   view_model.tasks_exist = ko.computed(-> view_model.todos().length)
 
   #############################
@@ -38,7 +39,7 @@ window.TodoApp = (view_model, element) ->
     return true if not $.trim(view_model.title()) or (event.keyCode != ENTER_KEY)
 
     # Create task and reset UI
-    app.collections.todos.create({title: $.trim(@title()), priority: app.settings.default_priority()}) # EXTENDED: add priority
+    app.collections.todos.create({title: $.trim(view_model.title()), priority: app.settings.default_priority()}) # EXTENDED: add priority
     view_model.title('')
 
   #############################

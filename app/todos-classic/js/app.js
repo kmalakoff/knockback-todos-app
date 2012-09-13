@@ -17,6 +17,9 @@
     view_model.todos = kb.collectionObservable(app.collections.todos, {
       view_model: TodoViewModel
     });
+    app.collections.todos.bind('change', function() {
+      return view_model.todos.notifySubscribers(view_model.todos());
+    });
     view_model.tasks_exist = ko.computed(function() {
       return view_model.todos().length;
     });

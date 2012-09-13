@@ -21,6 +21,9 @@
       view_model: TodoViewModel,
       sort_attribute: 'title'
     });
+    app.collections.todos.bind('change', function() {
+      return view_model.todos.notifySubscribers(view_model.todos());
+    });
     view_model.tasks_exist = ko.computed(function() {
       return view_model.todos().length;
     });
@@ -30,7 +33,7 @@
         return true;
       }
       app.collections.todos.create({
-        title: $.trim(this.title()),
+        title: $.trim(view_model.title()),
         priority: app.settings.default_priority()
       });
       return view_model.title('');
