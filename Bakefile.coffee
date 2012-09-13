@@ -20,9 +20,6 @@ module.exports =
 
   _postinstall:
     commands: [
-      'cp -v backbone-relational vendor/backbone-relational.js'
-      'cp -v lodash vendor/lodash.js'
-
       # todos-classic
       'cp -v knockback/knockback-core-stack.min.js app/todos-classic/js/lib/knockback-core-stack.min.js'
       'cp vendor/backbone.localStorage-min.js app/todos-classic/js/lib/backbone.localStorage-min.js'
