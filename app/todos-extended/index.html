@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" kb-app>
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -11,34 +11,34 @@
 	<![endif]-->
 </head>
 <body>
-	<section id="todoapp">
+	<section id="todoapp" data-bind="inject: TodoApp">
 		<section id="settings">
 			<!-- Language Options -->
-			<div id="todo-languages" class="selection codestyle" data-bind="foreach: settings.language_options">
-				<div class="option"><input type="radio" data-bind="attr: {id: id, name: option_group}, value: id, checked: $parents[0].settings.selected_language"><label data-bind="attr: {for: id}, text: label"></label></div>
+			<div id="todo-languages" class="selection codestyle" data-bind="foreach: app.settings.language_options">
+				<div class="option"><input type="radio" data-bind="attr: {id: id, name: option_group}, value: id, checked: app.settings.selected_language"><label data-bind="attr: {for: id}, text: label"></label></div>
 			</div>
 			<!-- Priority Options -->
-			<div id="priority-color-settings" data-bind="foreach: settings.priorities">
+			<div id="priority-color-settings" data-bind="foreach: app.settings.priorities">
 				<div class="priority-color-entry">
 					<div class="priority-text" data-bind="text: priority_text"></div>
 					<input data-bind="attr: {id: priority}, value: priority_color" class='priority-color-swatch colorpicker' data-text="hidden" data-hex="true"/>
 				</div>
 			</div>
 			<!-- List Sorting -->
-			<div id="todo-list-sorting" class="selection codestyle" data-bind="foreach: settings.list_sorting_options">
-				<div class="option"><input type="radio" data-bind="attr: {id: id, name: option_group}, value: id, checked: $parents[0].settings.selected_list_sorting"><label data-bind="attr: {for: id}, text: label"></label></div>
+			<div id="todo-list-sorting" class="selection codestyle" data-bind="foreach: app.settings.list_sorting_options">
+				<div class="option"><input type="radio" data-bind="attr: {id: id, name: option_group}, value: id, checked: app.settings.selected_list_sorting"><label data-bind="attr: {for: id}, text: label"></label></div>
 			</div>
 		</section>
 		<header id="header">
 			<h1>todos</h1>
-			<input id="new-todo" type="text" data-bind="value: header.title, valueUpdate: 'afterkeydown', event: {keyup: header.onAddTodo}, placeholder: header.input_placeholder_text" autofocus>
-			<span class="ui-tooltip-top" style="display:none;" data-bind="text: header.input_tooltip_text"></span>
-			<div class="priority-color-swatch-wrapper" data-bind="template: {name: 'priority-swatch-picker-template', data: header}"></div>
+			<input id="new-todo" type="text" data-bind="value: title, valueUpdate: 'afterkeydown', event: {keyup: onAddTodo}, placeholder: input_placeholder_text" autofocus>
+			<span class="ui-tooltip-top" style="display:none;" data-bind="text: input_tooltip_text"></span>
+			<div class="priority-color-swatch-wrapper" data-bind="template: {name: 'priority-swatch-picker-template', data: $data}"></div>
 		</header>
-		<section id="main" data-bind="block: todos.tasks_exist">
-			<input id="toggle-all" type="checkbox" data-bind="checked: todos.all_completed">
+		<section id="main" data-bind="block: tasks_exist">
+			<input id="toggle-all" type="checkbox" data-bind="checked: all_completed">
 			<label for="toggle-all">Mark all as complete</label>
-			<ul id="todo-list" data-bind="foreach: todos.todos">
+			<ul id="todo-list" data-bind="foreach: todos">
 				<li data-bind="css: {completed: completed, editing: editing}, visible: visible">
 					<div class="view" data-bind="event: {dblclick: onCheckEditBegin}">
 						<input class="toggle" type="checkbox" data-bind="checked: completed" checked>
@@ -51,20 +51,20 @@
 				</li>
 			</ul>
 		</section>
-		<footer id="footer" data-bind="block: todos.tasks_exist">
-			<span id="todo-count" data-bind="html: footer.remaining_text"></span>
+		<footer id="footer" data-bind="block: tasks_exist">
+			<span id="todo-count" data-bind="html: remaining_text"></span>
 			<ul id="filters">
 				<li>
-					<a href="#/" data-bind="text: settings.label_filter_all, css: {selected: settings.list_filter_mode()==''}"></a>
+					<a href="#/" data-bind="text: app.settings.label_filter_all, css: {selected: app.settings.list_filter_mode()==''}"></a>
 				</li>
 				<li>
-					<a href="#/active" data-bind="text: settings.label_filter_active, css: {selected: settings.list_filter_mode()=='active'}"></a>
+					<a href="#/active" data-bind="text: app.settings.label_filter_active, css: {selected: app.settings.list_filter_mode()=='active'}"></a>
 				</li>
 				<li>
-					<a href="#/completed" data-bind="text: settings.label_filter_completed, css: {selected: settings.list_filter_mode()=='completed'}"></a>
+					<a href="#/completed" data-bind="text: app.settings.label_filter_completed, css: {selected: app.settings.list_filter_mode()=='completed'}"></a>
 				</li>
 			</ul>
-			<button id="clear-completed" data-bind="text: footer.clear_text, block: footer.clear_text, click: footer.onDestroyCompleted"></button>
+			<button id="clear-completed" data-bind="text: clear_text, block: clear_text, click: onDestroyCompleted"></button>
 		</footer>
 	</section>
 	<footer id="info">
@@ -77,7 +77,7 @@
 	<script type="text/x-jquery-tmpl" id="priority-swatch-picker-template">
 		<div class="priority-color-swatch todo header" data-bind="style: {background: priority_color}, click: onToggleTooltip">
 			<span class="priority-picker-tooltip ui-tooltip-top" data-bind="visible: tooltip_visible">
-				<div data-bind="template: {name: 'priority-picker-template', foreach: $root.settings.priorities}"></div>
+				<div data-bind="template: {name: 'priority-picker-template', foreach: app.settings.priorities}"></div>
 			</span>
 		</div>
 	</script>
@@ -90,7 +90,7 @@
 	<!-- Demo Dependencies -->
 	<script src="../../assets/base.js"></script>
 	<script src="../../assets/jquery.min.js"></script>
-	<script src="js/lib/knockback-full-stack-0.16.5.min.js"></script>
+	<script src="js/lib/knockback-full-stack.js"></script>
 	<script src="js/lib/backbone.localStorage-min.js"></script>
 	<script src="js/lib/backbone-modelref-0.1.4.min.js"></script>
 	<script src="js/lib/globalize/globalize.js"></script>
@@ -108,11 +108,8 @@
 	<script src="js/models/todo.js"></script>
 	<script src="js/models/todo_collection.js"></script>
 	<script src="js/models/priority_collection.js"></script>
+	<script src="js/viewmodels/todo.js"></script>
 	<script src="js/viewmodels/settings.js"></script>
-	<script src="js/viewmodels/header.js"></script>
-	<script src="js/viewmodels/todos.js"></script>
-	<script src="js/viewmodels/footer.js"></script>
-	<script src="js/routers/app.js"></script>
 	<!-- The Demo -->
 	<script src="js/app.js"></script>
 </body>

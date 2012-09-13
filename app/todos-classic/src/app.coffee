@@ -1,18 +1,23 @@
 ENTER_KEY = 13
 
-# global app settings
+# app globals
 window.app =
-  settings:
-    list_filter_mode: ko.observable('')
+  settings: {}
+  collections: {}
 
 window.TodoApp = (view_model, element) ->
   #############################
   # Shared
   #############################
-  todos_collections = new TodoCollection()
-  todos_collections.fetch()
-  view_model.todos = kb.collectionObservable(todos_collections, {view_model: TodoViewModel})
+  # collections
+  app.collections.todos = new TodoCollection()
+  app.collections.todos.fetch()
 
+  # settings
+  app.settings.list_filter_mode = ko.observable('')
+
+  # shared observables
+  view_model.todos = kb.collectionObservable(app.collections.todos, {view_model: TodoViewModel})
   view_model.tasks_exist = ko.computed(-> view_model.todos().length)
 
   #############################
@@ -24,7 +29,7 @@ window.TodoApp = (view_model, element) ->
     return true if not $.trim(view_model.title()) or (event.keyCode != ENTER_KEY)
 
     # Create task and reset UI
-    todos_collections.create({title: $.trim(view_model.title())})
+    app.collections.todos.create({title: $.trim(view_model.title())})
     view_model.title('')
 
   #############################
@@ -44,7 +49,8 @@ window.TodoApp = (view_model, element) ->
     return if (count = view_model.todos.collection().completedCount()) then "Clear completed (#{count})" else ''
   )
 
-  view_model.onDestroyCompleted = -> todos.destroyCompleted()
+  view_model.onDestroyCompleted = ->
+    app.collections.todos.destroyCompleted()
 
   #############################
   # Routing

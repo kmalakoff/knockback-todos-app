@@ -5,16 +5,16 @@
   ENTER_KEY = 13;
 
   window.app = {
-    settings: {
-      list_filter_mode: ko.observable('')
-    }
+    settings: {},
+    collections: {}
   };
 
   window.TodoApp = function(view_model, element) {
-    var router, todos_collections;
-    todos_collections = new TodoCollection();
-    todos_collections.fetch();
-    view_model.todos = kb.collectionObservable(todos_collections, {
+    var router;
+    app.collections.todos = new TodoCollection();
+    app.collections.todos.fetch();
+    app.settings.list_filter_mode = ko.observable('');
+    view_model.todos = kb.collectionObservable(app.collections.todos, {
       view_model: TodoViewModel
     });
     view_model.tasks_exist = ko.computed(function() {
@@ -25,7 +25,7 @@
       if (!$.trim(view_model.title()) || (event.keyCode !== ENTER_KEY)) {
         return true;
       }
-      todos_collections.create({
+      app.collections.todos.create({
         title: $.trim(view_model.title())
       });
       return view_model.title('');
@@ -50,7 +50,7 @@
       }
     });
     view_model.onDestroyCompleted = function() {
-      return todos.destroyCompleted();
+      return app.collections.todos.destroyCompleted();
     };
     router = new Backbone.Router;
     router.route('', null, function() {
