@@ -1,31 +1,56 @@
-$ ->
-	# Add custom handlers to Knockout.js - adapted from Knockout.js Todos app: https://github.com/ashish01/knockoutjs-todos
-	ko.bindingHandlers.dblclick =
-		init: (element, value_accessor) -> $(element).dblclick(ko.utils.unwrapObservable(value_accessor()))
-	ko.bindingHandlers.block =
-		update: (element, value_accessor) -> element.style.display = if ko.utils.unwrapObservable(value_accessor()) then 'block' else 'none'
-	ko.bindingHandlers.selectAndFocus =
-		init: (element, value_accessor, all_bindings_accessor) ->
-			ko.bindingHandlers.hasfocus.init(element, value_accessor, all_bindings_accessor)
-			ko.utils.registerEventHandler(element, 'focus', -> element.select())
-		update: (element, value_accessor) ->
-			ko.utils.unwrapObservable(value_accessor()) # create dependency
-			_.defer(=>ko.bindingHandlers.hasfocus.update(element, value_accessor))
+ENTER_KEY = 13
 
-	# Create and bind the app viewmodels
-	window.app = {viewmodels: {}, collections: {}}
-	app.viewmodels.settings = new SettingsViewModel()
-	app.collections.todos = new TodoCollection()
-	app.viewmodels.header = new HeaderViewModel(app.collections.todos)
-	app.viewmodels.todos = new TodosViewModel(app.collections.todos)
-	app.viewmodels.footer = new FooterViewModel(app.collections.todos)
-	ko.applyBindings(app.viewmodels, $('#todoapp')[0])
+# global app settings
+window.app =
+  settings:
+    list_filter_mode: ko.observable('')
 
-	# Start the app routing
-	new AppRouter()
-	Backbone.history.start()
+window.TodoApp = (view_model, element) ->
+  #############################
+  # Shared
+  #############################
+  todos_collections = new TodoCollection()
+  todos_collections.fetch()
+  view_model.todos = kb.collectionObservable(todos_collections, {view_model: TodoViewModel})
 
-	# Load the todos
-	app.collections.todos.fetch()
+  view_model.tasks_exist = ko.computed(-> view_model.todos().length)
 
-	# kb.vmRelease(app.viewmodels)		# Destroy when finished with the view model
+  #############################
+  # Header Section
+  #############################
+  view_model.title = ko.observable('')
+
+  view_model.onAddTodo = (view_model, event) ->
+    return true if not $.trim(view_model.title()) or (event.keyCode != ENTER_KEY)
+
+    # Create task and reset UI
+    todos_collections.create({title: $.trim(view_model.title())})
+    view_model.title('')
+
+  #############################
+  # Main Section
+  #############################
+  view_model.all_completed = ko.computed(
+    read: -> return not view_model.todos.collection().remainingCount()
+    write: (completed) -> view_model.todos.collection().completeAll(completed)
+  )
+
+  #############################
+  # Footer Section
+  #############################
+  view_model.remaining_text = ko.computed(-> return "<strong>#{view_model.todos.collection().remainingCount()}</strong> #{if view_model.todos.collection().remainingCount() == 1 then 'item' else 'items'} left")
+
+  view_model.clear_text = ko.computed(->
+    return if (count = view_model.todos.collection().completedCount()) then "Clear completed (#{count})" else ''
+  )
+
+  view_model.onDestroyCompleted = -> todos.destroyCompleted()
+
+  #############################
+  # Routing
+  #############################
+  router = new Backbone.Router
+  router.route('', null, -> app.settings.list_filter_mode(''))
+  router.route('active', null, -> app.settings.list_filter_mode('active'))
+  router.route('completed', null, -> app.settings.list_filter_mode('completed'))
+  Backbone.history.start()
