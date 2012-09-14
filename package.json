@@ -23,7 +23,7 @@
     "easy-bake": "0.1.8"
   },
   "dependencies": {
-    "backbone-modelref": ">=0.1.4",
+    "backbone-modelref": ">=0.1.5",
     "knockback": ">=0.16.5"
   },
 
