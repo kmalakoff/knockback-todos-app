@@ -1,66 +1,64 @@
 ENTER_KEY = 13
 
-# app globals
-window.app =
-	settings: {}
-	collections: {}
+window.TodoApp = ->
+	window.app = @ # publish so settings are available globally
 
-window.TodoApp = (view_model, element) ->
 	#############################
 	# Shared
 	#############################
 	# collections
-	app.collections.todos = new TodoCollection()
-	app.collections.todos.fetch()
-	app.collections.priorities = new PriorityCollection() # EXTENSIONS: Add priorities
+	@collections =
+		todos: new TodoCollection()
+		priorities: new PriorityCollection() # EXTENSIONS: Add priorities
+	@collections.todos.fetch()
 
 	# EXTENSIONS: settings
-	app.settings = new SettingsViewModel([
-		new Backbone.ModelRef(app.collections.priorities, 'high'),
-		new Backbone.ModelRef(app.collections.priorities, 'medium'),
-		new Backbone.ModelRef(app.collections.priorities, 'low')
+	@settings = new SettingsViewModel([
+		new Backbone.ModelRef(@collections.priorities, 'high'),
+		new Backbone.ModelRef(@collections.priorities, 'medium'),
+		new Backbone.ModelRef(@collections.priorities, 'low')
 	], kb.locale_manager.getLocales())
 
 	# shared observables
-	view_model.todos = kb.collectionObservable(app.collections.todos, {view_model: TodoViewModel, sort_attribute: 'title'}) # EXTENSIONS: Add sorting
-	app.collections.todos.bind('change', -> view_model.todos.notifySubscribers(view_model.todos())) # trigger an update whenever a model changes (default is only when added, removed, or resorted)
-	view_model.tasks_exist = ko.computed(-> view_model.todos().length)
+	@todos = kb.collectionObservable(@collections.todos, {view_model: TodoViewModel, sort_attribute: 'title'}) # EXTENSIONS: Add sorting
+	@collections.todos.bind('change', => @todos.notifySubscribers(@todos())) # trigger an update whenever a model changes (default is only when added, removed, or resorted)
+	@tasks_exist = ko.computed(=> @todos().length)
 
 	#############################
 	# Header Section
 	#############################
-	view_model.title = ko.observable('')
+	@title = ko.observable('')
 
-	view_model.onAddTodo = (view_model, event) ->
-		return true if not $.trim(view_model.title()) or (event.keyCode != ENTER_KEY)
+	@onAddTodo = (view_model, event) =>
+		return true if not $.trim(@title()) or (event.keyCode != ENTER_KEY)
 
 		# Create task and reset UI
-		app.collections.todos.create({title: $.trim(view_model.title()), priority: app.settings.default_priority()}) # EXTENDED: Add priority to Todo
-		view_model.title('')
+		@collections.todos.create({title: $.trim(@title()), priority: @settings.default_priority()}) # EXTENDED: Add priority to Todo
+		@title('')
 
 	#############################
 	# Todos Section
 	#############################
-	view_model.all_completed = ko.computed(
-		read: -> return not view_model.todos.collection().remainingCount()
-		write: (completed) -> view_model.todos.collection().completeAll(completed)
+	@all_completed = ko.computed(
+		read: => return not @todos.collection().remainingCount()
+		write: (completed) => @todos.collection().completeAll(completed)
 	)
 
 	#############################
 	# Footer Section
 	#############################
-	view_model.remaining_text = ko.computed(-> return "<strong>#{view_model.todos.collection().remainingCount()}</strong> #{if view_model.todos.collection().remainingCount() == 1 then 'item' else 'items'} left")
+	@remaining_text = ko.computed(=> return "<strong>#{@todos.collection().remainingCount()}</strong> #{if @todos.collection().remainingCount() == 1 then 'item' else 'items'} left")
 
-	view_model.onDestroyCompleted = ->
-		app.collections.todos.destroyCompleted()
+	@onDestroyCompleted = =>
+		@collections.todos.destroyCompleted()
 
 	#############################
 	# Routing
 	#############################
 	router = new Backbone.Router
-	router.route('', null, -> app.settings.list_filter_mode(''))
-	router.route('active', null, -> app.settings.list_filter_mode('active'))
-	router.route('completed', null, -> app.settings.list_filter_mode('completed'))
+	router.route('', null, => @settings.list_filter_mode(''))
+	router.route('active', null, => @settings.list_filter_mode('active'))
+	router.route('completed', null, => @settings.list_filter_mode('completed'))
 	Backbone.history.start()
 
 
@@ -73,59 +71,59 @@ window.TodoApp = (view_model, element) ->
 	#############################
 	# Header Section
 	#############################
-	view_model.input_placeholder_text = kb.observable(kb.locale_manager, {key: 'placeholder_create'})
-	view_model.input_tooltip_text = kb.observable(kb.locale_manager, {key: 'tooltip_create'})
+	@input_placeholder_text = kb.observable(kb.locale_manager, {key: 'placeholder_create'})
+	@input_tooltip_text = kb.observable(kb.locale_manager, {key: 'tooltip_create'})
 
-	view_model.priority_color = ko.computed(-> return app.settings.default_priority_color())
-	view_model.tooltip_visible = ko.observable(false)
-	tooltip_visible = view_model.tooltip_visible # closured for onSelectPriority
-	view_model.onSelectPriority = (view_model, event) ->
+	@priority_color = ko.computed(=> return @settings.default_priority_color())
+	@tooltip_visible = ko.observable(false)
+	tooltip_visible = @tooltip_visible # closured for onSelectPriority
+	@onSelectPriority = (view_model, event) =>
 		event.stopPropagation()
 		tooltip_visible(false)
-		app.settings.default_priority(ko.utils.unwrapObservable(view_model.priority))
-	view_model.onToggleTooltip = ->
-		view_model.tooltip_visible(!view_model.tooltip_visible())
+		@settings.default_priority(ko.utils.unwrapObservable(@priority))
+	@onToggleTooltip = =>
+		@tooltip_visible(!@tooltip_visible())
 
 	#############################
 	# Todos Section
 	#############################
-	view_model.sort_mode = ko.computed(->
-		new_mode = app.settings.selected_list_sorting()
+	@sort_mode = ko.computed(=>
+		new_mode = @settings.selected_list_sorting()
 		switch new_mode
-			when 'label_title' then view_model.todos.sortAttribute('title')
-			when 'label_created' then view_model.todos.sortedIndex((models, model)-> return _.sortedIndex(models, model, (test) -> kb.utils.wrappedModel(test).get('created_at').valueOf()))
-			when 'label_priority' then view_model.todos.sortedIndex((models, model)-> return _.sortedIndex(models, model, (test) -> app.settings.priorityToRank(kb.utils.wrappedModel(test).get('priority'))))
+			when 'label_title' then @todos.sortAttribute('title')
+			when 'label_created' then @todos.sortedIndex((models, model)=> return _.sortedIndex(models, model, (test) => kb.utils.wrappedModel(test).get('created_at').valueOf()))
+			when 'label_priority' then @todos.sortedIndex((models, model)=> return _.sortedIndex(models, model, (test) => @settings.priorityToRank(kb.utils.wrappedModel(test).get('priority'))))
 	)
 
-	view_model.complete_all_text = kb.observable(kb.locale_manager, {key: 'complete_all'})
+	@complete_all_text = kb.observable(kb.locale_manager, {key: 'complete_all'})
 
 	#############################
 	# Footer Section
 	#############################
-	view_model.remaining_text_key = ko.computed(->
-		return if (view_model.todos.collection().remainingCount() == 1) then 'remaining_template_s' else 'remaining_template_pl'
+	@remaining_text_key = ko.computed(=>
+		return if (@todos.collection().remainingCount() == 1) then 'remaining_template_s' else 'remaining_template_pl'
 	)
-	view_model.remaining_text = kb.observable(kb.locale_manager, {
-		key: view_model.remaining_text_key
-		args: -> view_model.todos.collection().remainingCount()
+	@remaining_text = kb.observable(kb.locale_manager, {
+		key: @remaining_text_key
+		args: => @todos.collection().remainingCount()
 	})
 
-	view_model.clear_text_key = ko.computed(->
-		return if (view_model.todos.collection().completedCount()==0) then null else (if (view_model.todos.collection().completedCount() == 1) then 'clear_template_s' else 'clear_template_pl')
+	@clear_text_key = ko.computed(=>
+		return if (@todos.collection().completedCount()==0) then null else (if (@todos.collection().completedCount() == 1) then 'clear_template_s' else 'clear_template_pl')
 	)
-	view_model.clear_text = kb.observable(kb.locale_manager, {
-		key: view_model.clear_text_key
-		args: -> view_model.todos.collection().completedCount()
+	@clear_text = kb.observable(kb.locale_manager, {
+		key: @clear_text_key
+		args: => @todos.collection().completedCount()
 	})
 
-	view_model.instructions_text = kb.observable(kb.locale_manager, {key: 'instructions'})
+	@instructions_text = kb.observable(kb.locale_manager, {key: 'instructions'})
 
 	#############################
 	# Load the prioties late to show the dynamic nature of Knockback with Backbone.ModelRef
 	#############################
-	_.delay((->
-		app.collections.priorities.fetch(
-			success: (collection) ->
+	_.delay((=>
+		@collections.priorities.fetch(
+			success: (collection) =>
 				collection.create({id:'high', color:'#bf30ff'}) if not collection.get('high')
 				collection.create({id:'medium', color:'#98acff'}) if not collection.get('medium')
 				collection.create({id:'low', color:'#38ff6a'}) if not collection.get('low')
@@ -133,8 +131,10 @@ window.TodoApp = (view_model, element) ->
 
 		# set up color pickers
 		$('.colorpicker').mColorPicker({imageFolder: $.fn.mColorPicker.init.imageFolder})
-		$('.colorpicker').bind('colorpicked', ->
-			model = app.collections.priorities.get($(this).attr('id'))
+		$('.colorpicker').bind('colorpicked', =>
+			model = @collections.priorities.get($(this).attr('id'))
 			model.save({color: $(this).val()}) if model
 		)
 	), 1000)
+
+	return # coffeescript will return last statement, but we need 'this'

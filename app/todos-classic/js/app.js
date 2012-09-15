@@ -4,68 +4,69 @@
 
   ENTER_KEY = 13;
 
-  window.app = {
-    settings: {},
-    collections: {}
-  };
-
-  window.TodoApp = function(view_model, element) {
-    var router;
-    app.collections.todos = new TodoCollection();
-    app.collections.todos.fetch();
-    app.settings.list_filter_mode = ko.observable('');
-    view_model.todos = kb.collectionObservable(app.collections.todos, {
+  window.TodoApp = function() {
+    var router,
+      _this = this;
+    window.app = this;
+    this.collections = {
+      todos: new TodoCollection()
+    };
+    this.collections.todos.fetch();
+    this.settings = {
+      list_filter_mode: ko.observable('')
+    };
+    this.todos = kb.collectionObservable(this.collections.todos, {
       view_model: TodoViewModel
     });
-    app.collections.todos.bind('change', function() {
-      return view_model.todos.notifySubscribers(view_model.todos());
+    this.collections.todos.bind('change', function() {
+      return _this.todos.notifySubscribers(_this.todos());
     });
-    view_model.tasks_exist = ko.computed(function() {
-      return view_model.todos().length;
+    this.tasks_exist = ko.computed(function() {
+      return _this.todos().length;
     });
-    view_model.title = ko.observable('');
-    view_model.onAddTodo = function(view_model, event) {
-      if (!$.trim(view_model.title()) || (event.keyCode !== ENTER_KEY)) {
+    this.title = ko.observable('');
+    this.onAddTodo = function(view_model, event) {
+      if (!$.trim(_this.title()) || (event.keyCode !== ENTER_KEY)) {
         return true;
       }
-      app.collections.todos.create({
-        title: $.trim(view_model.title())
+      _this.collections.todos.create({
+        title: $.trim(_this.title())
       });
-      return view_model.title('');
+      return _this.title('');
     };
-    view_model.all_completed = ko.computed({
+    this.all_completed = ko.computed({
       read: function() {
-        return !view_model.todos.collection().remainingCount();
+        return !_this.todos.collection().remainingCount();
       },
       write: function(completed) {
-        return view_model.todos.collection().completeAll(completed);
+        return _this.todos.collection().completeAll(completed);
       }
     });
-    view_model.remaining_text = ko.computed(function() {
-      return "<strong>" + (view_model.todos.collection().remainingCount()) + "</strong> " + (view_model.todos.collection().remainingCount() === 1 ? 'item' : 'items') + " left";
+    this.remaining_text = ko.computed(function() {
+      return "<strong>" + (_this.todos.collection().remainingCount()) + "</strong> " + (_this.todos.collection().remainingCount() === 1 ? 'item' : 'items') + " left";
     });
-    view_model.clear_text = ko.computed(function() {
+    this.clear_text = ko.computed(function() {
       var count;
-      if ((count = view_model.todos.collection().completedCount())) {
+      if ((count = _this.todos.collection().completedCount())) {
         return "Clear completed (" + count + ")";
       } else {
         return '';
       }
     });
-    view_model.onDestroyCompleted = function() {
-      return app.collections.todos.destroyCompleted();
+    this.onDestroyCompleted = function() {
+      return _this.collections.todos.destroyCompleted();
     };
     router = new Backbone.Router;
     router.route('', null, function() {
-      return app.settings.list_filter_mode('');
+      return _this.settings.list_filter_mode('');
     });
     router.route('active', null, function() {
-      return app.settings.list_filter_mode('active');
+      return _this.settings.list_filter_mode('active');
     });
     router.route('completed', null, function() {
-      return app.settings.list_filter_mode('completed');
+      return _this.settings.list_filter_mode('completed');
     });
-    return Backbone.history.start();
+    Backbone.history.start();
   };
 
 }).call(this);

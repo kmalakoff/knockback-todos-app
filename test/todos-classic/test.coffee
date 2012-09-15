@@ -6,21 +6,20 @@ $(document).ready( ->
   )
 
   test("Create a todo app", ->
-  	view_model = {}
-  	new TodoApp(view_model)
+    view_model = new TodoApp()
 
-  	ok(app.collections.todos, "todos collection")
-  	equal(app.settings.list_filter_mode(), '', "filter mode default")
+    ok(app.collections.todos, "todos collection")
+    equal(app.settings.list_filter_mode(), '', "filter mode default")
 
-  	ok(view_model.tasks_exist, "tasks exist observable")
+    ok(view_model.tasks_exist, "tasks exist observable")
 
-  	view_model.title('do something')
-  	equal(view_model.title(), 'do something', "title works")
+    view_model.title('do something')
+    equal(view_model.title(), 'do something', "title works")
 
-  	ok(view_model.all_completed, "all_completed observable")
+    ok(view_model.all_completed, "all_completed observable")
 
-  	ok(view_model.remaining_text, "remaining_text observable")
+    ok(view_model.remaining_text, "remaining_text observable")
 
-  	ok(view_model.clear_text, "clear_text observable")
+    ok(view_model.clear_text, "clear_text observable")
   )
 )

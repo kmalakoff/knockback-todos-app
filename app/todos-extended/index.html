@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" kb-app>
+<html lang="en">
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -11,7 +11,7 @@
 	<![endif]-->
 </head>
 <body>
-	<section id="todoapp" data-bind="inject: TodoApp">
+	<section id="todoapp" kb-app="TodoApp">
 		<section id="settings">
 			<!-- Language Options -->
 			<div id="todo-languages" class="selection codestyle" data-bind="foreach: app.settings.language_options">

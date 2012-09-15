@@ -6,7 +6,7 @@
 
   LocaleManager = (function() {
 
-    _.extend(LocaleManager.prototype, Backbone.Events);
+    __extends(LocaleManager.prototype, Backbone.Events);
 
     function LocaleManager(locale_identifier, translations_by_locale) {
       this.translations_by_locale = translations_by_locale;

@@ -4,140 +4,139 @@
 
   ENTER_KEY = 13;
 
-  window.app = {
-    settings: {},
-    collections: {}
-  };
-
-  window.TodoApp = function(view_model, element) {
-    var router, tooltip_visible;
-    app.collections.todos = new TodoCollection();
-    app.collections.todos.fetch();
-    app.collections.priorities = new PriorityCollection();
-    app.settings = new SettingsViewModel([new Backbone.ModelRef(app.collections.priorities, 'high'), new Backbone.ModelRef(app.collections.priorities, 'medium'), new Backbone.ModelRef(app.collections.priorities, 'low')], kb.locale_manager.getLocales());
-    view_model.todos = kb.collectionObservable(app.collections.todos, {
+  window.TodoApp = function() {
+    var router, tooltip_visible,
+      _this = this;
+    window.app = this;
+    this.collections = {
+      todos: new TodoCollection(),
+      priorities: new PriorityCollection()
+    };
+    this.collections.todos.fetch();
+    this.settings = new SettingsViewModel([new Backbone.ModelRef(this.collections.priorities, 'high'), new Backbone.ModelRef(this.collections.priorities, 'medium'), new Backbone.ModelRef(this.collections.priorities, 'low')], kb.locale_manager.getLocales());
+    this.todos = kb.collectionObservable(this.collections.todos, {
       view_model: TodoViewModel,
       sort_attribute: 'title'
     });
-    app.collections.todos.bind('change', function() {
-      return view_model.todos.notifySubscribers(view_model.todos());
+    this.collections.todos.bind('change', function() {
+      return _this.todos.notifySubscribers(_this.todos());
     });
-    view_model.tasks_exist = ko.computed(function() {
-      return view_model.todos().length;
+    this.tasks_exist = ko.computed(function() {
+      return _this.todos().length;
     });
-    view_model.title = ko.observable('');
-    view_model.onAddTodo = function(view_model, event) {
-      if (!$.trim(view_model.title()) || (event.keyCode !== ENTER_KEY)) {
+    this.title = ko.observable('');
+    this.onAddTodo = function(view_model, event) {
+      if (!$.trim(_this.title()) || (event.keyCode !== ENTER_KEY)) {
         return true;
       }
-      app.collections.todos.create({
-        title: $.trim(view_model.title()),
-        priority: app.settings.default_priority()
+      _this.collections.todos.create({
+        title: $.trim(_this.title()),
+        priority: _this.settings.default_priority()
       });
-      return view_model.title('');
+      return _this.title('');
     };
-    view_model.all_completed = ko.computed({
+    this.all_completed = ko.computed({
       read: function() {
-        return !view_model.todos.collection().remainingCount();
+        return !_this.todos.collection().remainingCount();
       },
       write: function(completed) {
-        return view_model.todos.collection().completeAll(completed);
+        return _this.todos.collection().completeAll(completed);
       }
     });
-    view_model.remaining_text = ko.computed(function() {
-      return "<strong>" + (view_model.todos.collection().remainingCount()) + "</strong> " + (view_model.todos.collection().remainingCount() === 1 ? 'item' : 'items') + " left";
+    this.remaining_text = ko.computed(function() {
+      return "<strong>" + (_this.todos.collection().remainingCount()) + "</strong> " + (_this.todos.collection().remainingCount() === 1 ? 'item' : 'items') + " left";
     });
-    view_model.onDestroyCompleted = function() {
-      return app.collections.todos.destroyCompleted();
+    this.onDestroyCompleted = function() {
+      return _this.collections.todos.destroyCompleted();
     };
     router = new Backbone.Router;
     router.route('', null, function() {
-      return app.settings.list_filter_mode('');
+      return _this.settings.list_filter_mode('');
     });
     router.route('active', null, function() {
-      return app.settings.list_filter_mode('active');
+      return _this.settings.list_filter_mode('active');
     });
     router.route('completed', null, function() {
-      return app.settings.list_filter_mode('completed');
+      return _this.settings.list_filter_mode('completed');
     });
     Backbone.history.start();
-    view_model.input_placeholder_text = kb.observable(kb.locale_manager, {
+    this.input_placeholder_text = kb.observable(kb.locale_manager, {
       key: 'placeholder_create'
     });
-    view_model.input_tooltip_text = kb.observable(kb.locale_manager, {
+    this.input_tooltip_text = kb.observable(kb.locale_manager, {
       key: 'tooltip_create'
     });
-    view_model.priority_color = ko.computed(function() {
-      return app.settings.default_priority_color();
+    this.priority_color = ko.computed(function() {
+      return _this.settings.default_priority_color();
     });
-    view_model.tooltip_visible = ko.observable(false);
-    tooltip_visible = view_model.tooltip_visible;
-    view_model.onSelectPriority = function(view_model, event) {
+    this.tooltip_visible = ko.observable(false);
+    tooltip_visible = this.tooltip_visible;
+    this.onSelectPriority = function(view_model, event) {
       event.stopPropagation();
       tooltip_visible(false);
-      return app.settings.default_priority(ko.utils.unwrapObservable(view_model.priority));
+      return _this.settings.default_priority(ko.utils.unwrapObservable(_this.priority));
     };
-    view_model.onToggleTooltip = function() {
-      return view_model.tooltip_visible(!view_model.tooltip_visible());
+    this.onToggleTooltip = function() {
+      return _this.tooltip_visible(!_this.tooltip_visible());
     };
-    view_model.sort_mode = ko.computed(function() {
+    this.sort_mode = ko.computed(function() {
       var new_mode;
-      new_mode = app.settings.selected_list_sorting();
+      new_mode = _this.settings.selected_list_sorting();
       switch (new_mode) {
         case 'label_title':
-          return view_model.todos.sortAttribute('title');
+          return _this.todos.sortAttribute('title');
         case 'label_created':
-          return view_model.todos.sortedIndex(function(models, model) {
+          return _this.todos.sortedIndex(function(models, model) {
             return _.sortedIndex(models, model, function(test) {
               return kb.utils.wrappedModel(test).get('created_at').valueOf();
             });
           });
         case 'label_priority':
-          return view_model.todos.sortedIndex(function(models, model) {
+          return _this.todos.sortedIndex(function(models, model) {
             return _.sortedIndex(models, model, function(test) {
-              return app.settings.priorityToRank(kb.utils.wrappedModel(test).get('priority'));
+              return _this.settings.priorityToRank(kb.utils.wrappedModel(test).get('priority'));
             });
           });
       }
     });
-    view_model.complete_all_text = kb.observable(kb.locale_manager, {
+    this.complete_all_text = kb.observable(kb.locale_manager, {
       key: 'complete_all'
     });
-    view_model.remaining_text_key = ko.computed(function() {
-      if (view_model.todos.collection().remainingCount() === 1) {
+    this.remaining_text_key = ko.computed(function() {
+      if (_this.todos.collection().remainingCount() === 1) {
         return 'remaining_template_s';
       } else {
         return 'remaining_template_pl';
       }
     });
-    view_model.remaining_text = kb.observable(kb.locale_manager, {
-      key: view_model.remaining_text_key,
+    this.remaining_text = kb.observable(kb.locale_manager, {
+      key: this.remaining_text_key,
       args: function() {
-        return view_model.todos.collection().remainingCount();
+        return _this.todos.collection().remainingCount();
       }
     });
-    view_model.clear_text_key = ko.computed(function() {
-      if (view_model.todos.collection().completedCount() === 0) {
+    this.clear_text_key = ko.computed(function() {
+      if (_this.todos.collection().completedCount() === 0) {
         return null;
       } else {
-        if (view_model.todos.collection().completedCount() === 1) {
+        if (_this.todos.collection().completedCount() === 1) {
           return 'clear_template_s';
         } else {
           return 'clear_template_pl';
         }
       }
     });
-    view_model.clear_text = kb.observable(kb.locale_manager, {
-      key: view_model.clear_text_key,
+    this.clear_text = kb.observable(kb.locale_manager, {
+      key: this.clear_text_key,
       args: function() {
-        return view_model.todos.collection().completedCount();
+        return _this.todos.collection().completedCount();
       }
     });
-    view_model.instructions_text = kb.observable(kb.locale_manager, {
+    this.instructions_text = kb.observable(kb.locale_manager, {
       key: 'instructions'
     });
-    return _.delay((function() {
-      app.collections.priorities.fetch({
+    _.delay((function() {
+      _this.collections.priorities.fetch({
         success: function(collection) {
           if (!collection.get('high')) {
             collection.create({
@@ -164,10 +163,10 @@
       });
       return $('.colorpicker').bind('colorpicked', function() {
         var model;
-        model = app.collections.priorities.get($(this).attr('id'));
+        model = _this.collections.priorities.get($(_this).attr('id'));
         if (model) {
           return model.save({
-            color: $(this).val()
+            color: $(_this).val()
           });
         }
       });

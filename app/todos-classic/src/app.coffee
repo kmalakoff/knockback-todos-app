@@ -1,63 +1,64 @@
 ENTER_KEY = 13
 
-# app globals
-window.app =
-	settings: {}
-	collections: {}
+window.TodoApp = ->
+	window.app = @ # publish so settings are available globally
 
-window.TodoApp = (view_model, element) ->
 	#############################
 	# Shared
 	#############################
 	# collections
-	app.collections.todos = new TodoCollection()
-	app.collections.todos.fetch()
+	@collections =
+		todos: new TodoCollection()
+	@collections.todos.fetch()
 
 	# settings
-	app.settings.list_filter_mode = ko.observable('')
+	@settings =
+		list_filter_mode: ko.observable('')
 
 	# shared observables
-	view_model.todos = kb.collectionObservable(app.collections.todos, {view_model: TodoViewModel})
-	app.collections.todos.bind('change', -> view_model.todos.notifySubscribers(view_model.todos())) # trigger an update whenever a model changes (default is only when added, removed, or resorted)
-	view_model.tasks_exist = ko.computed(-> view_model.todos().length)
+	@todos = kb.collectionObservable(@collections.todos, {view_model: TodoViewModel})
+	@collections.todos.bind('change', => @todos.notifySubscribers(@todos())) # trigger an update whenever a model changes (default is only when added, removed, or resorted)
+	@tasks_exist = ko.computed(=> @todos().length)
 
 	#############################
 	# Header Section
 	#############################
-	view_model.title = ko.observable('')
+	@title = ko.observable('')
 
-	view_model.onAddTodo = (view_model, event) ->
-		return true if not $.trim(view_model.title()) or (event.keyCode != ENTER_KEY)
+	@onAddTodo = (view_model, event) =>
+		return true if not $.trim(@title()) or (event.keyCode != ENTER_KEY)
 
 		# Create task and reset UI
-		app.collections.todos.create({title: $.trim(view_model.title())})
-		view_model.title('')
+		@collections.todos.create({title: $.trim(@title())})
+		@title('')
 
 	#############################
 	# Main Section
 	#############################
-	view_model.all_completed = ko.computed(
-		read: -> return not view_model.todos.collection().remainingCount()
-		write: (completed) -> view_model.todos.collection().completeAll(completed)
+	@all_completed = ko.computed(
+		read: => return not @todos.collection().remainingCount()
+		write: (completed) => @todos.collection().completeAll(completed)
 	)
 
 	#############################
 	# Footer Section
 	#############################
-	view_model.remaining_text = ko.computed(-> return "<strong>#{view_model.todos.collection().remainingCount()}</strong> #{if view_model.todos.collection().remainingCount() == 1 then 'item' else 'items'} left")
+	@remaining_text = ko.computed(=> return "<strong>#{@todos.collection().remainingCount()}</strong> #{if @todos.collection().remainingCount() == 1 then 'item' else 'items'} left")
 
-	view_model.clear_text = ko.computed(->
-		return if (count = view_model.todos.collection().completedCount()) then "Clear completed (#{count})" else ''
+	@clear_text = ko.computed(=>
+		return if (count = @todos.collection().completedCount()) then "Clear completed (#{count})" else ''
 	)
 
-	view_model.onDestroyCompleted = ->
-		app.collections.todos.destroyCompleted()
+	@onDestroyCompleted = =>
+		@collections.todos.destroyCompleted()
 
 	#############################
 	# Routing
 	#############################
 	router = new Backbone.Router
-	router.route('', null, -> app.settings.list_filter_mode(''))
-	router.route('active', null, -> app.settings.list_filter_mode('active'))
-	router.route('completed', null, -> app.settings.list_filter_mode('completed'))
+	router.route('', null, => @settings.list_filter_mode(''))
+	router.route('active', null, => @settings.list_filter_mode('active'))
+	router.route('completed', null, => @settings.list_filter_mode('completed'))
 	Backbone.history.start()
+
+	return # coffeescript will return last statement, but we need 'this'
