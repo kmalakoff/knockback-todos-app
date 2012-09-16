@@ -4,25 +4,39 @@
 
   ENTER_KEY = 13;
 
-  window.TodoApp = function() {
-    var router,
+  window.AppViewModel = function() {
+    var router, todos_filter_fn,
       _this = this;
-    window.app = this;
     this.collections = {
       todos: new TodoCollection()
     };
     this.collections.todos.fetch();
-    this.settings = {
-      list_filter_mode: ko.observable('')
-    };
+    this.list_filter_mode = ko.observable('');
+    todos_filter_fn = ko.computed(function() {
+      switch (_this.list_filter_mode()) {
+        case 'active':
+          return function(model) {
+            return model.completed();
+          };
+        case 'completed':
+          return function(model) {
+            return !model.completed();
+          };
+        default:
+          return function() {
+            return false;
+          };
+      }
+    });
     this.todos = kb.collectionObservable(this.collections.todos, {
-      view_model: TodoViewModel
+      view_model: TodoViewModel,
+      filters: todos_filter_fn
     });
     this.collections.todos.bind('change', function() {
       return _this.todos.notifySubscribers(_this.todos());
     });
     this.tasks_exist = ko.computed(function() {
-      return _this.todos().length;
+      return !!_this.todos.collection().models.length;
     });
     this.title = ko.observable('');
     this.onAddTodo = function(view_model, event) {
@@ -58,15 +72,16 @@
     };
     router = new Backbone.Router;
     router.route('', null, function() {
-      return _this.settings.list_filter_mode('');
+      return _this.list_filter_mode('');
     });
     router.route('active', null, function() {
-      return _this.settings.list_filter_mode('active');
+      return _this.list_filter_mode('active');
     });
     router.route('completed', null, function() {
-      return _this.settings.list_filter_mode('completed');
+      return _this.list_filter_mode('completed');
     });
     Backbone.history.start();
+    return this;
   };
 
 }).call(this);

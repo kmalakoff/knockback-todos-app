@@ -9,7 +9,7 @@ $(document).ready( ->
     view_model = new TodoApp()
 
     ok(app.collections.todos, "todos collection")
-    equal(app.settings.list_filter_mode(), '', "filter mode default")
+    equal(list_filter_mode(), '', "filter mode default")
 
     ok(view_model.tasks_exist, "tasks exist observable")
 
@@ -25,7 +25,7 @@ $(document).ready( ->
 		#############################
 		# Extended
 		#############################
-    ok(app.settings.language_options, "language_options observable")
+    ok(app_settings.language_options, "language_options observable")
 
     ok(view_model.input_placeholder_text, "input_placeholder_text observable")
     ok(view_model.input_tooltip_text, "input_tooltip_text observable")

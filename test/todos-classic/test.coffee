@@ -9,7 +9,7 @@ $(document).ready( ->
     view_model = new TodoApp()
 
     ok(app.collections.todos, "todos collection")
-    equal(app.settings.list_filter_mode(), '', "filter mode default")
+    equal(list_filter_mode(), '', "filter mode default")
 
     ok(view_model.tasks_exist, "tasks exist observable")
 

@@ -11,24 +11,34 @@
 	<![endif]-->
 </head>
 <body>
-	<section id="todoapp" kb-app="TodoApp">
-		<section id="settings">
-			<!-- Language Options -->
-			<div id="todo-languages" class="selection codestyle" data-bind="foreach: app.settings.language_options">
-				<div class="option"><input type="radio" data-bind="attr: {id: id, name: option_group}, value: id, checked: app.settings.selected_language"><label data-bind="attr: {for: id}, text: label"></label></div>
+	<!-- **************** -->
+	<!-- EXTENSIONS: Priorities and language settings -->
+	<!-- **************** -->
+	<section id="settings" kb-inject="AppSettingsViewModel">
+		<!-- Language Options -->
+		<div id="todo-languages" class="selection codestyle" data-bind="foreach: language_options">
+			<div class="option"><input type="radio" data-bind="attr: {id: id, name: option_group}, value: id, checked: $parent.selected_language"><label data-bind="attr: {for: id}, text: label"></label></div>
+		</div>
+
+		<!-- Priority Options -->
+		<div id="priority-color-settings" data-bind="foreach: priorities">
+			<div class="priority-color-entry">
+				<div class="priority-text" data-bind="text: priority_text"></div>
+				<input data-bind="attr: {id: priority}, value: priority_color" class='priority-color-swatch colorpicker' data-text="hidden" data-hex="true"/>
 			</div>
-			<!-- Priority Options -->
-			<div id="priority-color-settings" data-bind="foreach: app.settings.priorities">
-				<div class="priority-color-entry">
-					<div class="priority-text" data-bind="text: priority_text"></div>
-					<input data-bind="attr: {id: priority}, value: priority_color" class='priority-color-swatch colorpicker' data-text="hidden" data-hex="true"/>
-				</div>
-			</div>
-			<!-- List Sorting -->
-			<div id="todo-list-sorting" class="selection codestyle" data-bind="foreach: app.settings.list_sorting_options">
-				<div class="option"><input type="radio" data-bind="attr: {id: id, name: option_group}, value: id, checked: app.settings.selected_list_sorting"><label data-bind="attr: {for: id}, text: label"></label></div>
-			</div>
-		</section>
+		</div>
+
+		<!-- List Sorting -->
+		<div id="todo-list-sorting" class="selection codestyle" data-bind="foreach: list_sorting_options">
+			<div class="option"><input type="radio" data-bind="attr: {id: id, name: option_group}, value: id, checked: $parent.selected_list_sorting"><label data-bind="attr: {for: id}, text: label"></label></div>
+		</div>
+	</section>
+
+	<!-- **************** -->
+	<!-- CLASSIC APP with some EXTENSIONS hooks -->
+	<!-- **************** -->
+
+	<section id="todoapp" kb-inject="AppViewModel">
 		<header id="header">
 			<h1>todos</h1>
 			<input id="new-todo" type="text" data-bind="value: title, valueUpdate: 'afterkeydown', event: {keyup: onAddTodo}, placeholder: input_placeholder_text" autofocus>
@@ -39,7 +49,7 @@
 			<input id="toggle-all" type="checkbox" data-bind="checked: all_completed">
 			<label for="toggle-all">Mark all as complete</label>
 			<ul id="todo-list" data-bind="foreach: todos">
-				<li data-bind="css: {completed: completed, editing: editing}, visible: visible">
+				<li data-bind="css: {completed: completed, editing: editing}">
 					<div class="view" data-bind="event: {dblclick: onCheckEditBegin}">
 						<input class="toggle" type="checkbox" data-bind="checked: completed" checked>
 						<label data-bind="text: title"></label>
@@ -55,13 +65,13 @@
 			<span id="todo-count" data-bind="html: remaining_text"></span>
 			<ul id="filters">
 				<li>
-					<a href="#/" data-bind="text: app.settings.label_filter_all, css: {selected: app.settings.list_filter_mode()==''}"></a>
+					<a href="#/" data-bind="text: label_filter_all, css: {selected: list_filter_mode()==''}"></a>
 				</li>
 				<li>
-					<a href="#/active" data-bind="text: app.settings.label_filter_active, css: {selected: app.settings.list_filter_mode()=='active'}"></a>
+					<a href="#/active" data-bind="text: label_filter_active, css: {selected: list_filter_mode()=='active'}"></a>
 				</li>
 				<li>
-					<a href="#/completed" data-bind="text: app.settings.label_filter_completed, css: {selected: app.settings.list_filter_mode()=='completed'}"></a>
+					<a href="#/completed" data-bind="text: label_filter_completed, css: {selected: list_filter_mode()=='completed'}"></a>
 				</li>
 			</ul>
 			<button id="clear-completed" data-bind="text: clear_text, block: clear_text, click: onDestroyCompleted"></button>
@@ -73,11 +83,29 @@
 		<p>Created by <a href="https://github.com/kmalakoff">Kevin Malakoff</a>. <br/>
 		<p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
 	</footer>
-	<!-- Templates -->
+
+	<!-- App Dependencies -->
+	<script src="../../assets/base.js"></script>
+	<script src="../../assets/jquery.min.js"></script>
+	<script src="js/lib/knockback-full-stack-0.16.5.min.js"></script>
+	<script src="js/lib/backbone.localStorage-min.js"></script>
+
+	<!-- App and Components -->
+	<script src="js/lib/knockout-extended-bindings.js"></script>
+	<script src="js/models/todo.js"></script>
+	<script src="js/models/todo_collection.js"></script>
+	<script src="js/viewmodels/todo.js"></script>
+	<script src="js/viewmodels/app.js"></script>
+
+	<!-- **************** -->
+	<!-- EXTENSIONS -->
+	<!-- **************** -->
+
+	<!-- Priorities Templates -->
 	<script type="text/x-jquery-tmpl" id="priority-swatch-picker-template">
 		<div class="priority-color-swatch todo header" data-bind="style: {background: priority_color}, click: onToggleTooltip">
 			<span class="priority-picker-tooltip ui-tooltip-top" data-bind="visible: tooltip_visible">
-				<div data-bind="template: {name: 'priority-picker-template', foreach: app.settings.priorities}"></div>
+				<div data-bind="template: {name: 'priority-picker-template', foreach: $parent.priorities}"></div>
 			</span>
 		</div>
 	</script>
@@ -87,11 +115,8 @@
 			<div class='priority-color-swatch' data-bind="style: {background: priority_color}, click: $parent.onSelectPriority"></div>
 		</div>
 	</script>
-	<!-- Demo Dependencies -->
-	<script src="../../assets/base.js"></script>
-	<script src="../../assets/jquery.min.js"></script>
-	<script src="js/lib/knockback-full-stack-0.16.5.min.js"></script>
-	<script src="js/lib/backbone.localStorage-min.js"></script>
+
+	<!-- App Dependencies -->
 	<script src="js/lib/backbone-modelref-0.1.5.min.js"></script>
 	<script src="js/lib/globalize/globalize.js"></script>
 	<script src="js/lib/globalize/globalize.culture.fr-FR.js"></script>
@@ -103,14 +128,10 @@
 		$.fn.mColorPicker.init.replace = false;
 		$.fn.mColorPicker.init.imageFolder = 'css/images/';
 	</script>
+
 	<!-- App and Components -->
-	<script src="js/lib/knockout-extended-bindings.js"></script>
 	<script src="js/models/locale_manager.js"></script>
-	<script src="js/models/todo.js"></script>
-	<script src="js/models/todo_collection.js"></script>
 	<script src="js/models/priority_collection.js"></script>
-	<script src="js/viewmodels/todo.js"></script>
-	<script src="js/viewmodels/settings.js"></script>
-	<script src="js/app.js"></script>
+	<script src="js/viewmodels/app_settings.js"></script>
 </body>
 </html>

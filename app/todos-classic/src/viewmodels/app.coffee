@@ -1,8 +1,6 @@
 ENTER_KEY = 13
 
-window.TodoApp = ->
-	window.app = @ # publish so settings are available globally
-
+window.AppViewModel = ->
 	#############################
 	# Shared
 	#############################
@@ -11,14 +9,17 @@ window.TodoApp = ->
 		todos: new TodoCollection()
 	@collections.todos.fetch()
 
-	# settings
-	@settings =
-		list_filter_mode: ko.observable('')
-
 	# shared observables
-	@todos = kb.collectionObservable(@collections.todos, {view_model: TodoViewModel})
+	@list_filter_mode = ko.observable('')
+	todos_filter_fn = ko.computed(=>
+		switch @list_filter_mode()
+			when 'active' then return (model) -> return model.completed()
+			when 'completed' then return (model) -> return not model.completed()
+			else return -> return false
+	)
+	@todos = kb.collectionObservable(@collections.todos, {view_model: TodoViewModel, filters: todos_filter_fn})
 	@collections.todos.bind('change', => @todos.notifySubscribers(@todos())) # trigger an update whenever a model changes (default is only when added, removed, or resorted)
-	@tasks_exist = ko.computed(=> @todos().length)
+	@tasks_exist = ko.computed(=> !!@todos.collection().models.length)
 
 	#############################
 	# Header Section
@@ -56,9 +57,9 @@ window.TodoApp = ->
 	# Routing
 	#############################
 	router = new Backbone.Router
-	router.route('', null, => @settings.list_filter_mode(''))
-	router.route('active', null, => @settings.list_filter_mode('active'))
-	router.route('completed', null, => @settings.list_filter_mode('completed'))
+	router.route('', null, => @list_filter_mode(''))
+	router.route('active', null, => @list_filter_mode('active'))
+	router.route('completed', null, => @list_filter_mode('completed'))
 	Backbone.history.start()
 
-	return # coffeescript will return last statement, but we need 'this'
+	@

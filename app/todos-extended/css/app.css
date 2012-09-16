@@ -2,9 +2,9 @@
 
 /* Create Settings Section
 ********************************************/
-#todoapp #settings {
+#settings {
 	position: absolute;
-	bottom: -180px;
+	top: 0px;
 	right: 0px;
 	width: 190px;
 	border-top-left-radius: 2px;

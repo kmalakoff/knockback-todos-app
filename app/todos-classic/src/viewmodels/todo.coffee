@@ -1,12 +1,6 @@
 window.TodoViewModel = (model) ->
 	@editing = ko.observable(false)
 	@completed = kb.observable(model, {key: 'completed', read: (-> return model.completed()), write: ((completed) -> model.completed(completed)) }, @)
-	@visible = ko.computed(=>
-		switch app.settings.list_filter_mode()
-			when 'active' then return not @completed()
-			when 'completed' then return @completed()
-			else return true
-	)
 
 	@title = kb.observable(model, {
 		key: 'title'

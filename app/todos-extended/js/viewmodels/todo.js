@@ -14,16 +14,6 @@
         return model.completed(completed);
       })
     }, this);
-    this.visible = ko.computed(function() {
-      switch (app.settings.list_filter_mode()) {
-        case 'active':
-          return !_this.completed();
-        case 'completed':
-          return _this.completed();
-        default:
-          return true;
-      }
-    });
     this.title = kb.observable(model, {
       key: 'title',
       write: (function(title) {
@@ -71,7 +61,7 @@
     this.priority_color = kb.observable(model, {
       key: 'priority',
       read: function() {
-        return app.settings.getColorByPriority(model.get('priority'));
+        return app_settings.getColorByPriority(model.get('priority'));
       }
     });
     this.tooltip_visible = ko.observable(false);

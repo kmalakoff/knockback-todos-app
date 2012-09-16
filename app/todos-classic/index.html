@@ -10,7 +10,7 @@
 	<![endif]-->
 </head>
 <body>
-	<section id="todoapp" kb-app="TodoApp">
+	<section id="todoapp" kb-inject="AppViewModel">
 		<header id="header">
 			<h1>todos</h1>
 			<input id="new-todo" type="text" data-bind="value: title, valueUpdate: 'afterkeydown', event: {keyup: onAddTodo}" placeholder="What needs to be done?" autofocus>
@@ -19,7 +19,7 @@
 			<input id="toggle-all" type="checkbox" data-bind="checked: all_completed">
 			<label for="toggle-all">Mark all as complete</label>
 			<ul id="todo-list" data-bind="foreach: todos">
-				<li data-bind="css: {completed: completed, editing: editing}, visible: visible">
+				<li data-bind="css: {completed: completed, editing: editing}">
 					<div class="view" data-bind="event: {dblclick: onCheckEditBegin}">
 						<input class="toggle" type="checkbox" data-bind="checked: completed" checked>
 						<label data-bind="text: title"></label>
@@ -33,13 +33,13 @@
 			<span id="todo-count" data-bind="html: remaining_text"></span>
 			<ul id="filters">
 				<li>
-					<a href="#/" data-bind="css: {selected: app.settings.list_filter_mode()==''}">All</a>
+					<a href="#/" data-bind="css: {selected: list_filter_mode()==''}">All</a>
 				</li>
 				<li>
-					<a href="#/active" data-bind="css: {selected: app.settings.list_filter_mode()=='active'}">Active</a>
+					<a href="#/active" data-bind="css: {selected: list_filter_mode()=='active'}">Active</a>
 				</li>
 				<li>
-					<a href="#/completed" data-bind="css: {selected: app.settings.list_filter_mode()=='completed'}">Completed</a>
+					<a href="#/completed" data-bind="css: {selected: list_filter_mode()=='completed'}">Completed</a>
 				</li>
 			</ul>
 			<button id="clear-completed" data-bind="text: clear_text, block: clear_text, click: onDestroyCompleted"></button>
@@ -54,16 +54,18 @@
 		to see just how dynamic <a href="https://github.com/kmalakoff/knockback">Knockback.js</a> can be!</p>
 		<p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
 	</footer>
-	<!-- Demo Dependencies -->
+
+	<!-- App Dependencies -->
 	<script src="../../assets/base.js"></script>
 	<script src="../../assets/jquery.min.js"></script>
 	<script src="js/lib/knockback-core-stack-0.16.5.min.js"></script>
 	<script src="js/lib/backbone.localStorage-min.js"></script>
+
 	<!-- App and Components -->
 	<script src="js/lib/knockout-extended-bindings.js"></script>
 	<script src="js/models/todo.js"></script>
 	<script src="js/models/todo_collection.js"></script>
 	<script src="js/viewmodels/todo.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/viewmodels/app.js"></script>
 </body>
 </html>

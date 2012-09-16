@@ -13,16 +13,6 @@
         return model.completed(completed);
       })
     }, this);
-    this.visible = ko.computed(function() {
-      switch (app.settings.list_filter_mode()) {
-        case 'active':
-          return !_this.completed();
-        case 'completed':
-          return _this.completed();
-        default:
-          return true;
-      }
-    });
     this.title = kb.observable(model, {
       key: 'title',
       write: (function(title) {
