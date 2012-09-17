@@ -1,4 +1,4 @@
-$(document).ready( ->
+$(->
   module("Knockback Todos (Extended)")
 
   test("TEST DEPENDENCY MISSING", ->
