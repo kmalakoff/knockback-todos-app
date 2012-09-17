@@ -6,10 +6,11 @@ $(document).ready( ->
   )
 
   test("Create a todo app", ->
-    view_model = new TodoApp()
+    new AppSettingsViewModel()
+    view_model = new AppViewModel()
 
-    ok(app.collections.todos, "todos collection")
-    equal(list_filter_mode(), '', "filter mode default")
+    ok(view_model.collections.todos, "todos collection")
+    equal(view_model.list_filter_mode(), '', "filter mode default")
 
     ok(view_model.tasks_exist, "tasks exist observable")
 

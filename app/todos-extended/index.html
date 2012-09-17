@@ -35,7 +35,7 @@
 	</section>
 
 	<!-- **************** -->
-	<!-- CLASSIC APP with some EXTENSIONS hooks -->
+	<!-- CLASSIC APP with some EXTENSION hooks -->
 	<!-- **************** -->
 
 	<section id="todoapp" kb-inject="AppViewModel">
@@ -105,10 +105,11 @@
 	<script type="text/x-jquery-tmpl" id="priority-swatch-picker-template">
 		<div class="priority-color-swatch todo header" data-bind="style: {background: priority_color}, click: onToggleTooltip">
 			<span class="priority-picker-tooltip ui-tooltip-top" data-bind="visible: tooltip_visible">
-				<div data-bind="template: {name: 'priority-picker-template', foreach: $parent.priorities}"></div>
+				<div data-bind="template: {name: 'priority-picker-template', foreach: app_settings.priorities}"></div>
 			</span>
 		</div>
 	</script>
+
 	<script type="text/x-jquery-tmpl" id="priority-picker-template">
 		<div class="priority-color-entry">
 			<div class="priority-text" data-bind="text: priority_text"></div>

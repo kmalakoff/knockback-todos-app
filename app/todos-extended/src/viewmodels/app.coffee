@@ -3,7 +3,7 @@ ENTER_KEY = 13
 window.AppViewModel = ->
 	#############################
 	#############################
-	# CLASSIC APP with some EXTENSIONS hooks
+	# CLASSIC APP with some EXTENSION hooks
 	#############################
 	#############################
 

@@ -1,7 +1,7 @@
 window.TodoViewModel = (model) ->
 	#############################
 	#############################
-	# CLASSIC APP with some EXTENSIONS hooks
+	# CLASSIC APP with some EXTENSION hooks
 	#############################
 	#############################
 
