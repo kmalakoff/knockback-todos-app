@@ -10,3 +10,4 @@ class window.TodoCollection extends Backbone.Collection
 	destroyCompleted: ->
 		completed_tasks = @filter((todo) -> return todo.completed())
 		model.destroy() for model in completed_tasks
+		return

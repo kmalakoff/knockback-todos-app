@@ -43,7 +43,6 @@
         return _this.editing(false);
       }
     };
-    return this;
   };
 
 }).call(this);

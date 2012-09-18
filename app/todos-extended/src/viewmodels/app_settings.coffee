@@ -63,7 +63,9 @@ window.AppSettingsViewModel = ->
 		@createColorsDependency()
 		(return view_model.priority_color() if view_model.priority == priority) for view_model in @priorities
 		return ''
-	@createColorsDependency = => view_model.priority_color() for view_model in @priorities
+	@createColorsDependency = =>
+		view_model.priority_color() for view_model in @priorities
+		return
 	@default_priority = ko.observable('medium')
 	@default_priority_color = ko.computed(=> return @getColorByPriority(@default_priority()))
 	@priorityToRank = (priority) ->
@@ -71,6 +73,7 @@ window.AppSettingsViewModel = ->
 			when 'high' then return 0
 			when 'medium' then return 1
 			when 'low' then return 2
+		return
 
 	# List sorting
 	@list_sorting_options = [new ListSortingOptionViewModel('label_title'), new ListSortingOptionViewModel('label_created'), new ListSortingOptionViewModel('label_priority')]

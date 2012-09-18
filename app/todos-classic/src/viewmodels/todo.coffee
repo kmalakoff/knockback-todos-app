@@ -22,4 +22,4 @@ window.TodoViewModel = (model) ->
 			$('.todo-input').blur()
 			@editing(false)
 
-	@
+	return

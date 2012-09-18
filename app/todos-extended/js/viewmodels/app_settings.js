@@ -103,14 +103,12 @@
       return '';
     };
     this.createColorsDependency = function() {
-      var view_model, _i, _len, _ref, _results;
+      var view_model, _i, _len, _ref;
       _ref = _this.priorities;
-      _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         view_model = _ref[_i];
-        _results.push(view_model.priority_color());
+        view_model.priority_color();
       }
-      return _results;
     };
     this.default_priority = ko.observable('medium');
     this.default_priority_color = ko.computed(function() {

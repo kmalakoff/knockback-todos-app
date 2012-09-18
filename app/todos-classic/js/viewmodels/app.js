@@ -81,7 +81,6 @@
       return _this.list_filter_mode('completed');
     });
     Backbone.history.start();
-    return this;
   };
 
 }).call(this);

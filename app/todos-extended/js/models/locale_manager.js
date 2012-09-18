@@ -38,7 +38,7 @@
     };
 
     LocaleManager.prototype.setLocale = function(locale_identifier) {
-      var culture_map, key, value, _results;
+      var culture_map, key, value;
       this.locale_identifier = locale_identifier;
       Globalize.culture = Globalize.findClosestCulture(locale_identifier);
       if (!window.Backbone) {
@@ -49,12 +49,10 @@
       if (!culture_map) {
         return;
       }
-      _results = [];
       for (key in culture_map) {
         value = culture_map[key];
-        _results.push(this.trigger("change:" + key, value));
+        this.trigger("change:" + key, value);
       }
-      return _results;
     };
 
     LocaleManager.prototype.getLocales = function() {

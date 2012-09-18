@@ -62,4 +62,4 @@ window.AppViewModel = ->
 	router.route('completed', null, => @list_filter_mode('completed'))
 	Backbone.history.start()
 
-	@
+	return
