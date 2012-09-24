@@ -94,8 +94,10 @@ window.AppViewModel = ->
 		new_mode = app_settings.selected_list_sorting()
 		switch new_mode
 			when 'label_title' then @todos.sortAttribute('title')
-			when 'label_created' then @todos.sortedIndex((models, model)=> return _.sortedIndex(models, model, (test) => kb.utils.wrappedModel(test).get('created_at').valueOf()))
-			when 'label_priority' then @todos.sortedIndex((models, model)=> return _.sortedIndex(models, model, (test) => app_settings.priorityToRank(kb.utils.wrappedModel(test).get('priority'))))
+			when 'label_created' then @todos.sortedIndex((models, model) =>
+				return _.sortedIndex(models, model, (test) => kb.utils.wrappedModel(test).get('created_at').valueOf()))
+			when 'label_priority' then @todos.sortedIndex((models, model) =>
+				return _.sortedIndex(models, model, (test) => app_settings.priorityToRank(kb.utils.wrappedModel(test).get('priority'))))
 	)
 
 	@complete_all_text = kb.observable(kb.locale_manager, 'complete_all')

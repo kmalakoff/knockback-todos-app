@@ -89,25 +89,19 @@
     });
     this.getColorByPriority = function(priority) {
       var view_model, _i, _len, _ref;
-      this.createColorsDependency();
       _ref = this.priorities;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         view_model = _ref[_i];
-        if (view_model.priority === priority) {
-          return view_model.priority_color();
-        }
+        view_model.priority_color();
       }
-      return '';
-    };
-    this.createColorsDependency = function() {
-      var view_model, _i, _len, _ref, _results;
-      _ref = _this.priorities;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        view_model = _ref[_i];
-        _results.push(view_model.priority_color());
+      view_model = _.find(this.priorities, function(test) {
+        return test.priority === priority;
+      });
+      if (view_model) {
+        return view_model.priority_color();
+      } else {
+        return '';
       }
-      return _results;
     };
     this.default_priority = ko.observable('medium');
     this.default_priority_color = ko.computed(function() {

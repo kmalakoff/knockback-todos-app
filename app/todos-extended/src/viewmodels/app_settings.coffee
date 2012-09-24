@@ -58,10 +58,9 @@ window.AppSettingsViewModel = ->
 	priorities = _.map(['high', 'medium', 'low'], (priority) => new Backbone.ModelRef(@collections.priorities, priority))
 	@priorities = _.map(priorities, (model) -> return new PrioritiesViewModel(model))
 	@getColorByPriority = (priority) ->
-		@createColorsDependency()
-		(return view_model.priority_color() if view_model.priority == priority) for view_model in @priorities
-		return ''
-	@createColorsDependency = => view_model.priority_color() for view_model in @priorities
+		view_model.priority_color() for view_model in @priorities # create dependency on all colors
+		view_model = _.find(@priorities, (test) -> test.priority is priority)
+		return if view_model then view_model.priority_color() else ''
 	@default_priority = ko.observable('medium')
 	@default_priority_color = ko.computed(=> return @getColorByPriority(@default_priority()))
 	@priorityToRank = (priority) -> _.indexOf(['high', 'medium', 'low'], priority)
