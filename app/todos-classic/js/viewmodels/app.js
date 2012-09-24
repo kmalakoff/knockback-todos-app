@@ -32,11 +32,10 @@
       view_model: TodoViewModel,
       filters: todos_filter_fn
     });
-    this.collections.todos.bind('change', function() {
-      return _this.todos.notifySubscribers(_this.todos());
-    });
+    this.todos_changed = kb.triggeredObservable(this.collections.todos, 'all');
     this.tasks_exist = ko.computed(function() {
-      return !!_this.todos.collection().models.length;
+      _this.todos_changed();
+      return !!_this.collections.todos.length;
     });
     this.title = ko.observable('');
     this.onAddTodo = function(view_model, event) {
@@ -48,20 +47,28 @@
       });
       return _this.title('');
     };
+    this.remaining_count = ko.computed(function() {
+      _this.todos_changed();
+      return _this.collections.todos.remainingCount();
+    });
+    this.completed_count = ko.computed(function() {
+      _this.todos_changed();
+      return _this.collections.todos.completedCount();
+    });
     this.all_completed = ko.computed({
       read: function() {
-        return !_this.todos.collection().remainingCount();
+        return !_this.remaining_count();
       },
       write: function(completed) {
-        return _this.todos.collection().completeAll(completed);
+        return _this.collections.todos.completeAll(completed);
       }
     });
     this.remaining_text = ko.computed(function() {
-      return "<strong>" + (_this.todos.collection().remainingCount()) + "</strong> " + (_this.todos.collection().remainingCount() === 1 ? 'item' : 'items') + " left";
+      return "<strong>" + (_this.remaining_count()) + "</strong> " + (_this.remaining_count() === 1 ? 'item' : 'items') + " left";
     });
     this.clear_text = ko.computed(function() {
       var count;
-      if ((count = _this.todos.collection().completedCount())) {
+      if ((count = _this.completed_count())) {
         return "Clear completed (" + count + ")";
       } else {
         return '';

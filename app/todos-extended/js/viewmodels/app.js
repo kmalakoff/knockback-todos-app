@@ -33,11 +33,10 @@
       filters: todos_filter_fn,
       sort_attribute: 'title'
     });
-    this.collections.todos.bind('change', function() {
-      return _this.todos.notifySubscribers(_this.todos());
-    });
+    this.todos_changed = kb.triggeredObservable(this.collections.todos, 'all');
     this.tasks_exist = ko.computed(function() {
-      return !!_this.todos.collection().models.length;
+      _this.todos_changed();
+      return !!_this.collections.todos.length;
     });
     this.title = ko.observable('');
     this.onAddTodo = function(view_model, event) {
@@ -50,16 +49,24 @@
       });
       return _this.title('');
     };
+    this.remaining_count = ko.computed(function() {
+      _this.todos_changed();
+      return _this.collections.todos.remainingCount();
+    });
+    this.completed_count = ko.computed(function() {
+      _this.todos_changed();
+      return _this.collections.todos.completedCount();
+    });
     this.all_completed = ko.computed({
       read: function() {
-        return !_this.todos.collection().remainingCount();
+        return !_this.remaining_count();
       },
       write: function(completed) {
-        return _this.todos.collection().completeAll(completed);
+        return _this.collections.todos.completeAll(completed);
       }
     });
     this.remaining_text = ko.computed(function() {
-      return "<strong>" + (_this.todos.collection().remainingCount()) + "</strong> " + (_this.todos.collection().remainingCount() === 1 ? 'item' : 'items') + " left";
+      return "<strong>" + (_this.remaining_count()) + "</strong> " + (_this.remaining_count() === 1 ? 'item' : 'items') + " left";
     });
     this.onDestroyCompleted = function() {
       return _this.collections.todos.destroyCompleted();
@@ -75,12 +82,8 @@
       return _this.list_filter_mode('completed');
     });
     Backbone.history.start();
-    this.input_placeholder_text = kb.observable(kb.locale_manager, {
-      key: 'placeholder_create'
-    });
-    this.input_tooltip_text = kb.observable(kb.locale_manager, {
-      key: 'tooltip_create'
-    });
+    this.input_placeholder_text = kb.observable(kb.locale_manager, 'placeholder_create');
+    this.input_tooltip_text = kb.observable(kb.locale_manager, 'tooltip_create');
     this.priority_color = ko.computed(function() {
       return app_settings.default_priority_color();
     });
@@ -89,7 +92,7 @@
     this.onSelectPriority = function(view_model, event) {
       event.stopPropagation();
       tooltip_visible(false);
-      return app_settings.default_priority(ko.utils.unwrapObservable(_this.priority));
+      return app_settings.default_priority(ko.utils.unwrapObservable(view_model.priority));
     };
     this.onToggleTooltip = function() {
       return _this.tooltip_visible(!_this.tooltip_visible());
@@ -114,11 +117,9 @@
           });
       }
     });
-    this.complete_all_text = kb.observable(kb.locale_manager, {
-      key: 'complete_all'
-    });
+    this.complete_all_text = kb.observable(kb.locale_manager, 'complete_all');
     this.remaining_text_key = ko.computed(function() {
-      if (_this.todos.collection().remainingCount() === 1) {
+      if (_this.collections.todos.remainingCount() === 1) {
         return 'remaining_template_s';
       } else {
         return 'remaining_template_pl';
@@ -127,14 +128,15 @@
     this.remaining_text = kb.observable(kb.locale_manager, {
       key: this.remaining_text_key,
       args: function() {
-        return _this.todos.collection().remainingCount();
+        return _this.collections.todos.remainingCount();
       }
     });
     this.clear_text_key = ko.computed(function() {
-      if (_this.todos.collection().completedCount() === 0) {
+      var count;
+      if ((count = _this.completed_count()) === 0) {
         return null;
       } else {
-        if (_this.todos.collection().completedCount() === 1) {
+        if (count === 1) {
           return 'clear_template_s';
         } else {
           return 'clear_template_pl';
@@ -144,16 +146,13 @@
     this.clear_text = kb.observable(kb.locale_manager, {
       key: this.clear_text_key,
       args: function() {
-        return _this.todos.collection().completedCount();
+        return _this.completed_count();
       }
     });
-    this.instructions_text = kb.observable(kb.locale_manager, {
-      key: 'instructions'
-    });
+    this.instructions_text = kb.observable(kb.locale_manager, 'instructions');
     this.label_filter_all = kb.observable(kb.locale_manager, 'todo_filter_all');
     this.label_filter_active = kb.observable(kb.locale_manager, 'todo_filter_active');
     this.label_filter_completed = kb.observable(kb.locale_manager, 'todo_filter_completed');
-    return this;
   };
 
 }).call(this);

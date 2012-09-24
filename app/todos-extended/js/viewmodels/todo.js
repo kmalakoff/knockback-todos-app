@@ -76,10 +76,7 @@
     this.onToggleTooltip = function() {
       return _this.tooltip_visible(!_this.tooltip_visible());
     };
-    this.complete_all_text = kb.observable(kb.locale_manager, {
-      key: 'complete_all'
-    });
-    return this;
+    this.complete_all_text = kb.observable(kb.locale_manager, 'complete_all');
   };
 
 }).call(this);

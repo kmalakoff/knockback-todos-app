@@ -8,14 +8,14 @@ LanguageOptionViewModel = (locale) ->
 # Priorities
 PrioritiesViewModel = (model) ->
 	@priority = model.get('id')
-	@priority_text = kb.observable(kb.locale_manager, {key: @priority})
-	@priority_color = kb.observable(model, {key: 'color'})
+	@priority_text = kb.observable(kb.locale_manager, @priority)
+	@priority_color = kb.observable(model, 'color')
 	@
 
 # List Sorting
 ListSortingOptionViewModel = (string_id) ->
 	@id = string_id
-	@label = kb.observable(kb.locale_manager, {key: string_id})
+	@label = kb.observable(kb.locale_manager, string_id)
 	@option_group = 'list_sort'
 	@
 
@@ -37,14 +37,16 @@ window.AppSettingsViewModel = ->
 
 		# set up color pickers
 		$('.colorpicker').mColorPicker({imageFolder: $.fn.mColorPicker.init.imageFolder})
-		$('.colorpicker').bind('colorpicked', =>
-			model = @collections.priorities.get($(this).attr('id'))
-			model.save({color: $(this).val()}) if model
+		$('.colorpicker').bind('colorpicked', (event) =>
+			$input = $(event.currentTarget)
+			model = @collections.priorities.get($input.attr('id'))
+			model.save({color: $input.val()}) if model
 		)
+		return
 	), 1000)
 
 	# Language settings
-	@language_options = _.map(kb.locale_manager.getLocales(), (locale) -> return new LanguageOptionViewModel(locale))
+	@language_options = _.map(kb.locale_manager.getLocales(), (locale) -> new LanguageOptionViewModel(locale))
 	@current_language = ko.observable() # start in english
 	@selected_language = ko.computed(
 		read: => return @current_language() # used to create a dependency
@@ -53,30 +55,19 @@ window.AppSettingsViewModel = ->
 	@selected_language('en') # start in English by default
 
 	# Priorities settings
-	priorities = [
-		new Backbone.ModelRef(@collections.priorities, 'high'),
-		new Backbone.ModelRef(@collections.priorities, 'medium'),
-		new Backbone.ModelRef(@collections.priorities, 'low')
-	]
+	priorities = _.map(['high', 'medium', 'low'], (priority) => new Backbone.ModelRef(@collections.priorities, priority))
 	@priorities = _.map(priorities, (model) -> return new PrioritiesViewModel(model))
 	@getColorByPriority = (priority) ->
 		@createColorsDependency()
 		(return view_model.priority_color() if view_model.priority == priority) for view_model in @priorities
 		return ''
-	@createColorsDependency = =>
-		view_model.priority_color() for view_model in @priorities
-		return
+	@createColorsDependency = => view_model.priority_color() for view_model in @priorities
 	@default_priority = ko.observable('medium')
 	@default_priority_color = ko.computed(=> return @getColorByPriority(@default_priority()))
-	@priorityToRank = (priority) ->
-		switch priority
-			when 'high' then return 0
-			when 'medium' then return 1
-			when 'low' then return 2
-		return
+	@priorityToRank = (priority) -> _.indexOf(['high', 'medium', 'low'], priority)
 
 	# List sorting
-	@list_sorting_options = [new ListSortingOptionViewModel('label_title'), new ListSortingOptionViewModel('label_created'), new ListSortingOptionViewModel('label_priority')]
+	@list_sorting_options = _.map(['label_title', 'label_created', 'label_priority'], (label) -> new ListSortingOptionViewModel(label))
 	@selected_list_sorting = ko.observable('label_title')
 
-	@
+	return

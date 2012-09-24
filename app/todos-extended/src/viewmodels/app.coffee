@@ -24,8 +24,8 @@ window.AppViewModel = ->
 			else return -> return false
 	)
 	@todos = kb.collectionObservable(@collections.todos, {view_model: TodoViewModel, filters: todos_filter_fn, sort_attribute: 'title'}) # EXTENSIONS: Add sorting
-	@collections.todos.bind('change', => @todos.notifySubscribers(@todos())) # trigger an update whenever a model changes (default is only when added, removed, or resorted)
-	@tasks_exist = ko.computed(=> !!@todos.collection().models.length)
+	@todos_changed = kb.triggeredObservable(@collections.todos, 'all')
+	@tasks_exist = ko.computed(=> @todos_changed(); return !!@collections.todos.length)
 
 	#############################
 	# Header Section
@@ -42,15 +42,17 @@ window.AppViewModel = ->
 	#############################
 	# Todos Section
 	#############################
+	@remaining_count = ko.computed(=> @todos_changed(); return @collections.todos.remainingCount())
+	@completed_count = ko.computed(=> @todos_changed(); return @collections.todos.completedCount())
 	@all_completed = ko.computed(
-		read: => return not @todos.collection().remainingCount()
-		write: (completed) => @todos.collection().completeAll(completed)
+		read: => return not @remaining_count()
+		write: (completed) => @collections.todos.completeAll(completed)
 	)
 
 	#############################
 	# Footer Section
 	#############################
-	@remaining_text = ko.computed(=> return "<strong>#{@todos.collection().remainingCount()}</strong> #{if @todos.collection().remainingCount() == 1 then 'item' else 'items'} left")
+	@remaining_text = ko.computed(=> return "<strong>#{@remaining_count()}</strong> #{if @remaining_count() == 1 then 'item' else 'items'} left")
 
 	@onDestroyCompleted = =>
 		@collections.todos.destroyCompleted()
@@ -74,18 +76,16 @@ window.AppViewModel = ->
 	#############################
 	# Header Section
 	#############################
-	@input_placeholder_text = kb.observable(kb.locale_manager, {key: 'placeholder_create'})
-	@input_tooltip_text = kb.observable(kb.locale_manager, {key: 'tooltip_create'})
+	@input_placeholder_text = kb.observable(kb.locale_manager, 'placeholder_create')
+	@input_tooltip_text = kb.observable(kb.locale_manager, 'tooltip_create')
 
 	@priority_color = ko.computed(=> return app_settings.default_priority_color())
 	@tooltip_visible = ko.observable(false)
 	tooltip_visible = @tooltip_visible # closured for onSelectPriority
 	@onSelectPriority = (view_model, event) =>
-		event.stopPropagation()
-		tooltip_visible(false)
-		app_settings.default_priority(ko.utils.unwrapObservable(@priority))
-	@onToggleTooltip = =>
-		@tooltip_visible(!@tooltip_visible())
+		event.stopPropagation(); tooltip_visible(false)
+		app_settings.default_priority(ko.utils.unwrapObservable(view_model.priority))
+	@onToggleTooltip = => @tooltip_visible(!@tooltip_visible())
 
 	#############################
 	# Todos Section
@@ -98,31 +98,25 @@ window.AppViewModel = ->
 			when 'label_priority' then @todos.sortedIndex((models, model)=> return _.sortedIndex(models, model, (test) => app_settings.priorityToRank(kb.utils.wrappedModel(test).get('priority'))))
 	)
 
-	@complete_all_text = kb.observable(kb.locale_manager, {key: 'complete_all'})
+	@complete_all_text = kb.observable(kb.locale_manager, 'complete_all')
 
 	#############################
 	# Footer Section
 	#############################
 	@remaining_text_key = ko.computed(=>
-		return if (@todos.collection().remainingCount() == 1) then 'remaining_template_s' else 'remaining_template_pl'
+		return if (@collections.todos.remainingCount() == 1) then 'remaining_template_s' else 'remaining_template_pl'
 	)
-	@remaining_text = kb.observable(kb.locale_manager, {
-		key: @remaining_text_key
-		args: => @todos.collection().remainingCount()
-	})
+	@remaining_text = kb.observable(kb.locale_manager, { key: @remaining_text_key, args: => @collections.todos.remainingCount() })
 
 	@clear_text_key = ko.computed(=>
-		return if (@todos.collection().completedCount()==0) then null else (if (@todos.collection().completedCount() == 1) then 'clear_template_s' else 'clear_template_pl')
+		return if ((count = @completed_count()) is 0) then null else (if (count is 1) then 'clear_template_s' else 'clear_template_pl')
 	)
-	@clear_text = kb.observable(kb.locale_manager, {
-		key: @clear_text_key
-		args: => @todos.collection().completedCount()
-	})
+	@clear_text = kb.observable(kb.locale_manager, { key: @clear_text_key, args: => @completed_count() })
 
 	# Localization
-	@instructions_text = kb.observable(kb.locale_manager, {key: 'instructions'})
+	@instructions_text = kb.observable(kb.locale_manager, 'instructions')
 	@label_filter_all = kb.observable(kb.locale_manager, 'todo_filter_all')
 	@label_filter_active = kb.observable(kb.locale_manager, 'todo_filter_active')
 	@label_filter_completed = kb.observable(kb.locale_manager, 'todo_filter_completed')
 
-	@
+	return

@@ -18,8 +18,8 @@ window.AppViewModel = ->
 			else return -> return false
 	)
 	@todos = kb.collectionObservable(@collections.todos, {view_model: TodoViewModel, filters: todos_filter_fn})
-	@collections.todos.bind('change', => @todos.notifySubscribers(@todos())) # trigger an update whenever a model changes (default is only when added, removed, or resorted)
-	@tasks_exist = ko.computed(=> !!@todos.collection().models.length)
+	@todos_changed = kb.triggeredObservable(@collections.todos, 'all')
+	@tasks_exist = ko.computed(=> @todos_changed(); return !!@collections.todos.length)
 
 	#############################
 	# Header Section
@@ -36,19 +36,18 @@ window.AppViewModel = ->
 	#############################
 	# Main Section
 	#############################
+	@remaining_count = ko.computed(=> @todos_changed(); return @collections.todos.remainingCount())
+	@completed_count = ko.computed(=> @todos_changed(); return @collections.todos.completedCount())
 	@all_completed = ko.computed(
-		read: => return not @todos.collection().remainingCount()
-		write: (completed) => @todos.collection().completeAll(completed)
+		read: => return not @remaining_count()
+		write: (completed) => @collections.todos.completeAll(completed)
 	)
 
 	#############################
 	# Footer Section
 	#############################
-	@remaining_text = ko.computed(=> return "<strong>#{@todos.collection().remainingCount()}</strong> #{if @todos.collection().remainingCount() == 1 then 'item' else 'items'} left")
-
-	@clear_text = ko.computed(=>
-		return if (count = @todos.collection().completedCount()) then "Clear completed (#{count})" else ''
-	)
+	@remaining_text = ko.computed(=> return "<strong>#{@remaining_count()}</strong> #{if @remaining_count() == 1 then 'item' else 'items'} left")
+	@clear_text = ko.computed(=> return if (count = @completed_count()) then "Clear completed (#{count})" else '')
 
 	@onDestroyCompleted = =>
 		@collections.todos.destroyCompleted()

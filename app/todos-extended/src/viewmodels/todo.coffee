@@ -46,6 +46,6 @@ window.TodoViewModel = (model) ->
 	@onToggleTooltip = => @tooltip_visible(!@tooltip_visible())
 
 	# Localization
-	@complete_all_text = kb.observable(kb.locale_manager, {key: 'complete_all'})
+	@complete_all_text = kb.observable(kb.locale_manager, 'complete_all')
 
-	@
+	return

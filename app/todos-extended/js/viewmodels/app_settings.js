@@ -11,20 +11,14 @@
 
   PrioritiesViewModel = function(model) {
     this.priority = model.get('id');
-    this.priority_text = kb.observable(kb.locale_manager, {
-      key: this.priority
-    });
-    this.priority_color = kb.observable(model, {
-      key: 'color'
-    });
+    this.priority_text = kb.observable(kb.locale_manager, this.priority);
+    this.priority_color = kb.observable(model, 'color');
     return this;
   };
 
   ListSortingOptionViewModel = function(string_id) {
     this.id = string_id;
-    this.label = kb.observable(kb.locale_manager, {
-      key: string_id
-    });
+    this.label = kb.observable(kb.locale_manager, string_id);
     this.option_group = 'list_sort';
     return this;
   };
@@ -62,12 +56,13 @@
       $('.colorpicker').mColorPicker({
         imageFolder: $.fn.mColorPicker.init.imageFolder
       });
-      return $('.colorpicker').bind('colorpicked', function() {
-        var model;
-        model = _this.collections.priorities.get($(_this).attr('id'));
+      $('.colorpicker').bind('colorpicked', function(event) {
+        var $input, model;
+        $input = $(event.currentTarget);
+        model = _this.collections.priorities.get($input.attr('id'));
         if (model) {
           return model.save({
-            color: $(_this).val()
+            color: $input.val()
           });
         }
       });
@@ -86,7 +81,9 @@
       }
     });
     this.selected_language('en');
-    priorities = [new Backbone.ModelRef(this.collections.priorities, 'high'), new Backbone.ModelRef(this.collections.priorities, 'medium'), new Backbone.ModelRef(this.collections.priorities, 'low')];
+    priorities = _.map(['high', 'medium', 'low'], function(priority) {
+      return new Backbone.ModelRef(_this.collections.priorities, priority);
+    });
     this.priorities = _.map(priorities, function(model) {
       return new PrioritiesViewModel(model);
     });
@@ -103,30 +100,26 @@
       return '';
     };
     this.createColorsDependency = function() {
-      var view_model, _i, _len, _ref;
+      var view_model, _i, _len, _ref, _results;
       _ref = _this.priorities;
+      _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         view_model = _ref[_i];
-        view_model.priority_color();
+        _results.push(view_model.priority_color());
       }
+      return _results;
     };
     this.default_priority = ko.observable('medium');
     this.default_priority_color = ko.computed(function() {
       return _this.getColorByPriority(_this.default_priority());
     });
     this.priorityToRank = function(priority) {
-      switch (priority) {
-        case 'high':
-          return 0;
-        case 'medium':
-          return 1;
-        case 'low':
-          return 2;
-      }
+      return _.indexOf(['high', 'medium', 'low'], priority);
     };
-    this.list_sorting_options = [new ListSortingOptionViewModel('label_title'), new ListSortingOptionViewModel('label_created'), new ListSortingOptionViewModel('label_priority')];
+    this.list_sorting_options = _.map(['label_title', 'label_created', 'label_priority'], function(label) {
+      return new ListSortingOptionViewModel(label);
+    });
     this.selected_list_sorting = ko.observable('label_title');
-    return this;
   };
 
 }).call(this);
