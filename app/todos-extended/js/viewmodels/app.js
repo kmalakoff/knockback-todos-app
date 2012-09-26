@@ -33,7 +33,7 @@
       filters: filter_fn,
       sort_attribute: 'title'
     });
-    this.todos_changed = kb.triggeredObservable(this.collections.todos, 'all');
+    this.todos_changed = kb.triggeredObservable(this.collections.todos, 'change add remove');
     this.tasks_exist = ko.computed(function() {
       _this.todos_changed();
       return !!_this.collections.todos.length;

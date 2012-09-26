@@ -32,7 +32,7 @@
       view_model: TodoViewModel,
       filters: filter_fn
     });
-    this.todos_changed = kb.triggeredObservable(this.collections.todos, 'all');
+    this.todos_changed = kb.triggeredObservable(this.collections.todos, 'change add remove');
     this.tasks_exist = ko.computed(function() {
       _this.todos_changed();
       return !!_this.collections.todos.length;
@@ -63,19 +63,21 @@
         return _this.collections.todos.completeAll(completed);
       }
     });
-    this.remaining_message = ko.computed(function() {
-      return "<strong>" + (_this.remaining_count()) + "</strong> " + (_this.remaining_count() === 1 ? 'item' : 'items') + " left";
-    });
-    this.clear_message = ko.computed(function() {
-      var count;
-      if ((count = _this.completed_count())) {
-        return "Clear completed (" + count + ")";
-      } else {
-        return '';
-      }
-    });
     this.onDestroyCompleted = function() {
       return _this.collections.todos.destroyCompleted();
+    };
+    this.loc = {
+      remaining_message: ko.computed(function() {
+        return "<strong>" + (_this.remaining_count()) + "</strong> " + (_this.remaining_count() === 1 ? 'item' : 'items') + " left";
+      }),
+      clear_message: ko.computed(function() {
+        var count;
+        if ((count = _this.completed_count())) {
+          return "Clear completed (" + count + ")";
+        } else {
+          return '';
+        }
+      })
     };
     router = new Backbone.Router;
     router.route('', null, function() {

@@ -18,7 +18,7 @@ window.AppViewModel = ->
 			else return -> return false
 	)
 	@todos = kb.collectionObservable(@collections.todos, {view_model: TodoViewModel, filters: filter_fn})
-	@todos_changed = kb.triggeredObservable(@collections.todos, 'all')
+	@todos_changed = kb.triggeredObservable(@collections.todos, 'change add remove')
 	@tasks_exist = ko.computed(=> @todos_changed(); return !!@collections.todos.length)
 
 	#############################
@@ -46,11 +46,15 @@ window.AppViewModel = ->
 	#############################
 	# Footer Section
 	#############################
-	@remaining_message = ko.computed(=> return "<strong>#{@remaining_count()}</strong> #{if @remaining_count() == 1 then 'item' else 'items'} left")
-	@clear_message = ko.computed(=> return if (count = @completed_count()) then "Clear completed (#{count})" else '')
-
 	@onDestroyCompleted = =>
 		@collections.todos.destroyCompleted()
+
+	#############################
+	# Localization
+	#############################
+	@loc =
+		remaining_message: ko.computed(=> return "<strong>#{@remaining_count()}</strong> #{if @remaining_count() == 1 then 'item' else 'items'} left")
+		clear_message: ko.computed(=> return if (count = @completed_count()) then "Clear completed (#{count})" else '')
 
 	#############################
 	# Routing
