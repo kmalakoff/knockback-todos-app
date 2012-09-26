@@ -102,16 +102,18 @@
         case 'label_title':
           return _this.todos.sortAttribute('title');
         case 'label_created':
-          return _this.todos.sortedIndex(function(models, model) {
-            return _.sortedIndex(models, model, function(test) {
-              return kb.utils.wrappedModel(test).get('created_at').valueOf();
-            });
+          return _this.todos.comparator(function(model_a, model_b) {
+            return kb.utils.wrappedModel(model_a).get('created_at').valueOf() - kb.utils.wrappedModel(model_b).get('created_at').valueOf();
           });
         case 'label_priority':
-          return _this.todos.sortedIndex(function(models, model) {
-            return _.sortedIndex(models, model, function(test) {
-              return app_settings.priorityToRank(kb.utils.wrappedModel(test).get('priority'));
-            });
+          return _this.todos.comparator(function(model_a, model_b) {
+            var delta, rank_a, rank_b;
+            rank_a = _.indexOf(['high', 'medium', 'low'], kb.utils.wrappedModel(model_a).get('priority'));
+            rank_b = _.indexOf(['high', 'medium', 'low'], kb.utils.wrappedModel(model_b).get('priority'));
+            if ((delta = rank_a - rank_b) !== 0) {
+              return delta;
+            }
+            return kb.utils.wrappedModel(model_a).get('created_at').valueOf() - kb.utils.wrappedModel(model_b).get('created_at').valueOf();
           });
       }
     });

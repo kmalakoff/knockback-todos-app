@@ -107,9 +107,6 @@
     this.default_priority_color = ko.computed(function() {
       return _this.getColorByPriority(_this.default_priority());
     });
-    this.priorityToRank = function(priority) {
-      return _.indexOf(['high', 'medium', 'low'], priority);
-    };
     this.list_sorting_options = _.map(['label_title', 'label_created', 'label_priority'], function(label) {
       return new ListSortingOptionViewModel(label);
     });

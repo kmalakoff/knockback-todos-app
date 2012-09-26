@@ -91,10 +91,15 @@ window.AppViewModel = ->
 		new_mode = app_settings.selected_list_sorting()
 		switch new_mode
 			when 'label_title' then @todos.sortAttribute('title')
-			when 'label_created' then @todos.sortedIndex((models, model) =>
-				return _.sortedIndex(models, model, (test) => kb.utils.wrappedModel(test).get('created_at').valueOf()))
-			when 'label_priority' then @todos.sortedIndex((models, model) =>
-				return _.sortedIndex(models, model, (test) => app_settings.priorityToRank(kb.utils.wrappedModel(test).get('priority'))))
+			when 'label_created' then @todos.comparator( (model_a, model_b) ->
+				return kb.utils.wrappedModel(model_a).get('created_at').valueOf() - kb.utils.wrappedModel(model_b).get('created_at').valueOf()
+			)
+			when 'label_priority' then @todos.comparator( (model_a, model_b) ->
+				rank_a = _.indexOf(['high', 'medium', 'low'], kb.utils.wrappedModel(model_a).get('priority'))
+				rank_b = _.indexOf(['high', 'medium', 'low'], kb.utils.wrappedModel(model_b).get('priority'))
+				return delta if (delta = (rank_a - rank_b)) isnt 0
+				return kb.utils.wrappedModel(model_a).get('created_at').valueOf() - kb.utils.wrappedModel(model_b).get('created_at').valueOf()
+			)
 	)
 
 	#############################

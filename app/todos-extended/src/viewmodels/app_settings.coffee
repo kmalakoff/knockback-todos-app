@@ -63,7 +63,6 @@ window.AppSettingsViewModel = ->
 		return if view_model then view_model.priority_color() else ''
 	@default_priority = ko.observable('medium')
 	@default_priority_color = ko.computed(=> return @getColorByPriority(@default_priority()))
-	@priorityToRank = (priority) -> _.indexOf(['high', 'medium', 'low'], priority)
 
 	# List sorting
 	@list_sorting_options = _.map(['label_title', 'label_created', 'label_priority'], (label) -> new ListSortingOptionViewModel(label))
