@@ -26,6 +26,7 @@ window.AppViewModel = ->
 	@todos = kb.collectionObservable(@collections.todos, {view_model: TodoViewModel, filters: filter_fn, sort_attribute: 'title'}) # EXTENSIONS: Add sorting
 	@todos_changed = kb.triggeredObservable(@collections.todos, 'change add remove')
 	@tasks_exist = ko.computed(=> @todos_changed(); return !!@collections.todos.length)
+	@update_filter = ko.computed(=> @todos_changed(); @list_filter_mode.notifySubscribers(@list_filter_mode()))
 
 	#############################
 	# Header Section

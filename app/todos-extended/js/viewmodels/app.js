@@ -38,6 +38,10 @@
       _this.todos_changed();
       return !!_this.collections.todos.length;
     });
+    this.update_filter = ko.computed(function() {
+      _this.todos_changed();
+      return _this.list_filter_mode.notifySubscribers(_this.list_filter_mode());
+    });
     this.title = ko.observable('');
     this.onAddTodo = function(view_model, event) {
       if (!$.trim(_this.title()) || (event.keyCode !== ENTER_KEY)) {

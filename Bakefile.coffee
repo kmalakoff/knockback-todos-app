@@ -25,7 +25,7 @@ module.exports =
       'cp vendor/backbone.localStorage-min.js app/todos-classic/js/lib/backbone.localStorage-min.js'
 
       # todos-extended
-      'cp -v knockback/knockback-full-stack.js app/todos-extended/js/lib/knockback-full-stack.min.js'
+      'cp -v knockback/knockback-full-stack.min.js app/todos-extended/js/lib/knockback-full-stack.min.js'
       'cp -v backbone-modelref/backbone-modelref.min.js app/todos-extended/js/lib/backbone-modelref.min.js'
       'cp vendor/backbone.localStorage-min.js app/todos-extended/js/lib/backbone.localStorage-min.js'
       'cp vendor/mColorPicker.min.js app/todos-extended/js/lib/mColorPicker.min.js'
