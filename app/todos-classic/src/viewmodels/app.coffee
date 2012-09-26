@@ -11,13 +11,13 @@ window.AppViewModel = ->
 
 	# shared observables
 	@list_filter_mode = ko.observable('')
-	todos_filter_fn = ko.computed(=>
+	filter_fn = ko.computed(=>
 		switch @list_filter_mode()
 			when 'active' then return (model) -> return model.completed()
 			when 'completed' then return (model) -> return not model.completed()
 			else return -> return false
 	)
-	@todos = kb.collectionObservable(@collections.todos, {view_model: TodoViewModel, filters: todos_filter_fn})
+	@todos = kb.collectionObservable(@collections.todos, {view_model: TodoViewModel, filters: filter_fn})
 	@todos_changed = kb.triggeredObservable(@collections.todos, 'all')
 	@tasks_exist = ko.computed(=> @todos_changed(); return !!@collections.todos.length)
 
@@ -46,8 +46,8 @@ window.AppViewModel = ->
 	#############################
 	# Footer Section
 	#############################
-	@remaining_text = ko.computed(=> return "<strong>#{@remaining_count()}</strong> #{if @remaining_count() == 1 then 'item' else 'items'} left")
-	@clear_text = ko.computed(=> return if (count = @completed_count()) then "Clear completed (#{count})" else '')
+	@remaining_message = ko.computed(=> return "<strong>#{@remaining_count()}</strong> #{if @remaining_count() == 1 then 'item' else 'items'} left")
+	@clear_message = ko.computed(=> return if (count = @completed_count()) then "Clear completed (#{count})" else '')
 
 	@onDestroyCompleted = =>
 		@collections.todos.destroyCompleted()

@@ -45,19 +45,6 @@
       }
     };
     this.created_at = model.get('created_at');
-    this.completed_at = kb.observable(model, {
-      key: 'completed',
-      localizer: LongDateLocalizer
-    });
-    this.completed_text = ko.computed(function() {
-      var completed_at;
-      completed_at = _this.completed_at();
-      if (!!completed_at) {
-        return "" + (kb.locale_manager.get('label_completed')) + ": " + completed_at;
-      } else {
-        return '';
-      }
-    });
     this.priority_color = kb.observable(model, {
       key: 'priority',
       read: function() {
@@ -76,7 +63,20 @@
     this.onToggleTooltip = function() {
       return _this.tooltip_visible(!_this.tooltip_visible());
     };
-    this.complete_all_text = kb.observable(kb.locale_manager, 'complete_all');
+    this.completed_at = kb.observable(model, {
+      key: 'completed',
+      localizer: LongDateLocalizer
+    });
+    this.loc = kb.viewModel(kb.locale_manager, {
+      keys: ['complete_all']
+    });
+    this.loc.completed_message = ko.computed(function() {
+      if (!!_this.completed_at()) {
+        return "" + (kb.locale_manager.get('label_completed')) + ": " + (_this.completed_at());
+      } else {
+        return '';
+      }
+    });
   };
 
 }).call(this);

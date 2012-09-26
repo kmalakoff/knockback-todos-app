@@ -5,14 +5,14 @@
   ENTER_KEY = 13;
 
   window.AppViewModel = function() {
-    var router, todos_filter_fn,
+    var filter_fn, router,
       _this = this;
     this.collections = {
       todos: new TodoCollection()
     };
     this.collections.todos.fetch();
     this.list_filter_mode = ko.observable('');
-    todos_filter_fn = ko.computed(function() {
+    filter_fn = ko.computed(function() {
       switch (_this.list_filter_mode()) {
         case 'active':
           return function(model) {
@@ -30,7 +30,7 @@
     });
     this.todos = kb.collectionObservable(this.collections.todos, {
       view_model: TodoViewModel,
-      filters: todos_filter_fn
+      filters: filter_fn
     });
     this.todos_changed = kb.triggeredObservable(this.collections.todos, 'all');
     this.tasks_exist = ko.computed(function() {
@@ -63,10 +63,10 @@
         return _this.collections.todos.completeAll(completed);
       }
     });
-    this.remaining_text = ko.computed(function() {
+    this.remaining_message = ko.computed(function() {
       return "<strong>" + (_this.remaining_count()) + "</strong> " + (_this.remaining_count() === 1 ? 'item' : 'items') + " left";
     });
-    this.clear_text = ko.computed(function() {
+    this.clear_message = ko.computed(function() {
       var count;
       if ((count = _this.completed_count())) {
         return "Clear completed (" + count + ")";

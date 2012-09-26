@@ -29,11 +29,6 @@ window.TodoViewModel = (model) ->
 
 	# Created message
 	@created_at = model.get('created_at')
-	@completed_at = kb.observable(model, {key: 'completed', localizer: LongDateLocalizer})
-	@completed_text = ko.computed(=>
-		completed_at = @completed_at() # ensure there is a dependency
-		return if !!completed_at then return "#{kb.locale_manager.get('label_completed')}: #{completed_at}" else ''
-	)
 
 	# Priorities
 	@priority_color = kb.observable(model, {key: 'priority', read: -> return app_settings.getColorByPriority(model.get('priority'))})
@@ -45,7 +40,11 @@ window.TodoViewModel = (model) ->
 		model.save({priority: ko.utils.unwrapObservable(@priority)})
 	@onToggleTooltip = => @tooltip_visible(!@tooltip_visible())
 
+	#############################
 	# Localization
-	@complete_all_text = kb.observable(kb.locale_manager, 'complete_all')
+	#############################
+	@completed_at = kb.observable(model, {key: 'completed', localizer: LongDateLocalizer})
+	@loc = kb.viewModel(kb.locale_manager, { keys: ['complete_all'] })
+	@loc.completed_message = ko.computed(=> return if !!@completed_at() then return "#{kb.locale_manager.get('label_completed')}: #{@completed_at()}" else '')
 
 	return

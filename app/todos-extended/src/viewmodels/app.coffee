@@ -17,13 +17,13 @@ window.AppViewModel = ->
 
 	# shared observables
 	@list_filter_mode = ko.observable('')
-	todos_filter_fn = ko.computed(=>
+	filter_fn = ko.computed(=>
 		switch @list_filter_mode()
 			when 'active' then return (model) -> return model.completed()
 			when 'completed' then return (model) -> return not model.completed()
 			else return -> return false
 	)
-	@todos = kb.collectionObservable(@collections.todos, {view_model: TodoViewModel, filters: todos_filter_fn, sort_attribute: 'title'}) # EXTENSIONS: Add sorting
+	@todos = kb.collectionObservable(@collections.todos, {view_model: TodoViewModel, filters: filter_fn, sort_attribute: 'title'}) # EXTENSIONS: Add sorting
 	@todos_changed = kb.triggeredObservable(@collections.todos, 'all')
 	@tasks_exist = ko.computed(=> @todos_changed(); return !!@collections.todos.length)
 
@@ -52,7 +52,7 @@ window.AppViewModel = ->
 	#############################
 	# Footer Section
 	#############################
-	@remaining_text = ko.computed(=> return "<strong>#{@remaining_count()}</strong> #{if @remaining_count() == 1 then 'item' else 'items'} left")
+	@remaining_message = ko.computed(=> return "<strong>#{@remaining_count()}</strong> #{if @remaining_count() == 1 then 'item' else 'items'} left")
 
 	@onDestroyCompleted = =>
 		@collections.todos.destroyCompleted()
@@ -76,9 +76,6 @@ window.AppViewModel = ->
 	#############################
 	# Header Section
 	#############################
-	@input_placeholder_text = kb.observable(kb.locale_manager, 'placeholder_create')
-	@input_tooltip_text = kb.observable(kb.locale_manager, 'tooltip_create')
-
 	@priority_color = ko.computed(=> return app_settings.default_priority_color())
 	@tooltip_visible = ko.observable(false)
 	tooltip_visible = @tooltip_visible # closured for onSelectPriority
@@ -100,25 +97,16 @@ window.AppViewModel = ->
 				return _.sortedIndex(models, model, (test) => app_settings.priorityToRank(kb.utils.wrappedModel(test).get('priority'))))
 	)
 
-	@complete_all_text = kb.observable(kb.locale_manager, 'complete_all')
-
 	#############################
-	# Footer Section
-	#############################
-	@remaining_text_key = ko.computed(=>
-		return if (@collections.todos.remainingCount() == 1) then 'remaining_template_s' else 'remaining_template_pl'
-	)
-	@remaining_text = kb.observable(kb.locale_manager, { key: @remaining_text_key, args: => @collections.todos.remainingCount() })
-
-	@clear_text_key = ko.computed(=>
-		return if ((count = @completed_count()) is 0) then null else (if (count is 1) then 'clear_template_s' else 'clear_template_pl')
-	)
-	@clear_text = kb.observable(kb.locale_manager, { key: @clear_text_key, args: => @completed_count() })
-
 	# Localization
-	@instructions_text = kb.observable(kb.locale_manager, 'instructions')
-	@label_filter_all = kb.observable(kb.locale_manager, 'todo_filter_all')
-	@label_filter_active = kb.observable(kb.locale_manager, 'todo_filter_active')
-	@label_filter_completed = kb.observable(kb.locale_manager, 'todo_filter_completed')
+	#############################
+	@remaining_message_key = ko.computed(=>return if (@remaining_count() == 1) then 'remaining_template_s' else 'remaining_template_pl')
+	@clear_message_key = ko.computed(=>return if ((count = @completed_count()) is 0) then null else (if (count is 1) then 'clear_template_s' else 'clear_template_pl'))
+	@loc = kb.viewModel(kb.locale_manager, {
+		keys: ['complete_all', 'create_placeholder', 'create_tooltip', 'instructions', 'filter_all', 'filter_active', 'filter_completed']
+		mappings:
+			remaining_message: { key: @remaining_message_key, args: => @remaining_count() }
+			clear_message: { key: @clear_message_key, args: => @completed_count() }
+	})
 
 	return

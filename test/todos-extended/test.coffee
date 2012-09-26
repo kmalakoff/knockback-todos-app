@@ -19,17 +19,17 @@ $(->
 
     ok(view_model.all_completed, "all_completed observable")
 
-    ok(view_model.remaining_text, "remaining_text observable")
+    ok(view_model.remaining_message, "remaining_message observable")
 
-    ok(view_model.clear_text, "clear_text observable")
+    ok(view_model.clear_message, "clear_message observable")
 
 		#############################
 		# Extended
 		#############################
     ok(app_settings.language_options, "language_options observable")
 
-    ok(view_model.input_placeholder_text, "input_placeholder_text observable")
-    ok(view_model.input_tooltip_text, "input_tooltip_text observable")
+    ok(view_model.loc.create_placeholder, "loc.create_placeholder observable")
+    ok(view_model.loc.create_tooltip, "loc.create_tooltip observable")
 
     ok(view_model.priority_color, "priority_color observable")
     ok(view_model.tooltip_visible, "tooltip_visible observable")

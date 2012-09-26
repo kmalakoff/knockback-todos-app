@@ -5,14 +5,14 @@
   ENTER_KEY = 13;
 
   window.AppViewModel = function() {
-    var router, todos_filter_fn, tooltip_visible,
+    var filter_fn, router, tooltip_visible,
       _this = this;
     this.collections = {
       todos: new TodoCollection()
     };
     this.collections.todos.fetch();
     this.list_filter_mode = ko.observable('');
-    todos_filter_fn = ko.computed(function() {
+    filter_fn = ko.computed(function() {
       switch (_this.list_filter_mode()) {
         case 'active':
           return function(model) {
@@ -30,7 +30,7 @@
     });
     this.todos = kb.collectionObservable(this.collections.todos, {
       view_model: TodoViewModel,
-      filters: todos_filter_fn,
+      filters: filter_fn,
       sort_attribute: 'title'
     });
     this.todos_changed = kb.triggeredObservable(this.collections.todos, 'all');
@@ -65,7 +65,7 @@
         return _this.collections.todos.completeAll(completed);
       }
     });
-    this.remaining_text = ko.computed(function() {
+    this.remaining_message = ko.computed(function() {
       return "<strong>" + (_this.remaining_count()) + "</strong> " + (_this.remaining_count() === 1 ? 'item' : 'items') + " left";
     });
     this.onDestroyCompleted = function() {
@@ -82,8 +82,6 @@
       return _this.list_filter_mode('completed');
     });
     Backbone.history.start();
-    this.input_placeholder_text = kb.observable(kb.locale_manager, 'placeholder_create');
-    this.input_tooltip_text = kb.observable(kb.locale_manager, 'tooltip_create');
     this.priority_color = ko.computed(function() {
       return app_settings.default_priority_color();
     });
@@ -117,21 +115,14 @@
           });
       }
     });
-    this.complete_all_text = kb.observable(kb.locale_manager, 'complete_all');
-    this.remaining_text_key = ko.computed(function() {
-      if (_this.collections.todos.remainingCount() === 1) {
+    this.remaining_message_key = ko.computed(function() {
+      if (_this.remaining_count() === 1) {
         return 'remaining_template_s';
       } else {
         return 'remaining_template_pl';
       }
     });
-    this.remaining_text = kb.observable(kb.locale_manager, {
-      key: this.remaining_text_key,
-      args: function() {
-        return _this.collections.todos.remainingCount();
-      }
-    });
-    this.clear_text_key = ko.computed(function() {
+    this.clear_message_key = ko.computed(function() {
       var count;
       if ((count = _this.completed_count()) === 0) {
         return null;
@@ -143,16 +134,23 @@
         }
       }
     });
-    this.clear_text = kb.observable(kb.locale_manager, {
-      key: this.clear_text_key,
-      args: function() {
-        return _this.completed_count();
+    this.loc = kb.viewModel(kb.locale_manager, {
+      keys: ['complete_all', 'create_placeholder', 'create_tooltip', 'instructions', 'filter_all', 'filter_active', 'filter_completed'],
+      mappings: {
+        remaining_message: {
+          key: this.remaining_message_key,
+          args: function() {
+            return _this.remaining_count();
+          }
+        },
+        clear_message: {
+          key: this.clear_message_key,
+          args: function() {
+            return _this.completed_count();
+          }
+        }
       }
     });
-    this.instructions_text = kb.observable(kb.locale_manager, 'instructions');
-    this.label_filter_all = kb.observable(kb.locale_manager, 'todo_filter_all');
-    this.label_filter_active = kb.observable(kb.locale_manager, 'todo_filter_active');
-    this.label_filter_completed = kb.observable(kb.locale_manager, 'todo_filter_completed');
   };
 
 }).call(this);

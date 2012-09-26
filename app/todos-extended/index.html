@@ -41,8 +41,8 @@
 	<section id="todoapp" kb-inject="AppViewModel">
 		<header id="header">
 			<h1>todos</h1>
-			<input id="new-todo" type="text" data-bind="value: title, valueUpdate: 'afterkeydown', event: {keyup: onAddTodo}, placeholder: input_placeholder_text" autofocus>
-			<span class="ui-tooltip-top" style="display:none;" data-bind="text: input_tooltip_text"></span>
+			<input id="new-todo" type="text" data-bind="value: title, valueUpdate: 'afterkeydown', event: {keyup: onAddTodo}, placeholder: loc.create_placeholder" autofocus>
+			<span class="ui-tooltip-top" style="display:none;" data-bind="text: loc.create_tooltip"></span>
 			<div class="priority-color-swatch-wrapper" data-bind="template: {name: 'priority-swatch-picker-template', data: $data}"></div>
 		</header>
 		<section id="main" data-bind="block: tasks_exist">
@@ -55,26 +55,26 @@
 						<label data-bind="text: title"></label>
 						<button class="destroy" data-bind="click: onDestroyTodo"></button>
 						<div class="priority-color-swatch-wrapper" data-bind="template: {name: 'priority-swatch-picker-template', data: $data}"></div>
-						<div class="todo-completed-text" data-bind="text: completed_text"></div>
+						<div class="todo-completed-text" data-bind="text: loc.completed_message"></div>
 					</div>
 					<input class="edit" type="text" data-bind="value: title, selectAndFocus: editing, event: {blur: onCheckEditEnd, keyup: onCheckEditEnd}">
 				</li>
 			</ul>
 		</section>
 		<footer id="footer" data-bind="block: tasks_exist">
-			<span id="todo-count" data-bind="html: remaining_text"></span>
+			<span id="todo-count" data-bind="html: loc.remaining_message"></span>
 			<ul id="filters">
 				<li>
-					<a href="#/" data-bind="text: label_filter_all, css: {selected: list_filter_mode()==''}"></a>
+					<a href="#/" data-bind="text: loc.filter_all, css: {selected: list_filter_mode()==''}"></a>
 				</li>
 				<li>
-					<a href="#/active" data-bind="text: label_filter_active, css: {selected: list_filter_mode()=='active'}"></a>
+					<a href="#/active" data-bind="text: loc.filter_active, css: {selected: list_filter_mode()=='active'}"></a>
 				</li>
 				<li>
-					<a href="#/completed" data-bind="text: label_filter_completed, css: {selected: list_filter_mode()=='completed'}"></a>
+					<a href="#/completed" data-bind="text: loc.filter_completed, css: {selected: list_filter_mode()=='completed'}"></a>
 				</li>
 			</ul>
-			<button id="clear-completed" data-bind="text: clear_text, block: clear_text, click: onDestroyCompleted"></button>
+			<button id="clear-completed" data-bind="text: loc.clear_message, block: loc.clear_message, click: onDestroyCompleted"></button>
 		</footer>
 	</section>
 	<footer id="info">
