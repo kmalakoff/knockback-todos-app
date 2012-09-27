@@ -19,9 +19,9 @@ $(->
 
     ok(view_model.all_completed, "all_completed observable")
 
-    ok(view_model.remaining_message, "remaining_message observable")
+    ok(view_model.loc.remaining_message, "remaining_message observable")
 
-    ok(view_model.clear_message, "clear_message observable")
+    ok(view_model.loc.clear_message, "clear_message observable")
 
 		#############################
 		# Extended
