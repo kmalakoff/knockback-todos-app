@@ -25,7 +25,6 @@ window.AppViewModel = ->
 	# Header Section
 	#############################
 	@title = ko.observable('')
-
 	@onAddTodo = (view_model, event) =>
 		return true if not $.trim(@title()) or (event.keyCode != ENTER_KEY)
 
