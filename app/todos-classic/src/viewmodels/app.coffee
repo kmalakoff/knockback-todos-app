@@ -11,12 +11,12 @@ window.AppViewModel = ->
 
 	# shared observables
 	@list_filter_mode = ko.observable('')
-	filter_fn = ko.computed(=>
+	filter_fn = ko.computed =>
 		switch @list_filter_mode()
-			when 'active' then return (model) -> return model.completed()
-			when 'completed' then return (model) -> return not model.completed()
-			else return -> return false
-	)
+			when 'active' then return (model) -> return not model.completed()
+			when 'completed' then return (model) -> return model.completed()
+			else return -> return true
+
 	@todos = kb.collectionObservable(@collections.todos, {view_model: TodoViewModel, filters: filter_fn})
 	@todos_changed = kb.triggeredObservable(@collections.todos, 'change add remove')
 	@tasks_exist = ko.computed(=> @todos_changed(); return !!@collections.todos.length)

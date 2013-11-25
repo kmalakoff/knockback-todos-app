@@ -17,12 +17,12 @@ window.AppViewModel = ->
 
 	# shared observables
 	@list_filter_mode = ko.observable('')
-	filter_fn = ko.computed(=>
+	filter_fn = ko.computed =>
 		switch @list_filter_mode()
-			when 'active' then return (model) -> return model.completed()
-			when 'completed' then return (model) -> return not model.completed()
-			else return -> return false
-	)
+			when 'active' then return (model) -> return not model.completed()
+			when 'completed' then return (model) -> return model.completed()
+			else return -> return true
+
 	@todos = kb.collectionObservable(@collections.todos, {view_model: TodoViewModel, filters: filter_fn, sort_attribute: 'title'}) # EXTENSIONS: Add sorting
 	@todos_changed = kb.triggeredObservable(@collections.todos, 'change add remove')
 	@tasks_exist = ko.computed(=> @todos_changed(); return !!@collections.todos.length)
@@ -87,7 +87,7 @@ window.AppViewModel = ->
 	#############################
 	# Todos Section
 	#############################
-	@sort_mode = ko.computed(=>
+	@sort_mode = ko.computed =>
 		new_mode = app_settings.selected_list_sorting()
 		switch new_mode
 			when 'label_title' then @todos.sortAttribute('title')
@@ -100,7 +100,6 @@ window.AppViewModel = ->
 				return delta if (delta = (rank_a - rank_b)) isnt 0
 				return kb.utils.wrappedModel(model_a).get('created_at').valueOf() - kb.utils.wrappedModel(model_b).get('created_at').valueOf()
 			)
-	)
 
 	#############################
 	# Localization
@@ -110,8 +109,8 @@ window.AppViewModel = ->
 	@loc = kb.viewModel(kb.locale_manager, {
 		keys: ['complete_all', 'create_placeholder', 'create_tooltip', 'instructions', 'filter_all', 'filter_active', 'filter_completed']
 		mappings:
-			remaining_message: { key: @remaining_message_key, args: => @remaining_count() }
-			clear_message: { key: @clear_message_key, args: => @completed_count() }
+			remaining_message: { key: @remaining_message_key, args: [@remaining_count] }
+			clear_message: { key: @clear_message_key, args: [@completed_count] }
 	})
 
 	return

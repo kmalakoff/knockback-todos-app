@@ -5,12 +5,14 @@ class LocaleManager
     @setLocale(locale_identifier) if locale_identifier
 
   get: (string_id, parameters) ->
+    debugger if string_id is 'remaining_template_pl'
+
     return '' if not string_id
     culture_map = @translations_by_locale[@locale_identifier] if @locale_identifier
     return '' if not culture_map
     string = if culture_map.hasOwnProperty(string_id) then culture_map[string_id] else ''
     return string if arguments.length == 1
-    return Knockback.toFormattedString.apply(null, [string].concat(Array.prototype.slice.call(arguments, 1)))
+    return kb.toFormattedString.apply(null, [string].concat(Array.prototype.slice.call(arguments, 1)))
 
   getLocale: -> return @locale_identifier
   setLocale: (locale_identifier) ->
