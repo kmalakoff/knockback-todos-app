@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "backbone-modelref": "0.1.x",
-    "knockback": "git+https://github.com/kmalakoff/knockback"
+    "knockback": "0.18.x"
   },
 
   "version"       : "0.1.2"
